@@ -81,7 +81,7 @@ ${BSUB_CMDLINE} -K -M 10G \
 
 # Check that the generated evidence strings do not contain any duplicated evidence strings. For every evidence string, we group the value of fields datatypeId, studyId, targetFromSourceId, variantFunctionalConsequenceId and diseaseFromSourceMappedId, all separated by tabs, sorted and saved at duplicates.json if found duplicated. 
 jq --arg sep $'\t' -jr \
-  '.datatypeId,$sep,.studyId,$sep,.targetFromSourceId,$sep,.variantFunctionalConsequenceId,$sep,.diseaseFromSourceMappedId,"\n"' \
+  '.datatypeId,$sep,.studyId,$sep,.targetFromSourceId,$sep,.variantFunctionalConsequenceId,$sep,.diseaseFromSourceMappedId,$sep,.diseaseFromSource,"\n"' \
   ${BATCH_ROOT}/evidence_strings/evidence_strings.json \
   | sort | uniq -d > ${BATCH_ROOT}/evidence_strings/duplicates.json
 
@@ -106,6 +106,7 @@ A repeated evidence string will have identical values for these five fields:
 * **variantFunctionalConsequenceId** - The consequence of such variant (*e.g.* ``SO_0001818``, which corresponds to protein_altering_variant). 
 * **diseaseFromSourceMappedId** - Associated phenotype to such variant (*e.g.* ``Orphanet_2337``, which corresponds to a type of keratoderma). 
 
+Nevertheless, we also report evidence strings in which  ``diseaseFromSourceMappedId`` may be empty (``diseaseFromSourceMappedId: null``) - i.e. the phenotype has not been mapped to an ontology yet. Therefore, to check for duplicates we also take into account the field ``diseaseFromSource``, which is the string describing the phenotype within ClinVar records (and is never missing in any evidence string).  
 
 ### Update summary metrics
 After the evidence strings have been generated, summary metrics need to be updated in the Google Sheets [table](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/) on the “Raw statistics” sheet.
