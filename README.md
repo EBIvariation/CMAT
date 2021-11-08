@@ -14,7 +14,9 @@ Additional documentation:
   + Installing a newer Python version
   + Clean copying the repository and setting up the package installation from scratch
   + Running the pipeline in non-standard situations, for example when we need to use a version of OLS which has not yet been released
-* [Evidence string comparison protocol](compare-evidence-strings/): when any significant updates to the code are done, an important control measure is re-running the latest batch using the same input data and the new code, and then doing the comparison to see if the introduced changes are correct.
+
+Additional services (external):
+* [Evidence string comparison protocol](https://github.com/opentargets/ot-release-metrics/tree/master/compare-evidence-strings): when any significant updates to the code are done, an important control measure is re-running the latest batch using the same input data and the new code, and then doing the comparison to see if the introduced changes are correct.
 
 
 
