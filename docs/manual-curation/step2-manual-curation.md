@@ -3,6 +3,7 @@
 The goals of the manual curation:
 * All traits which are linked to NT expansion (nucleotide repeat expansion) variants must be curated. Those are marked as "NT expansion" in the “Notes” column.
 * All traits with occurrence ≥ **10** must be curated. Additionally, if there are less than **200** such terms, then the top 200 terms must be curated.
+* _Suggested previous mapping_ traits should be checked for any terms that have become obsolete since the last iteration. This can be done by filtering then searching for the string EFO\_OBSOLETE
 * For the rest of the traits, we curate as many as possible.
 
 Good mappings must be eyeballed to ensure they are actually good. Alternative mappings for medium or low quality mappings can be searched for using OLS. If a mapping can't be found in EFO, look for a mapping to a HP, ORDO, or MONDO trait name. Most HP/ORDO/MONDO terms will also be in EFO but some are not. These can be imported to EFO using the Webulous submission service.
@@ -10,7 +11,7 @@ Good mappings must be eyeballed to ensure they are actually good. Alternative ma
 ## Criteria to manually evaluate mapping quality
 * Exact string for string matches are _good_
 * Slight modifications are _good_ e.g. IRAK4 DEFICIENCY → Immunodeficiency due to interleukin-1 receptor-associated kinase-4 deficiency
-* Subtype to parent are _good_ e.g ACHROMATOPSIA 3 → Achromatopsia
+* Subtype to parent are _good_ e.g ACHROMATOPSIA 3 → Achromatopsia but non-EFO exact string matches are prioritized and then set as _IMPORT_
 * Parent to subtype are _bad_ e.g. HEMOCHROMATOSIS → Hemochromatosis type 3
 * Familial / congenital represented on only one half are _bad_ e.g. Familial renal glycosuria → Renal glycosuria
 * Susceptibility on only one half is _bad_ e.g Alcohol dependence, susceptibility to → alcohol dependence
@@ -61,7 +62,9 @@ The “Status” column has the following acceptable values:
 * **SKIP** — trait is going to be skipped in this iteration, due to being too non-specific, or just having a low frequency
 * **UNSURE** — temporary status; traits to be discussed with reviewers/the team
 
-“Comment” field can contain arbitrary additional information.
+### Comment field for curation review
+The "Comment" field can be used to enter arbitrary additional information which will be used by reviewers. Precede any text with initials e.g. "BK - example comment"
+Any comments will become available in the Notes field within the next iteration
 
 ### Note on multiple mappings
 Sometimes the source string contains two or more traits. In this case it is necessary to map that string to two or more ontology terms to fully represent its content. For example, “Coronary artery disease/myocardial infarction” should be mapped both to http://www.ebi.ac.uk/efo/EFO_0001645 “Coronary artery disease” and to http://www.ebi.ac.uk/efo/EFO_0000612 “Myocardial infarction”.
