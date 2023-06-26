@@ -25,25 +25,28 @@ Trait names that haven't been automatically mapped against any ontology term can
 ## Curation workflow
 Curation should be done by subsequently applying filters to appropriate columns, then making decisions for the traits in the filtered selection.
 
-* 1\. **There is a previously assigned mapping for this trait.** All of these are the decisions that we made in the past, so we trust them (to an extent). Copy and paste previously used mappings into “Mapping to use”. Then review them according to the following steps.
-  * 1.1. **The previously assigned mapping is in EFO**
-    * 1.1.1. **The previously assigned mapping is in EFO and is exact and current.** Mark as finished immediately. (It's extremely unlikely that a better mapping could be found).
-    * 1.1.2. **The previously assigned mapping is in EFO and IS NOT exact or current.** Review the mappings to see if a better (more accurate/specific, non-obsolete) mapping is available. Then mark as finished.
-  * 1.2. **The previously assigned mapping is not contained in EFO.** We need to either find a mapping which is already in EFO, or import these terms into EFO.
-    * 1.2.1. **The previously used mapping IS NOT contained in EFO and is exact.** These are good candidates to mark as finished and them import in EFO afterwards. However, quickly check whether there are non-exact matches which are already in EFO are are as good as exact mappings.
-      * E. g. if the exact mapping is “erythrocytosis 6, familial” and not in EFO, but there is an inexact mapping “familial erythrocytosis 6” which *is* in EFO, we should use the inexact mapping.
-      * If a trait does not have any EFO mappings, it's probably safe to mark it as finished (with subsequent import to EFO).
-    * 1.2.2. **The previously assigned mapping IS NOT contained in EFO and IS NOT exact.** Similarly to 1.2.1, attempt to find an acceptable EFO mapping; if not found, use any acceptable mapping (with subsequent import to EFO).
-* 2\. **There is no previously assigned mappings for the trait, but exact mappings are available.** Because letter-to-letter matches are extremely likely to be correct, we can use them after eyeballing for correctness.
-  * 2.1. **The exact mapping in the EFO.** Mark as finished immediately.
-  * 2.2. **The exact mapping IS NOT in the EFO.** Similarly to 1.2.1, attempt to find an acceptable EFO mapping; if not found, use any acceptable mapping (with subsequent import to EFO).
-* 3\. **There are no previously used or exact mappings for the trait.** Curate manually as usual.
+* 1\. **Suggested exact EFO mappings.** These are terms we can use confidently as they match the term to map perfectly and already reside in EFO. Filter options as follows:
+  * 1.1. Remove "Blank" from *Suggested exact mapping* column 
+  * 1.2. Filter by colour: Fill colour #B7E1CD
+  * 1.3. Use these mappings and mark as DONE
+* 2\. **Suggested previous mappings.** All of these are the decisions that we made in the past, so we trust them unless they have been made obsolete. In this case there will be a suggested replacement, or we can find an entirely new mapping. Filter options as follows:
+  * 2.1. Remove "Blank" from *Suggested previous mapping* column
+  * 2.2. Filter by colour: Fill colour light red 3
+  * 2.3. Determine if *Suggested replacement mapping* is suitable, if not find a new term to use as mapping
+  * 2.4. Remove Fill colour light red 3 filter and check all other *Suggested previous mapping* using the following ruleset:
+    * 2.4.1. **The previously assigned mapping is in EFO and is exact.** Mark as finished immediately. (It's extremely unlikely that a better mapping could be found).
+    * 2.4.2. **The previously assigned mapping is in EFO and IS NOT exact.** Review the mappings to see if a better (more accurate/specific, non-obsolete) mapping is available. Then mark as finished.
+    * 2.4.3. **The previously assigned mapping is not contained in EFO and is not exact.** We need to either find a mapping which is already in EFO, or import these terms into EFO.
+    * 2.4.4. **The previously used mapping IS NOT contained in EFO and is exact.** These are good candidates to mark as finished and them import in EFO afterwards.
+    * 2.4.5. **The previously assigned mapping IS NOT contained in EFO and IS NOT exact.** Similarly to 2.4.3, attempt to find an acceptable EFO mapping; if not found, use any acceptable mapping (with subsequent import to EFO).
+* 3\. **Mapping blank ontology terms** Once the options from the suggested exact & previous mappings is complete, we can begin the process of finding mappings for "blank" terms. Filter options as follows:
+  * 3.1. Set the Status column to only include "blank" entries
+  * 3.2. Search for suitable mappings using OLS - https://www.ebi.ac.uk/ols4/
 
 ### Time-saving options
 The new manual workflow can be shortened if necessary, while the quality of the results will be _at least as good as for the old workflow_ (because we're reusing the results of previous curations):
-* All subsections 1.\* involve review of mappings previously selected by ourselves. Because we trust them (to an extent), this review can be applied not to all mappings, but only to some (selected on a basis of frequency, or just randomly sampled/eyeballed).
-* If necessary, section 1 can be skipped completely, i. e. copy-paste previous mappings into “Mapping to use” column, but skip the review.
-* Sections 2.2 and 3 can only be applied to some variants (e. g. based on frequency), depending on the time available.
+* Complete steps from 1.\*
+* All subsections 2.\* involve review of mappings previously selected by ourselves. Because we trust them (to an extent), this review can be applied not to all mappings, but only to some (selected on a basis of frequency, or just randomly sampled/eyeballed).
 
 ## Entering the curation results
 
