@@ -2,8 +2,7 @@
 
 ## IMPORT terms
 The partially ready table for EFO import is available in the "Add EFO disease" sheet in the curation spreadsheet. The table needs to be amended manually:
-* Some terms will lack descriptions, because ontologies don't always contain a description field for a particular term. If possible, descriptions should be added for all traits.
-* Some terms (or their parent terms) might be marked as obsolete. Although an effort is made to exclude such traits during upstream analysis (inside the trait mapping pipeline), sometimes a trait is not properly marked as obsolete in the ontology but its obsoleteness is indicated in its name or in its parent term. The easy way to detect such issues is to search the table for the term “obsolete”. They must be corrected manually by selecting another term or just removed from the import table.
+* In some cases, terms will lack descriptions/parent terms/synonyms, because ontologies don't always contain these fields for a particular term. If possible, they should be added for all traits. They can be found by querying OLS using a cross reference entry (usually MONDO). A description for a term can also be found by using the terms "Description" from OMIM.
 
 Open a new git issue with EFO to review and import these novel trait names, e.g. [https://github.com/EBISPOT/efo/issues/223](https://github.com/EBISPOT/efo/issues/223).
 
