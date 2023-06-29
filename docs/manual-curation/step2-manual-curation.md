@@ -28,25 +28,25 @@ Curation should be done by subsequently applying filters to appropriate columns,
 * 1\. **Suggested exact EFO mappings.** These are terms we can use confidently as they match the term to map perfectly and already reside in EFO. Filter options as follows:
   * 1.1. Remove "Blank" from *Suggested exact mapping* column 
   * 1.2. Filter by colour: Fill colour #B7E1CD
-  * 1.3. Use these mappings and mark as DONE
+  * 1.3. Copy the cell contents into "Mapping to use" and mark as DONE
 * 2\. **Suggested previous mappings.** All of these are the decisions that we made in the past, so we trust them unless they have been made obsolete. In this case there will be a suggested replacement, or we can find an entirely new mapping. Filter options as follows:
-  * 2.1. Remove "Blank" from *Suggested previous mapping* column
-  * 2.2. Filter by colour: Fill colour light red 3
-  * 2.3. Determine if *Suggested replacement mapping* is suitable, if not find a new term to use as mapping
-  * 2.4. Remove Fill colour light red 3 filter and check all other *Suggested previous mapping* using the following ruleset:
-    * 2.4.1. **The previously assigned mapping is in EFO and is exact.** Mark as finished immediately. (It's extremely unlikely that a better mapping could be found).
-    * 2.4.2. **The previously assigned mapping is in EFO and IS NOT exact.** Review the mappings to see if a better (more accurate/specific, non-obsolete) mapping is available. Then mark as finished.
-    * 2.4.3. **The previously assigned mapping is not contained in EFO and is not exact.** We need to either find a mapping which is already in EFO, or import these terms into EFO.
-    * 2.4.4. **The previously used mapping IS NOT contained in EFO and is exact.** These are good candidates to mark as finished and them import in EFO afterwards.
-    * 2.4.5. **The previously assigned mapping IS NOT contained in EFO and IS NOT exact.** Similarly to 2.4.3, attempt to find an acceptable EFO mapping; if not found, use any acceptable mapping (with subsequent import to EFO).
+  * 2.1 **The previously assigned mapping is using a term that has now been made OBSOLETE.** these can be highlighted and a new term found using the following ruleset:
+    * 2.1.1. Remove "Blank" from *Suggested previous mapping* column
+    * 2.1.2. Filter by colour: Fill colour light red 3 - this highlights terms where the previously used mapping has been made *OBSOLETE*
+    * 2.1.3. Determine if *Suggested replacement mapping* is suitable, if not find a new term to use as mapping
+  * 2.2. Remove Fill colour light red 3 filter and check all other *Suggested previous mapping* using the following ruleset:
+    * 2.2.1. **The previously assigned mapping is in EFO and is exact.** Mark as finished immediately. (It's extremely unlikely that a better mapping could be found).
+    * 2.2.2. **The previously assigned mapping is in EFO and IS NOT exact.** Review the mappings by filtering the "Suggested exact mapping" for text containing MONDO_ or HP_ and compare the label to see if the exact mapping is more precise. If so, copy the label for the exact mapping and set for IMPORT
+    * 2.2.3. **The previously assigned mapping is not contained in EFO and IS NOT exact.** We need to either find a mapping which is already in EFO, or import these terms into EFO.
+    * 2.2.4. **The previously assigned mapping is not contained in EFO and is exact.** These are good candidates to mark as finished and them import in EFO afterwards.
 * 3\. **Mapping blank ontology terms** Once the options from the suggested exact & previous mappings is complete, we can begin the process of finding mappings for "blank" terms. Filter options as follows:
   * 3.1. Set the Status column to only include "blank" entries
   * 3.2. Search for suitable mappings using OLS - https://www.ebi.ac.uk/ols4/
 
 ### Time-saving options
 The new manual workflow can be shortened if necessary, while the quality of the results will be _at least as good as for the old workflow_ (because we're reusing the results of previous curations):
-* Complete steps from 1.\*
-* All subsections 2.\* involve review of mappings previously selected by ourselves. Because we trust them (to an extent), this review can be applied not to all mappings, but only to some (selected on a basis of frequency, or just randomly sampled/eyeballed).
+* Complete all Step 1 instances from the Curation workflow
+* All subsections of Step 2 - they involve review of mappings previously selected by ourselves. The only changes will be those where the previously mapped term has now become obsolete, however a new mapping can be found during step 2.1
 
 ## Entering the curation results
 
