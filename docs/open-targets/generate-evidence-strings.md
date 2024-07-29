@@ -110,11 +110,9 @@ If everything has been done correctly, hash sums will be the same. Note that the
   + Functional consequences
     - There shouldn't be any warnings such as “Error on last attempt, skipping” in the logs. This might mean that one of the servers was down during processing, and potentially not all information has been gathered.
     - The final file with the genes & consequences contains both “normal variants”, and a few dozen repeat variants, including `short_tandem_repeat_expansion` and `trinucleotide_repeat_expansion` ones.
-    - The `${BATCH_ROOT}/logs/consequence_repeat_expansion.err` log will record all repeat expansion variants which could not be parsed using any of the regular expressions. Verify that there are no new such variants compared to the previous batch.
+    - The `${BATCH_ROOT}/logs/consequence_repeat.err` log will record all repeat expansion variants which could not be parsed using any of the regular expressions. Verify that there are no new such variants compared to the previous batch.
   + Evidence stringts
     - Version of JSON schema is the same as specified in the Open Targets e-mail
-    - All traits mentioned in the [spreadsheet](https://docs.google.com/spreadsheets/d/1m4ld3y3Pfust5JSOJOX9ZmImRCKRGi-fGYj_dExoGj8/edit) are mapped to the correct ontology terms in `${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv`.
-    - The file `${BATCH_ROOT}/evidence_strings/duplicates.json` is empty, meaning there are no duplicates in the generated evidence strings.
 * Step 5 “Manual follow-up actions”
   + The summary metrics
     - Are present in the [spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/)
