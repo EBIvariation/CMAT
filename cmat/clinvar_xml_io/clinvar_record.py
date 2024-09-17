@@ -42,7 +42,7 @@ class ClinVarRecord:
         if not variant_measure:
             self.measure = None
         else:
-            self.measure = measure_class(variant_measure, self)
+            self.measure = measure_class(variant_measure, self, self.vcv_id)
 
     def __str__(self):
         return f'ClinVarRecord object with accession {self.accession}'
@@ -59,6 +59,11 @@ class ClinVarRecord:
     @property
     def accession(self):
         return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib['Acc']
+
+    @property
+    def vcv_id(self):
+        """ClinVar's accession for a MeasureSet, present only in RCV records."""
+        return find_optional_unique_element(self.record_xml, './MeasureSet').attrib['Acc']
 
     @property
     def last_updated_date(self):

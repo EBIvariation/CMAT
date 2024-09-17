@@ -26,9 +26,10 @@ class ClinVarRecordMeasure:
     MS_REPEAT_EXPANSION = 'repeat_expansion'
     MS_NO_COMPLETE_COORDS = 'no_complete_coords'
 
-    def __init__(self, measure_xml, clinvar_record):
+    def __init__(self, measure_xml, clinvar_record, vcv_id):
         self.measure_xml = measure_xml
         self.clinvar_record = clinvar_record
+        self.vcv_id = vcv_id
 
     @property
     def all_names(self):
