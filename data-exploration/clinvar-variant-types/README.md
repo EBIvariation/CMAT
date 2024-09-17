@@ -9,8 +9,8 @@ The data was last updated on **2022-10-24.** Graphs can be enlarged by clicking 
 ## Updating the data
 
 ```bash
-wget https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/ClinVarFullRelease_00-latest.xml.gz
-python3 clinvar-variant-types.py --clinvar-xml ClinVarFullRelease_00-latest.xml.gz
+wget -O clinvar.xml.gz https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/RCV_release/ClinVarRCVRelease_00-latest.xml.gz
+python3 clinvar-variant-types.py --clinvar-xml clinvar.xml.gz
 ```
 
 The source code for diagrams and tables will be printed to STDOUT. The diagrams can then be built using the website http://sankeymatic.com/build/. Parameters for rendering them will be indicated in the output as well. The tables should be copy-pasted into the [corresponding Markdown file](supplementary-tables.md).

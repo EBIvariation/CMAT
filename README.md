@@ -170,3 +170,9 @@ for record in ClinVarDataset('/path/to/clinvar.xml.gz'):
     # e.g. RCV001842692: 3_38633214_G_C => Cardiac arrhythmia
     print(s)
 ```
+
+## Citation
+
+If you find CMAT useful, you can cite the following:
+
+> Shen et al., CMAT: ClinVar Mapping and Annotation Toolkit. _Bioinformatics Advances_, 2024. [doi:10.1093/bioadv/vbae018](https://doi.org/10.1093/bioadv/vbae018)
