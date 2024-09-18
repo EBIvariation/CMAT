@@ -63,7 +63,7 @@ class ClinVarRecord:
     @property
     def vcv_id(self):
         """ClinVar's accession for a MeasureSet, present only in RCV records."""
-        return find_optional_unique_element(self.record_xml, './MeasureSet').attrib['Acc']
+        return find_mandatory_unique_element(self.record_xml, './MeasureSet').attrib.get('Acc', None)
 
     @property
     def last_updated_date(self):

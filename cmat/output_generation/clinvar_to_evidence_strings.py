@@ -238,6 +238,7 @@ def generate_evidence_string(clinvar_record, allele_origins, disease_name, disea
         'variantFunctionalConsequenceId': consequence_attributes.so_term.accession,
         'variantId': clinvar_record.measure.vcf_full_coords,  # CHROM_POS_REF_ALT notation.
         'variantRsId': clinvar_record.measure.rs_id,
+        'variantIdFromSource': clinvar_record.vcv_id,
 
         # PHENOTYPE ATTRIBUTES.
         # The alphabetical list of *all* valid disease names from all traits from that ClinVar record, reported as a
