@@ -1,7 +1,7 @@
 from collections import Counter
 
 from cmat.clinvar_xml_io import ClinVarDataset
-from cmat.clinvar_xml_io.filtering import filter_by_submission_name
+from cmat.clinvar_xml_io.filtering import filter_by_submission
 from cmat.trait_mapping.trait import Trait
 
 
@@ -30,7 +30,7 @@ def parse_trait_names(filepath: str) -> list:
 
     dataset = ClinVarDataset(filepath)
     for clinvar_set in dataset.iter_cvs():
-        if not filter_by_submission_name(clinvar_set):
+        if not filter_by_submission(clinvar_set):
             continue
         clinvar_record = clinvar_set.rcv
         trait_names_and_ids = set((trait.preferred_or_other_valid_name.lower(), trait.identifier)
