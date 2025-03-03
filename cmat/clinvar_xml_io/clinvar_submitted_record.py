@@ -28,25 +28,25 @@ class ClinVarSubmittedRecord(ClinVarRecord):
     @property
     def submission_date(self):
         """Date of submission or when submission was last revised (for first submission, use created_date)."""
-        return find_mandatory_unique_element(self.record_xml, './ClinVarSubmissionID').attrib['submitterDate']
+        return find_mandatory_unique_element(self.record_xml, './ClinVarSubmissionID').attrib.get('submitterDate', None)
 
     @property
     def last_updated_date(self):
-        return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib['DateUpdated']
+        return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib.get('DateUpdated', None)
 
     @property
     def created_date(self):
-        return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib['DateCreated']
+        return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib.get('DateCreated', None)
 
     @property
     def submitter(self):
         """Name of the submitting organization."""
-        return find_mandatory_unique_element(self.record_xml, './ClinVarSubmissionID').attrib['submitter']
+        return find_mandatory_unique_element(self.record_xml, './ClinVarSubmissionID').attrib.get('submitter', None)
 
     @property
     def submitter_id(self):
         """Numeric identifier associated with the submitting organization."""
-        return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib['OrgID']
+        return find_mandatory_unique_element(self.record_xml, './ClinVarAccession').attrib.get('OrgID', None)
 
     @property
     def submission_name(self):

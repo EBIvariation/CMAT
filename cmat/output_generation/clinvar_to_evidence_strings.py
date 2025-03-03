@@ -10,7 +10,7 @@ import jsonschema
 
 from cmat.clinvar_xml_io import ClinVarDataset
 from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassificationsError
-from cmat.clinvar_xml_io.filtering import filter_by_submission_name
+from cmat.clinvar_xml_io.filtering import filter_by_submission
 from cmat.output_generation import consequence_type as CT
 from cmat.output_generation.report import Report
 
@@ -81,7 +81,7 @@ def clinvar_to_evidence_strings(string_to_efo_mappings, variant_to_gene_mappings
         # Catch any exceptions for this record so we can continue processing.
         try:
             # Failure mode 1 (fatal). Record is only supported by submissions deemed to be unusable.
-            if not filter_by_submission_name(clinvar_set):
+            if not filter_by_submission(clinvar_set):
                 report.clinvar_fatal_excluded_submission += 1
                 continue
             clinvar_record = clinvar_set.rcv
