@@ -2,7 +2,7 @@
 
 # Identified as problematic submissions, e.g. too many unmappable trait names.
 submissions_to_exclude = {
-    ('239772', '2024-03-16')
+    ('239772', '2024-03-16')  # Submitter ID, Creation date as a proxy for a specific submission
 }
 
 
