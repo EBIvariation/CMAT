@@ -21,21 +21,29 @@ def is_in_efo(iri):
 def format_outout(ontology_result, is_in_efo):
     output = f"{ontology_result['iri']}|{ontology_result['label']}|||"
     if is_in_efo:
-        return output + 'EFO_CURRENT', 'DONE', f'{",".join(ontology_result["exact_match"])}'
+        return output + 'EFO_CURRENT', 'DONE', f'{",".join(ontology_result["full_exact_match"])}'
     else:
-        return output , 'IMPORT', f'{",".join(ontology_result["exact_match"])}'
+        return output , 'IMPORT', f'{",".join(ontology_result["full_exact_match"])}'
 
 def add_fields_with_exact_match(ontology_result, search_term):
     # Where was the match found ?
-    found_in = []
+    exact_match_in = []
+    full_exact_match_in = []
     for field in query_fields:
         if field in ontology_result:
-            if isinstance(ontology_result[field], str) and search_term.lower() in ontology_result[field].lower():
-                found_in.append(field)
+            if isinstance(ontology_result[field], str):
+                if  search_term.lower().strip() == ontology_result[field].lower().strip():
+                    full_exact_match_in.append(field)
+                elif search_term.lower() in ontology_result[field].lower():
+                    exact_match_in.append(field)
             if isinstance(ontology_result[field], list):
-                if [element for element in ontology_result[field] if search_term.lower() in element.lower()]:
-                    found_in.append(field)
-    ontology_result['exact_match'] = found_in
+                if [element for element in ontology_result[field] if search_term.lower().strip() == element.lower().strip()]:
+                    full_exact_match_in.append(field)
+                elif [element for element in ontology_result[field] if search_term.lower() in element.lower()]:
+                    exact_match_in.append(field)
+
+    ontology_result['exact_match'] = exact_match_in
+    ontology_result['full_exact_match'] = full_exact_match_in
 
 def search_ols4(term):
     search_url = base_url + "/search"
@@ -51,13 +59,12 @@ def search_ols4(term):
         response = requests.get(search_url, params=params)
         response.raise_for_status()
         results = response.json()
-
         if results['response']['numFound'] > 0:
             ontology_to_term = {}
 
             for result in results['response']['docs']:
                 add_fields_with_exact_match(result, term)
-                if result['exact_match']:
+                if result['full_exact_match']:
                     ontology_to_term[result.get('ontology_name')] = result
             if 'efo' in ontology_to_term:
                 return format_outout(ontology_to_term['efo'], True)
