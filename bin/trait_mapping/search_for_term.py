@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import argparse
+from collections import defaultdict
+from functools import lru_cache
 
 import requests
 
@@ -9,7 +11,7 @@ query_fields = ['label', 'synonym', 'description', 'short_form', 'obo_id', 'anno
 field_list = ['iri', 'label', 'short_form', 'obo_id', 'ontology_name', 'ontology_prefix', 'description', 'type',
               'synonym', 'annotations', 'logical_description']
 
-
+@lru_cache
 def is_in_efo(iri):
     term_url = f'{base_url}/ontologies/efo/terms/{iri}'
     response = requests.get(term_url)
@@ -18,16 +20,29 @@ def is_in_efo(iri):
     else:
         return False
 
-def format_outout(ontology_result, is_in_efo):
-    output = f"{ontology_result['iri']}|{ontology_result['label']}|||"
-    if is_in_efo:
-        return output + 'EFO_CURRENT', 'DONE', f'{",".join(ontology_result["full_exact_match"])}'
+def format_mapping(result):
+    if result.get('is_in_efo'):
+        return f"{result['iri']}|{result['label']}|||EFO_CURRENT"
     else:
-        return output , 'IMPORT', f'{",".join(ontology_result["full_exact_match"])}'
+        return f"{result['iri']}|{result['label']}|||"
 
-def add_fields_with_exact_match(ontology_result, search_term):
+def format_outout(results_by_match_type):
+    output = []
+    if 'full_exact_match'  in results_by_match_type:
+        output.append(format_mapping(results_by_match_type.get('full_exact_match')))
+    else:
+        output.append('')
+    if 'contain_match'  in results_by_match_type:
+        output.append(format_mapping(results_by_match_type.get('contain_match')))
+    else:
+        output.append('')
+    for results in results_by_match_type.get('other_matches', []):
+        output.append(format_mapping(results))
+    return '\t'.join(output)
+
+def add_fields_with_match(ontology_result, search_term):
     # Where was the match found ?
-    exact_match_in = []
+    contain_match_in = []
     full_exact_match_in = []
     for field in query_fields:
         if field in ontology_result:
@@ -35,15 +50,52 @@ def add_fields_with_exact_match(ontology_result, search_term):
                 if  search_term.lower().strip() == ontology_result[field].lower().strip():
                     full_exact_match_in.append(field)
                 elif search_term.lower() in ontology_result[field].lower():
-                    exact_match_in.append(field)
+                    contain_match_in.append(field)
             if isinstance(ontology_result[field], list):
                 if [element for element in ontology_result[field] if search_term.lower().strip() == element.lower().strip()]:
                     full_exact_match_in.append(field)
                 elif [element for element in ontology_result[field] if search_term.lower() in element.lower()]:
-                    exact_match_in.append(field)
+                    contain_match_in.append(field)
 
-    ontology_result['exact_match'] = exact_match_in
+    ontology_result['contain_match'] = contain_match_in
     ontology_result['full_exact_match'] = full_exact_match_in
+    # For the term not from EFO check if they are also in EFO
+    if ontology_result.get('ontology_name') == 'efo':
+        ontology_result['is_in_efo'] = True
+    else:
+        ontology_result['is_in_efo'] = is_in_efo(ontology_result.get('iri'))
+
+def ontology_preference(result):
+    if result.get('ontology_name') == 'efo':
+        return 1
+    elif result.get('is_in_efo'):
+        return 2
+    elif result.get('ontology_name') == 'mondo':
+        return 3
+    elif result.get('ontology_name') == 'hp':
+        return 4
+    else:
+        return 5
+
+def prioritise_ontology_search_results(ontology_results):
+    tmp_results_by_match_type = defaultdict(list)
+    for result in ontology_results:
+        if result.get("full_exact_match"):
+            tmp_results_by_match_type["full_exact_match"].append(result)
+        elif result.get("contain_match"):
+            tmp_results_by_match_type["contain_match"].append(result)
+        else:
+            tmp_results_by_match_type["other_match"].append(result)
+    # only take the first full and contain match
+    full_exact_match = next(iter(sorted(tmp_results_by_match_type["full_exact_match"], key=ontology_preference)), None)
+    contain_match = next(iter(sorted(tmp_results_by_match_type["contain_match"], key=ontology_preference)), None)
+    results_by_match_type = {}
+    if full_exact_match:
+        results_by_match_type["full_exact_match"] = full_exact_match
+    if contain_match:
+        results_by_match_type["contain_match"] = contain_match
+    results_by_match_type["other_matches"] = sorted(tmp_results_by_match_type["other_match"], key=ontology_preference)
+    return results_by_match_type
 
 def search_ols4(term):
     search_url = base_url + "/search"
@@ -60,24 +112,19 @@ def search_ols4(term):
         response.raise_for_status()
         results = response.json()
         if results['response']['numFound'] > 0:
-            ontology_to_term = {}
+            search_results = []
 
             for result in results['response']['docs']:
-                add_fields_with_exact_match(result, term)
-                if result['full_exact_match']:
-                    ontology_to_term[result.get('ontology_name')] = result
-            if 'efo' in ontology_to_term:
-                return format_outout(ontology_to_term['efo'], True)
-                # return (ontology_to_term['efo'] + 'EFO_CURRENT', 'DONE')
-            elif 'mondo' in ontology_to_term:
-                return format_outout(ontology_to_term['mondo'], is_in_efo(ontology_to_term['mondo']['iri']))
-            elif 'hp' in ontology_to_term:
-                return format_outout(ontology_to_term['hp'], is_in_efo(ontology_to_term['hp']['iri']))
-        return '', '', ''
+                add_fields_with_match(result, term)
+                search_results.append(result)
+            results_by_match_type = prioritise_ontology_search_results(search_results)
+            return format_outout(results_by_match_type)
+        else:
+            return ''
 
     except requests.RequestException as e:
         print(f"Error querying OLS4: {e}")
-        return None, None, None
+        return ''
 
 def main():
     parser = argparse.ArgumentParser('Search OLS label for exact match')
@@ -88,8 +135,8 @@ def main():
     count = 0
     with open(args.search_file) as open_input, open(args.output_file, 'w') as open_output:
         for line in open_input:
-            result, status, comment = search_ols4(line.strip())
-            open_output.write(f'{line.strip()}\t{result}\t{status}\t{comment}\n')
+            output = search_ols4(line.strip())
+            open_output.write(f'{line.strip()}\t{output}\n')
             count += 1
             if count % 100 == 0:
                 print(f'Processed {count} lines')
