@@ -118,7 +118,7 @@ def search_ols4(term):
                 add_fields_with_match(result, term)
                 search_results.append(result)
             results_by_match_type = prioritise_ontology_search_results(search_results)
-            return format_outout(results_by_match_type)
+            return format_output(results_by_match_type)
         else:
             return ''
 
