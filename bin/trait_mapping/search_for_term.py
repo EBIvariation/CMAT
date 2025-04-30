@@ -26,7 +26,7 @@ def format_mapping(result):
     else:
         return f"{result['iri']}|{result['label']}|||"
 
-def format_outout(results_by_match_type):
+def format_output(results_by_match_type):
     output = []
     if 'full_exact_match'  in results_by_match_type:
         output.append(format_mapping(results_by_match_type.get('full_exact_match')))
@@ -103,7 +103,7 @@ def search_ols4(term):
         'q': term,
         'exact': 'true',
         'ontologies': 'efo,mondo,hp',
-        'queryFileds': ','.join(query_fields),
+        'queryFields': ','.join(query_fields),
         'fieldList': ','.join(field_list)
     }
 
