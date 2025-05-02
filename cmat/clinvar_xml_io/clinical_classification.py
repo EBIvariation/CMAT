@@ -13,16 +13,18 @@ class ClinicalClassification:
 
     # A score for the review status of the assigned clinical significance ranges from 0 to 4 and corresponds to the
     # number of "gold stars" displayed on ClinVar website. See details here:
-    # https://www.ncbi.nlm.nih.gov/clinvar/docs/details/#review_status
+    # https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/
     score_map = {
         'no assertion provided': 0,  # v1 only
         'no classification provided': 0,
         'no classification for the single variant': 0,
+        'no classification for the individual variant': 0,
         'no assertion criteria provided': 0,
         'no classifications from unflagged records': 0,
         'criteria provided, single submitter': 1,
         'criteria provided, conflicting interpretations': 1,  # v1 only
         'criteria provided, conflicting classifications': 1,
+        'criteria provided, multiple submitters': 2,
         'criteria provided, multiple submitters, no conflicts': 2,
         'reviewed by expert panel': 3,
         'practice guideline': 4,
@@ -52,7 +54,7 @@ class ClinicalClassification:
         """Return a review status text for the assigned clinical significance. See score_map above for the list of
         possible values."""
         review_status = find_mandatory_unique_element(self.class_xml, './ReviewStatus').text
-        assert review_status in self.score_map, f'Unknown review status {review_status} in RCV {self.accession}'
+        assert review_status in self.score_map, f'Unknown review status {review_status} in RCV {self.clinvar_record.accession}'
         return review_status
 
     @property
