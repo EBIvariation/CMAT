@@ -14,7 +14,8 @@ class ClinVarTrait:
     # meaningful EFO term.
     NONSPECIFIC_TRAITS = {
         '', 'allhighlypenetrant', 'disease', 'none provided', 'not provided', 'not specified',
-        'reclassified - variant of unknown significance', 'see cases', 'variant of unknown significance'
+        'reclassified - variant of unknown significance', 'see cases', 'variant of unknown significance',
+        'reclassified - adra2c polymorphism', 'reclassified - adrb1 polymorphism'
     }
 
     # These database identifiers are directly importable into EFO
