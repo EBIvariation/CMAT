@@ -1,6 +1,7 @@
 import os
 import re
-from functools import lru_cache
+from collections import defaultdict
+from functools import lru_cache, total_ordering
 import logging
 import requests
 import urllib
@@ -10,19 +11,14 @@ from retry import retry
 from cmat.trait_mapping.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request, ServerError
 
-OLS_SERVER = 'https://www.ebi.ac.uk/ols4'
-# The setting for local OLS installation should be uncommented if necessary. Note that the link
-# for the local deployment is different from the production link in three regards: (1) it must use
-# HTTP instead of HTTPS; (2) it must include the port which you used when deploying the Docker
-# container; (3) it does *not* include /ols in its path.
-# OLS_EFO_SERVER = 'http://127.0.0.1:8080'
+OLS_BASE_URL = 'https://www.ebi.ac.uk/ols4/api'
 
 logger = logging.getLogger(__package__)
 
 
 def build_ols_query(ontology_uri: str) -> str:
     """Build a url to query OLS for a given ontology uri."""
-    return "{}/api/terms?iri={}".format(OLS_SERVER, ontology_uri)
+    return "{}/terms?iri={}".format(OLS_BASE_URL, ontology_uri)
 
 
 @lru_cache(maxsize=16384)
@@ -73,7 +69,7 @@ def ols_ontology_query(uri: str, ontology: str = 'EFO') -> requests.Response:
     :return: Response from OLS
     """
     double_encoded_uri = double_encode_uri(uri)
-    response = requests.get(f"{OLS_SERVER}/api/ontologies/{ontology}/terms/{double_encoded_uri}")
+    response = requests.get(f"{OLS_BASE_URL}/ontologies/{ontology}/terms/{double_encoded_uri}")
     if 500 <= response.status_code < 600:
         raise ServerError
     return response
@@ -144,7 +140,7 @@ def get_uri_from_exact_match(text, ontology='EFO'):
     :param ontology: ID of target ontology to query (default EFO)
     :return: URI of matching term or None if not found
     """
-    search_url = os.path.join(OLS_SERVER, f'api/search?ontology={ontology}&q={text}&queryFields=label&exact=true')
+    search_url = os.path.join(OLS_BASE_URL, f'search?ontology={ontology}&q={text}&queryFields=label&exact=true')
     response = requests.get(search_url)
     response.raise_for_status()
     data = response.json()
@@ -160,3 +156,121 @@ def get_uri_from_exact_match(text, ontology='EFO'):
             return candidates.pop()
     logger.warning(f'Could not find an IRI for {text}')
     return None
+
+
+@total_ordering
+class OlsResult:
+    """Representation of one ontology term coming from OLS"""
+
+    def __init__(self, result_json):
+        self.result_json = result_json
+        self.uri = result_json.get('iri')
+        self.label = result_json.get('label')
+        self.full_exact_match = []
+        self.contained_match = []
+        self.token_match = []
+        self.in_target_ontology = False
+        # ontologies that are not the target but are preferred to alternatives
+        self.in_preferred_ontology = False
+        # by default OLS does not return obsolete terms
+        self.is_current = True
+
+    def __eq__(self, other):
+        return isinstance(other, type(self)) and self.uri == other.uri and self.label == other.label
+
+    def __hash__(self):
+        return hash((self.uri, self.label))
+
+    def __gt__(self, other):
+        # Larger means better mapping
+        # In general, full exact matches > contained matches > token matches,
+        # and target ontology > preferred ontologies > neither
+        if self.full_exact_match:
+            if other.full_exact_match:
+                return self.ontology_rank() > other.ontology_rank()
+            else:
+                return True
+        if self.contained_match:
+            if other.full_exact_match:
+                return False
+            if other.contained_match:
+                return self.ontology_rank() > other.ontology_rank()
+            else:
+                return True
+        if self.token_match:
+            if other.full_exact_match:
+                return False
+            if other.contained_match:
+                return False
+            if other.token_match:
+                return self.ontology_rank() > other.ontology_rank()
+            else:
+                return True
+
+    def ontology_rank(self):
+        if self.in_target_ontology:
+            return 2
+        if self.in_preferred_ontology:
+            return 1
+        return 0
+
+    def set_fields_with_match(self, search_term, query_fields):
+        search_term = search_term.lower().strip()
+        for field in query_fields:
+            if field in self.result_json:
+                if isinstance(self.result_json[field], str):
+                    if  search_term == self.result_json[field].lower().strip():
+                        self.full_exact_match.append(field)
+                    elif search_term in self.result_json[field].lower():
+                        self.contained_match.append(field)
+                    else:
+                        self.token_match.append(field)
+                if isinstance(self.result_json[field], list):
+                    if [element for element in self.result_json[field] if search_term == element.lower().strip()]:
+                        self.full_exact_match.append(field)
+                    elif [element for element in self.result_json[field] if search_term in element.lower()]:
+                        self.contained_match.append(field)
+                    else:
+                        self.token_match.append(field)
+
+    def set_is_in_ontologies(self, target_ontology, preferred_ontologies):
+        self.in_target_ontology = is_in_ontology(self.uri, target_ontology)
+        for ontology in preferred_ontologies:
+            if is_in_ontology(self.uri, ontology):
+                self.in_preferred_ontology = True
+                return
+        self.in_preferred_ontology = False
+
+
+def get_ols_results(term, ontologies, query_fields, field_list, target_ontology='EFO'):
+    """Returns a list of OlsResults."""
+    search_url = OLS_BASE_URL + "/search"
+    params = {
+        'q': term,
+        'exact': 'false',
+        'obsoletes': 'false',
+        'ontologies': ontologies,
+        'queryFields': query_fields,
+        'fieldList': field_list
+    }
+    preferred_ontologies = set(ontologies.split(','))
+    preferred_ontologies.remove(target_ontology.lower())
+
+    try:
+        results = json_request(search_url, params=params)
+        if results['response']['numFound'] > 0:
+            search_results = set()
+
+            for result in results['response']['docs']:
+                ols_result = OlsResult(result)
+                if ols_result not in search_results:
+                    ols_result.set_fields_with_match(term, query_fields.split(','))
+                    ols_result.set_is_in_ontologies(target_ontology, preferred_ontologies)
+                    search_results.add(ols_result)
+            return list(search_results)
+        else:
+            return []
+
+    except requests.RequestException as e:
+        logger.warning(f"Error querying OLS4: {e}")
+        return []

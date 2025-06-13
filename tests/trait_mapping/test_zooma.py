@@ -1,5 +1,5 @@
 import cmat.trait_mapping.zooma as zooma
-from cmat.trait_mapping.ols import OLS_SERVER
+from cmat.trait_mapping.ols import OLS_BASE_URL
 
 
 def test_build_zooma_query():
@@ -21,7 +21,7 @@ def test_get_zooma_results_for_trait():
                                            'accuracy': None, 'generator': 'ZOOMA', 'annotator': 'ZOOMA',
                                            'evidence': 'ZOOMA_INFERRED_FROM_CURATED',
                                            'annotationDate': 1502287637052}, '_links': {'olslinks': [
-            {'href': f'{OLS_SERVER}/api/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FHP_0001892',
+            {'href': f'{OLS_BASE_URL}/api/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FHP_0001892',
              'semanticTag': 'http://purl.obolibrary.org/obo/HP_0001892'}]}, 'annotatedBiologicalEntities': [],
                             'annotatedProperty': {
                                 'uri': 'http://rdf.ebi.ac.uk/resource/zooma/8EAA9C1095AD18A90D557D7086084B64',

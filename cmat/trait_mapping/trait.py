@@ -33,6 +33,7 @@ class Trait:
         self.name = name
         self.identifier = identifier
         self.frequency = frequency
+        self.ols_result_list = []
         self.zooma_result_list = []
         self.oxo_result_list = []
         self.finished_mapping_set = set()
@@ -52,6 +53,17 @@ class Trait:
         repeat expansion) variant.
         """
         return self.associated_with_nt_expansion
+
+    def process_ols_results(self):
+        """
+        Check whether any OLS mappings can be output as a finished ontology mapping.
+        Put any finished mappings in finished_mapping_set
+        """
+        for ols_result in self.ols_result_list:
+            # Accept current mappings in the target ontology with full exact matches on the label
+            if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
+                ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
+                self.finished_mapping_set.add(ontology_entry)
 
     def process_zooma_results(self):
         """

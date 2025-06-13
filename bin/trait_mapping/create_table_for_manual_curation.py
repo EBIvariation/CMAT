@@ -94,6 +94,7 @@ if __name__ == '__main__':
             notes = f'"{notes}\n{previous_comments[trait_name]}"'
         # Use maximum of 50 mappings to improve Google Sheets performance
         mappings = fields[3:53]
+        # TODO update this for new columns, mapping string
         exact_mapping = find_exact_mapping(trait_name, mappings)
         for previous_mapping, replacement_mapping in previous_and_replacement_mappings(trait_name, previous_mappings,
                                                                                        target_ontology):

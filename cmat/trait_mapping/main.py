@@ -4,11 +4,11 @@ import multiprocessing
 from collections import Counter
 
 from cmat.clinvar_xml_io import ClinVarTrait
-from cmat.trait_mapping.ols import get_uri_from_exact_match
+from cmat.trait_mapping.ols import get_ols_results
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
-from cmat.trait_mapping.trait import Trait, OntologyEntry
+from cmat.trait_mapping.trait import Trait
 from cmat.trait_mapping.trait_names_parsing import parse_trait_names
 from cmat.trait_mapping.zooma import get_zooma_results
 
@@ -31,7 +31,8 @@ def get_uris_for_oxo(zooma_result_list: list) -> set:
     return uri_set
 
 
-def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list: list, oxo_distance: int, target_ontology: str = 'EFO') -> Trait:
+def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list: list, oxo_distance: int,
+                  ols_query_fields: str, ols_field_list: str, target_ontology: str = 'EFO') -> Trait:
     """
     Process a single trait. First look for an exact string match in the target ontology and return immediately if found.
     Otherwise find any mappings in Zooma. If there are no high confidence Zooma mappings that are in EFO then query OxO
@@ -49,9 +50,10 @@ def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list:
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
-    string_match_uri = get_uri_from_exact_match(trait.name.lower(), target_ontology)
-    if string_match_uri:
-        trait.finished_mapping_set.add(OntologyEntry(string_match_uri, trait.name.lower()))
+    # TODO note oxo_target contains orphanet currently
+    trait.ols_result_list = get_ols_results(trait.name.lower(), oxo_target_list, ols_query_fields, ols_field_list, target_ontology)
+    trait.process_ols_results()
+    if trait.is_finished:
         return trait
 
     trait.zooma_result_list = get_zooma_results(trait.name.lower(), filters, zooma_host, target_ontology)

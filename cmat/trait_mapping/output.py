@@ -13,7 +13,7 @@ def output_trait_mapping(trait: Trait, mapping_writer: csv.writer, finished_sour
     :param finished_source_counts: Optional Counter to count sources of finished mappings
     """
     for ontology_entry in trait.finished_mapping_set:
-        # Need the corresponding Zooma result
+        # Need the corresponding Zooma result - for counting purposes only
         zooma_mapping = None
         for zooma_result in trait.zooma_result_list:
             for zm in zooma_result.mapping_list:
@@ -51,18 +51,11 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, ontology: str
     # records they are associated with is low. This is added to the "Notes" column.
     output_row = [trait.name, trait.frequency, 'NT expansion' if trait.associated_with_nt_expansion else '']
 
-    zooma_mapping_list = get_mappings_for_curation(trait.zooma_result_list)
-
-    for zooma_mapping in zooma_mapping_list:
-        cell = [zooma_mapping.uri, zooma_mapping.ontology_label, str(zooma_mapping.confidence),
-                zooma_mapping.source, f'{ontology.upper()}_CURRENT' if zooma_mapping.in_ontology else 'NOT_CONTAINED']
-        output_row.append("|".join(cell))
-
-    oxo_mapping_list = get_mappings_for_curation(trait.oxo_result_list)
-
-    for oxo_mapping in oxo_mapping_list:
-        cell = [str(oxo_mapping.uri), oxo_mapping.ontology_label, str(oxo_mapping.distance),
-                oxo_mapping.query_id, f'{ontology.upper()}_CURRENT' if oxo_mapping.in_ontology else 'NOT_CONTAINED']
+    for ols_result in sorted(trait.ols_result_list, reverse=True):
+        # TODO - set these enums
+        match_type = ...
+        mapping_source = ...
+        cell = [ols_result.uri, ols_result.label, match_type, mapping_source]
         output_row.append("|".join(cell))
 
     curation_writer.writerow(output_row)

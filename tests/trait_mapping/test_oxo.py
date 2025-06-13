@@ -1,7 +1,7 @@
 import requests_mock
 
 import cmat.trait_mapping.oxo as oxo
-from cmat.trait_mapping.ols import OLS_SERVER
+from cmat.trait_mapping.ols import OLS_BASE_URL
 
 import resources.test_oxo_data as test_oxo_data
 
@@ -44,24 +44,24 @@ class TestBuildOxoPayload:
 class TestGetOxoResultsFromResponse:
     def test_get_oxo_results_from_response(self):
         with requests_mock.mock() as m:
-            m.get(f"{OLS_SERVER}/api/terms?iri=http://www.orpha.net/ORDO/Orphanet_660",
+            m.get(f"{OLS_BASE_URL}/api/terms?iri=http://www.orpha.net/ORDO/Orphanet_660",
                   json=test_oxo_data.TestGetOxoResultsFromResponseData.orphanet_660_ols_terms_json)
 
             m.get(
-                f"{OLS_SERVER}/api/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_660",
+                f"{OLS_BASE_URL}/api/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_660",
                 json={'message': 'Resource not found', 'timestamp': 1502441846181,
                       'exception': 'org.springframework.data.rest.webmvc.ResourceNotFoundException', 'status': 404,
                       'error': 'Not Found',
                       'path': '/ols4/api/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_660'},
                 status_code=404)
 
-            m.get(f"{OLS_SERVER}/api/terms?iri=http://www.orpha.net/ORDO/Orphanet_3164",
+            m.get(f"{OLS_BASE_URL}/api/terms?iri=http://www.orpha.net/ORDO/Orphanet_3164",
                   json=test_oxo_data.TestGetOxoResultsFromResponseData.orphanet_3164_ols_terms_json)
 
-            m.get(f"{OLS_SERVER}/api/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_3164",
+            m.get(f"{OLS_BASE_URL}/api/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_3164",
                   json=test_oxo_data.TestGetOxoResultsFromResponseData.orphanet_3164_ols_efo_json)
 
-            m.get(f"{OLS_SERVER}/api/terms?iri=http://purl.obolibrary.org/obo/HP_0001537",
+            m.get(f"{OLS_BASE_URL}/api/terms?iri=http://purl.obolibrary.org/obo/HP_0001537",
                   json=test_oxo_data.TestGetOxoResultsFromResponseData.hp_0001537_ols_terms_json)
 
             oxo_response = {'_embedded': {'searchResults': [{'curie': 'HP:0001537', '_links': {'self': {'href': 'https://www.ebi.ac.uk/spot/oxo/api/terms/HP:0001537'}, 'mappings': {'href': 'https://www.ebi.ac.uk/spot/oxo/api/mappings?fromId=HP:0001537'}}, 'label': 'Umbilical hernia', 'querySource': None, 'queryId': 'HP:0001537', 'mappingResponseList': [{'curie': 'Orphanet:660', 'targetPrefix': 'Orphanet', 'distance': 3, 'sourcePrefixes': ['ONTONEO', 'Orphanet', 'DOID', 'UMLS'], 'label': 'Omphalocele'}, {'curie': 'Orphanet:3164', 'targetPrefix': 'Orphanet', 'distance': 3, 'sourcePrefixes': ['ONTONEO', 'EFO', 'Orphanet', 'DOID'], 'label': 'Omphalocele syndrome, Shprintzen-Goldberg type'}]}]}, 'page': {'totalPages': 1, 'size': 1000, 'number': 0, 'totalElements': 1}, '_links': {'self': {'href': 'https://www.ebi.ac.uk/spot/oxo/api/search'}}}
