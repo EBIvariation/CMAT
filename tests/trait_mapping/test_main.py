@@ -45,6 +45,9 @@ def run_pipeline(resource_name):
         zooma_host='https://www.ebi.ac.uk',
         oxo_target_list=['Orphanet', 'efo', 'hp', 'mondo'],
         oxo_distance=3,
+        ols_ontology_list='efo,hp,mondo',
+        ols_query_fields='label,synonym',
+        ols_field_list='iri,label,ontology_name,synonym',
         ontology='EFO'
     )
     output_traits = [row for row in csv.reader(open(traits_file.name), delimiter=',')]
@@ -76,14 +79,18 @@ def test_process_trait_exact_match():
     # Don't use OxO
     oxo_targets = []
     oxo_distance = 0
+    # Don't use OLS
+    ols_ontology_list = None
+    ols_query_fields = None
+    ols_field_list = None
 
     # This should be marked as finished, as it's an exact string match with a term contained in the target ontology
     efo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, zooma_host, oxo_targets, oxo_distance,
-                              target_ontology='efo')
+                              ols_ontology_list, ols_query_fields, ols_field_list, target_ontology='efo')
     assert efo_trait.is_finished
 
     # This should not be marked as finished, even though Zooma finds an exact match in one of its ontologies, it's not
     # the requested target ontology and thus still needs to be curated
     hpo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, zooma_host, oxo_targets, oxo_distance,
-                              target_ontology='hp')
+                              ols_ontology_list, ols_query_fields, ols_field_list, target_ontology='hp')
     assert not hpo_trait.is_finished

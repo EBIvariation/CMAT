@@ -1,6 +1,6 @@
 import os
 import re
-from collections import defaultdict
+from enum import Enum
 from functools import lru_cache, total_ordering
 import logging
 import requests
@@ -22,7 +22,7 @@ def build_ols_query(ontology_uri: str) -> str:
 
 
 @lru_cache(maxsize=16384)
-def get_ontology_label_from_ols(ontology_uri: str) -> str:
+def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
     """
     Using provided ontology URI, build an OLS URL with which to make a request to find the term label for this URI.
 
@@ -47,7 +47,7 @@ def get_ontology_label_from_ols(ontology_uri: str) -> str:
     # at some point).
     for term in json_response["_embedded"]["terms"]:
         if term["is_defining_ontology"]:
-            return term["label"]
+            return term["label"], term["synonyms"]
 
     if '/medgen/' not in url and '/omim/' not in url:
         logger.warning('OLS queried OK, but there is no defining ontology in its results for URL {}'.format(url))
@@ -158,22 +158,44 @@ def get_uri_from_exact_match(text, ontology='EFO'):
     return None
 
 
+class MatchType(Enum):
+    EXACT_MATCH_LABEL = 0
+    EXACT_MATCH_SYNONYM = 1
+    CONTAINED_MATCH_LABEL = 2
+    CONTAINED_MATCH_SYNONYM = 3
+    TOKEN_MATCH_LABEL = 4
+    TOKEN_MATCH_SYNONYM = 5
+    NO_MATCH = 6
+
+    def __str__(self):
+        return self.name
+
+
+class MappingSource(Enum):
+    # TODO generalise to target/preferred ontologies?
+    EFO_CURRENT = 0
+    EFO_OBSOLETE = 1
+    MONDO_HP_NOT_EFO = 2
+    NOT_MONDO_HP_EFO = 3
+
+    def __str__(self):
+        return self.name
+
+
 @total_ordering
 class OlsResult:
     """Representation of one ontology term coming from OLS"""
 
-    def __init__(self, result_json):
-        self.result_json = result_json
-        self.uri = result_json.get('iri')
-        self.label = result_json.get('label')
-        self.full_exact_match = []
-        self.contained_match = []
-        self.token_match = []
-        self.in_target_ontology = False
-        # ontologies that are not the target but are preferred to alternatives
-        self.in_preferred_ontology = False
-        # by default OLS does not return obsolete terms
-        self.is_current = True
+    def __init__(self, uri, label, full_exact_match, contained_match, token_match, in_target_ontology,
+                 in_preferred_ontology, is_current):
+        self.uri = uri
+        self.label = label
+        self.full_exact_match = full_exact_match
+        self.contained_match = contained_match
+        self.token_match = token_match
+        self.in_target_ontology = in_target_ontology
+        self.in_preferred_ontology = in_preferred_ontology
+        self.is_current = is_current
 
     def __eq__(self, other):
         return isinstance(other, type(self)) and self.uri == other.uri and self.label == other.label
@@ -214,36 +236,70 @@ class OlsResult:
             return 1
         return 0
 
-    def set_fields_with_match(self, search_term, query_fields):
-        search_term = search_term.lower().strip()
-        for field in query_fields:
-            if field in self.result_json:
-                if isinstance(self.result_json[field], str):
-                    if  search_term == self.result_json[field].lower().strip():
-                        self.full_exact_match.append(field)
-                    elif search_term in self.result_json[field].lower():
-                        self.contained_match.append(field)
-                    else:
-                        self.token_match.append(field)
-                if isinstance(self.result_json[field], list):
-                    if [element for element in self.result_json[field] if search_term == element.lower().strip()]:
-                        self.full_exact_match.append(field)
-                    elif [element for element in self.result_json[field] if search_term in element.lower()]:
-                        self.contained_match.append(field)
-                    else:
-                        self.token_match.append(field)
+    def get_match_type(self):
+        if self.full_exact_match:
+            if 'label' in self.full_exact_match:
+                return MatchType.EXACT_MATCH_LABEL
+            if 'synonym' in self.full_exact_match:
+                return MatchType.EXACT_MATCH_SYNONYM
+        if self.contained_match:
+            if 'label' in self.contained_match:
+                return MatchType.CONTAINED_MATCH_LABEL
+            if 'synonym' in self.contained_match:
+                return MatchType.CONTAINED_MATCH_SYNONYM
+        if self.token_match:
+            if 'label' in self.token_match:
+                return MatchType.TOKEN_MATCH_LABEL
+            if 'synonym' in self.token_match:
+                return MatchType.TOKEN_MATCH_SYNONYM
+        return MatchType.NO_MATCH
 
-    def set_is_in_ontologies(self, target_ontology, preferred_ontologies):
-        self.in_target_ontology = is_in_ontology(self.uri, target_ontology)
-        for ontology in preferred_ontologies:
-            if is_in_ontology(self.uri, ontology):
-                self.in_preferred_ontology = True
-                return
-        self.in_preferred_ontology = False
+    def get_mapping_source(self):
+        if self.in_target_ontology:
+            return MappingSource.EFO_CURRENT if self.is_current else MappingSource.EFO_OBSOLETE
+        if self.in_preferred_ontology:
+            return MappingSource.MONDO_HP_NOT_EFO
+        return MappingSource.NOT_MONDO_HP_EFO
+
+
+def get_fields_with_match(search_term, query_fields, result_json):
+    search_term = search_term.lower().strip()
+    full_exact_match = []
+    contained_match = []
+    token_match = []
+    for field in query_fields:
+        if field in result_json:
+            if isinstance(result_json[field], str):
+                if  search_term == result_json[field].lower().strip():
+                    full_exact_match.append(field)
+                elif search_term in result_json[field].lower():
+                    contained_match.append(field)
+                else:
+                    token_match.append(field)
+            if isinstance(result_json[field], list):
+                if [element for element in result_json[field] if search_term == element.lower().strip()]:
+                    full_exact_match.append(field)
+                elif [element for element in result_json[field] if search_term in element.lower()]:
+                    contained_match.append(field)
+                else:
+                    token_match.append(field)
+    return full_exact_match, contained_match, token_match
+
+
+def get_is_in_ontologies(uri, target_ontology, preferred_ontologies):
+    in_target_ontology = is_in_ontology(uri, target_ontology)
+    in_preferred_ontology = False
+    for ontology in preferred_ontologies:
+        if is_in_ontology(uri, ontology):
+            in_preferred_ontology = True
+            break
+    return in_target_ontology, in_preferred_ontology
 
 
 def get_ols_results(term, ontologies, query_fields, field_list, target_ontology='EFO'):
     """Returns a list of OlsResults."""
+    if ontologies is None or query_fields is None or field_list is None:
+        return []
     search_url = OLS_BASE_URL + "/search"
     params = {
         'q': term,
@@ -254,7 +310,8 @@ def get_ols_results(term, ontologies, query_fields, field_list, target_ontology=
         'fieldList': field_list
     }
     preferred_ontologies = set(ontologies.split(','))
-    preferred_ontologies.remove(target_ontology.lower())
+    if target_ontology.lower() in preferred_ontologies:
+        preferred_ontologies.remove(target_ontology.lower())
 
     try:
         results = json_request(search_url, params=params)
@@ -262,11 +319,16 @@ def get_ols_results(term, ontologies, query_fields, field_list, target_ontology=
             search_results = set()
 
             for result in results['response']['docs']:
-                ols_result = OlsResult(result)
-                if ols_result not in search_results:
-                    ols_result.set_fields_with_match(term, query_fields.split(','))
-                    ols_result.set_is_in_ontologies(target_ontology, preferred_ontologies)
-                    search_results.add(ols_result)
+                uri = result.get('iri')
+                label = result.get('label')
+                full_exact_match, contained_match, token_match = get_fields_with_match(uri, query_fields.split(','),
+                                                                                       result)
+                in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology,
+                                                                                 preferred_ontologies)
+                # Query includes obsoletes=false
+                is_current = True if in_target_ontology else False
+                search_results.add(OlsResult(uri, label, full_exact_match, contained_match, token_match,
+                                             in_target_ontology, in_preferred_ontology, is_current))
             return list(search_results)
         else:
             return []

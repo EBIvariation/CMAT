@@ -39,7 +39,7 @@ def get_mappings_for_curation(result_list) -> list:
 
 def output_for_curation(trait: Trait, curation_writer: csv.writer, ontology: str = 'EFO'):
     """
-    Write any non-finished Zooma or OxO mappings of a trait to a file for manual curation.
+    Write any non-finished OLS mappings of a trait to a file for manual curation.
     Also outputs traits without any ontology mappings.
 
     :param trait: A Trait with no finished ontology mappings in finished_mapping_set
@@ -52,10 +52,9 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, ontology: str
     output_row = [trait.name, trait.frequency, 'NT expansion' if trait.associated_with_nt_expansion else '']
 
     for ols_result in sorted(trait.ols_result_list, reverse=True):
-        # TODO - set these enums
-        match_type = ...
-        mapping_source = ...
-        cell = [ols_result.uri, ols_result.label, match_type, mapping_source]
+        match_type = ols_result.get_match_type()
+        mapping_source = ols_result.get_mapping_source()
+        cell = [ols_result.uri, ols_result.label, str(match_type), str(mapping_source)]
         output_row.append("|".join(cell))
 
     curation_writer.writerow(output_row)

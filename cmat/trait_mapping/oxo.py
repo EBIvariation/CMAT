@@ -3,7 +3,7 @@ import logging
 import re
 import requests
 
-from cmat.trait_mapping.ols import get_ontology_label_from_ols, is_in_ontology
+from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, is_in_ontology
 from cmat.trait_mapping.ols import is_current_and_in_ontology
 from cmat.trait_mapping.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request
@@ -160,7 +160,7 @@ def get_oxo_results_from_response(oxo_response: dict, target_ontology: str = 'EF
 
             uri = str(oxo_mapping.uri)
 
-            ontology_label = get_ontology_label_from_ols(uri)
+            ontology_label, _ = get_label_and_synonyms_from_ols(uri)
             if ontology_label is not None:
                 oxo_mapping.ontology_label = ontology_label
 
