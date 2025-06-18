@@ -6,7 +6,8 @@ import pandas as pd
 
 from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping
 from cmat.trait_mapping.ols import get_replacement_term, is_current_and_in_ontology, OlsResult, \
-    get_label_and_synonyms_from_ols, get_is_in_ontologies, MatchType, MappingSource, get_fields_with_match
+    get_label_and_synonyms_from_ols, get_is_in_ontologies, MatchType, MappingSource, get_fields_with_match, \
+    EXACT_SYNONYM_KEY
 
 
 def previous_and_replacement_mappings(trait_name, previous_mappings, target_ontology, preferred_ontologies):
@@ -52,10 +53,10 @@ def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_
     is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
 
     label, synonyms = get_label_and_synonyms_from_ols(uri)
-    full_exact_match, contained_match, token_match = get_fields_with_match(trait_name, 'label,synonym',
-                                                                           {'label': label, 'synonym': synonyms})
+    exact_match, contained_match, token_match = get_fields_with_match(trait_name, f'label,{EXACT_SYNONYM_KEY}',
+                                                                      {'label': label, EXACT_SYNONYM_KEY: synonyms})
 
-    ols_result = OlsResult(uri, label, full_exact_match, contained_match, token_match, in_target_ontology,
+    ols_result = OlsResult(uri, label, exact_match, contained_match, token_match, in_target_ontology,
                            in_preferred_ontology, is_current)
     return label, ols_result.get_match_type(), ols_result.get_mapping_source()
 

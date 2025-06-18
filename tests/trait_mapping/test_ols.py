@@ -1,7 +1,7 @@
 import requests_mock
 
 import cmat.trait_mapping.ols as ols
-from cmat.trait_mapping.ols import OlsResult, MatchType, MappingSource
+from cmat.trait_mapping.ols import OlsResult, MatchType, MappingSource, EXACT_SYNONYM_KEY
 import resources.test_ols_data as test_ols_data
 
 
@@ -17,29 +17,29 @@ def test_get_label_and_synonyms_from_ols():
 
 def test_is_current_and_in_efo():
     with requests_mock.mock() as m:
-        url = f"{ols.OLS_BASE_URL}/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_425"
+        url = f"{ols.OLS_BASE_URL}/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_1000062"
         m.get(url,
-              json=test_ols_data.TestIsInEfoData.orphanet_425_ols_efo_json)
+              json=test_ols_data.TestIsInEfoData.efo_1000062_ols_efo_json)
 
-        assert ols.is_current_and_in_ontology("http://www.orpha.net/ORDO/Orphanet_425") == True
+        assert ols.is_current_and_in_ontology("http://www.ebi.ac.uk/efo/EFO_1000062") == True
 
 
 def test_is_in_efo():
     with requests_mock.mock() as m:
-        url = f"{ols.OLS_BASE_URL}/ontologies/efo/terms/http%253A%252F%252Fwww.orpha.net%252FORDO%252FOrphanet_425"
+        url = f"{ols.OLS_BASE_URL}/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_1000062"
         m.get(url,
-              json=test_ols_data.TestIsInEfoData.orphanet_425_ols_efo_json)
+              json=test_ols_data.TestIsInEfoData.efo_1000062_ols_efo_json)
 
-        assert ols.is_in_ontology("http://www.orpha.net/ORDO/Orphanet_425") == True
+        assert ols.is_in_ontology("http://www.ebi.ac.uk/efo/EFO_1000062") == True
 
 
 def test_get_fields_with_match():
-    search_term = 'ApoA-I deficiency'
-    query_fields = ['label', 'synonyms']
+    search_term = 'lactose malabsorption'
+    query_fields = ['label', EXACT_SYNONYM_KEY]
     exact, contained, token = ols.get_fields_with_match(search_term, query_fields,
-                                                        test_ols_data.TestIsInEfoData.orphanet_425_ols_efo_json)
-    assert exact == ['synonyms']
-    assert contained == []
+                                                        test_ols_data.TestIsInEfoData.efo_1000062_ols_efo_json)
+    assert exact == []
+    assert contained == [EXACT_SYNONYM_KEY]
     assert token == ['label']
 
 

@@ -11,14 +11,15 @@ from retry import retry
 from cmat.trait_mapping.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request, ServerError
 
-OLS_BASE_URL = 'https://www.ebi.ac.uk/ols4/api'
+OLS_BASE_URL = 'https://www.ebi.ac.uk/ols4/api/v2'
+EXACT_SYNONYM_KEY = 'http://www.geneontology.org/formats/oboInOwl#hasExactSynonym'
 
 logger = logging.getLogger(__package__)
 
 
 def build_ols_query(ontology_uri: str) -> str:
     """Build a url to query OLS for a given ontology uri."""
-    return "{}/terms?iri={}".format(OLS_BASE_URL, ontology_uri)
+    return "{}/classes?iri={}".format(OLS_BASE_URL, ontology_uri)
 
 
 @lru_cache(maxsize=16384)
@@ -33,25 +34,37 @@ def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
     json_response = json_request(url)
 
     if not json_response:
-        return None
+        return None, None
 
-    # If the '_embedded' section is missing from the response, it means that the term is not found in OLS
-    if '_embedded' not in json_response:
+    # If the 'elements' section is missing from the response, it means that the term is not found in OLS
+    if 'elements' not in json_response:
         if '/medgen/' not in url and '/omim/' not in url:
             logger.warning('OLS queried OK but did not return any results for URL {}'.format(url))
-        return None
+        return None, None
 
     # Go through all terms found by the requested identifier and try to find the one where the _identifier_ and the
     # _term_ come from the same ontology (marked by a special flag). Example of such a situation would be a MONDO term
     # in the MONDO ontology. Example of a reverse situation is a MONDO term in EFO ontology (being *imported* into it
     # at some point).
-    for term in json_response["_embedded"]["terms"]:
-        if term["is_defining_ontology"]:
-            return term["label"], term["synonyms"]
-
-    if '/medgen/' not in url and '/omim/' not in url:
-        logger.warning('OLS queried OK, but there is no defining ontology in its results for URL {}'.format(url))
-    return None
+    label = None
+    synonyms = set()
+    for term in json_response['elements']:
+        if term['isDefiningOntology']:
+            if len(term['label']) > 1:
+                logger.warning(f'Found multiple labels for {ontology_uri}, choosing the first')
+            label = term['label'][0]
+        # Synonyms are not always in the defining ontology, so we accumulate all exact synonyms from all terms
+        # Also this value can be either a single string or a list of strings _and/or_ dicts (!)
+        if EXACT_SYNONYM_KEY in term:
+            if isinstance(term[EXACT_SYNONYM_KEY], str):
+                synonyms.add(term[EXACT_SYNONYM_KEY])
+            elif isinstance(term[EXACT_SYNONYM_KEY], list):
+                synonym_values = [syn if isinstance(syn, str) else syn['value'] for syn in term[EXACT_SYNONYM_KEY]]
+                synonyms.update(synonym_values)
+    if label is None:
+        if '/medgen/' not in url and '/omim/' not in url:
+            logger.warning('OLS queried OK, but there is no defining ontology in its results for URL {}'.format(url))
+    return label, synonyms
 
 
 def double_encode_uri(uri: str) -> str:
@@ -69,8 +82,10 @@ def ols_ontology_query(uri: str, ontology: str = 'EFO') -> requests.Response:
     :return: Response from OLS
     """
     double_encoded_uri = double_encode_uri(uri)
-    response = requests.get(f"{OLS_BASE_URL}/ontologies/{ontology}/terms/{double_encoded_uri}")
-    if 500 <= response.status_code < 600:
+    response = requests.get(f"{OLS_BASE_URL}/ontologies/{ontology}/classes/{double_encoded_uri}")
+    # V1 of the API returned 404 when a term was not present in the ontology, in which case we do not want to retry.
+    # V2 returns 500 in this case, so to preserve this behaviour we check the error message as well.
+    if 500 <= response.status_code < 600 and 'Expected at least 1 result' not in response.text:
         raise ServerError
     return response
 
@@ -88,7 +103,7 @@ def is_current_and_in_ontology(uri: str, ontology: str = 'EFO') -> bool:
     if response.status_code != 200:
         return False
     response_json = response.json()
-    return not response_json["is_obsolete"]
+    return not response_json["isObsolete"]
 
 
 @lru_cache(maxsize=16384)
@@ -241,17 +256,17 @@ class OlsResult:
         if self.full_exact_match:
             if 'label' in self.full_exact_match:
                 return MatchType.EXACT_MATCH_LABEL
-            if 'synonym' in self.full_exact_match:
+            if EXACT_SYNONYM_KEY in self.full_exact_match:
                 return MatchType.EXACT_MATCH_SYNONYM
         if self.contained_match:
             if 'label' in self.contained_match:
                 return MatchType.CONTAINED_MATCH_LABEL
-            if 'synonym' in self.contained_match:
+            if EXACT_SYNONYM_KEY in self.contained_match:
                 return MatchType.CONTAINED_MATCH_SYNONYM
         if self.token_match:
             if 'label' in self.token_match:
                 return MatchType.TOKEN_MATCH_LABEL
-            if 'synonym' in self.token_match:
+            if EXACT_SYNONYM_KEY in self.token_match:
                 return MatchType.TOKEN_MATCH_SYNONYM
         return MatchType.NO_MATCH
 
@@ -271,19 +286,23 @@ def get_fields_with_match(search_term, query_fields, result_json):
     for field in query_fields:
         if field in result_json:
             if isinstance(result_json[field], str):
-                if  search_term == result_json[field].lower().strip():
+                if search_term == result_json[field].lower().strip():
                     full_exact_match.append(field)
                 elif search_term in result_json[field].lower():
                     contained_match.append(field)
                 else:
                     token_match.append(field)
             if isinstance(result_json[field], list):
-                if [element for element in result_json[field] if search_term == element.lower().strip()]:
+                # Lists can be mixture of strings and dicts
+                field_values = [element if isinstance(element, str) else element['value'] for element in result_json[field] ]
+                if [element for element in field_values if search_term == element.lower().strip()]:
                     full_exact_match.append(field)
-                elif [element for element in result_json[field] if search_term in element.lower()]:
+                elif [element for element in field_values if search_term in element.lower()]:
                     contained_match.append(field)
                 else:
+                    # If it's a search result and neither full or contained, must be a token match
                     token_match.append(field)
+
     return full_exact_match, contained_match, token_match
 
 
