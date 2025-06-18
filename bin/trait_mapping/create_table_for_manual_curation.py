@@ -18,18 +18,18 @@ def previous_and_replacement_mappings(trait_name, previous_mappings, target_onto
         trait_string = '|'.join([uri, label, str(match_type), mapping_source.to_string(target_ontology, preferred_ontologies)])
         replacement_string = ''
         if mapping_source == MappingSource.TARGET_OBSOLETE:
-            replacement_string = find_replacement_mapping(trait_name, uri, target_ontology)
+            replacement_string = find_replacement_mapping(trait_name, uri, target_ontology, preferred_ontologies)
         yield trait_string, replacement_string
 
 
-def find_replacement_mapping(trait_name, previous_uri, ontology, max_depth=1):
+def find_replacement_mapping(trait_name, previous_uri, ontology, preferred_ontologies, max_depth=1):
     replacement_uri = get_replacement_term(previous_uri, ontology)
     if not replacement_uri:
         return ''
-    label, match_type, mapping_source = get_mapping_attributes_from_ols(trait_name, replacement_uri, ontology)
+    label, match_type, mapping_source = get_mapping_attributes_from_ols(trait_name, replacement_uri, ontology, preferred_ontologies)
     # If this term is also obsolete, try to find its replacement (at most max_depth times)
     if mapping_source == MappingSource.TARGET_OBSOLETE and replacement_uri.startswith('http') and max_depth > 0:
-        return find_replacement_mapping(replacement_uri, ontology, max_depth-1)
+        return find_replacement_mapping(replacement_uri, ontology, preferred_ontologies, max_depth-1)
     trait_string = '|'.join([replacement_uri, label, match_type, mapping_source])
     return trait_string
 
