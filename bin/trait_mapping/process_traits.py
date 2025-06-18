@@ -9,8 +9,8 @@ def launch():
 
     main.process_traits(parser.input_traits_filepath, parser.output_mappings_filepath,
                         parser.output_curation_filepath, parser.filters, parser.zooma_host,
-                        parser.oxo_target_list, parser.oxo_distance, parser.ols_ontology_list,
-                        parser.ols_query_fields, parser.ols_field_list, parser.target_ontology)
+                        parser.oxo_target_list, parser.oxo_distance, parser.ols_query_fields, parser.ols_field_list,
+                        parser.target_ontology, parser.preferred_ontologies)
 
 
 class ArgParser:
@@ -62,7 +62,9 @@ class ArgParser:
         self.zooma_host = args.zooma_host
         self.oxo_target_list = [target.strip() for target in args.oxo_target_list.split(",")]
         self.oxo_distance = args.oxo_distance
-        self.ols_ontology_list = args.ols_ontology_list
+        self.preferred_ontologies = [target.lower().strip() for target in args.ols_ontology_list.split(",")]
+        if args.target_ontology.lower() in self.preferred_ontologies:
+            self.preferred_ontologies.remove(args.target_ontology.lower())
         self.ols_query_fields = args.ols_query_fields
         self.ols_field_list = args.ols_field_list
         self.target_ontology = args.target_ontology

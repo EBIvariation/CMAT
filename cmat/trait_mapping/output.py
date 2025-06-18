@@ -37,13 +37,14 @@ def get_mappings_for_curation(result_list) -> list:
     return curation_mapping_list
 
 
-def output_for_curation(trait: Trait, curation_writer: csv.writer, ontology: str = 'EFO'):
+def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontology: str, preferred_ontologies: list):
     """
     Write any non-finished OLS mappings of a trait to a file for manual curation.
     Also outputs traits without any ontology mappings.
 
     :param trait: A Trait with no finished ontology mappings in finished_mapping_set
-    :param ontology: ID of target ontology (default EFO)
+    :param target_ontology: ID of target ontology
+    :param preferred_ontologies: List of preferred non-target ontology IDs
     :param curation_writer: A csv.writer to write non-finished ontology mappings for manual curation
     """
 
@@ -54,23 +55,24 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, ontology: str
     for ols_result in sorted(trait.ols_result_list, reverse=True):
         match_type = ols_result.get_match_type()
         mapping_source = ols_result.get_mapping_source()
-        cell = [ols_result.uri, ols_result.label, str(match_type), str(mapping_source)]
+        cell = [ols_result.uri, ols_result.label, str(match_type), mapping_source.to_string(target_ontology, preferred_ontologies)]
         output_row.append("|".join(cell))
 
     curation_writer.writerow(output_row)
 
 
 def output_trait(trait: Trait, mapping_writer: csv.writer, curation_writer: csv.writer, finished_source_counts: Counter,
-                 ontology: str = 'EFO'):
+                 target_ontology: str, preferred_ontologies: list):
     """
     Output finished ontology mappings of a trait, or non-finished mappings (if any) for curation.
 
     :param trait: A trait which has been used to query Zooma and possibly OxO.
     :param mapping_writer: A csv.writer to write the finished mappings
     :param curation_writer: A csv.writer to write non-finished ontology mappings for manual curation
-    :param ontology: ID of target ontology (default EFO)
+    :param target_ontology: ID of target ontology
+    :param preferred_ontologies: List of preferred non-target ontology IDs
     """
     if trait.is_finished:
         output_trait_mapping(trait, mapping_writer, finished_source_counts)
     else:
-        output_for_curation(trait, curation_writer, ontology)
+        output_for_curation(trait, curation_writer, target_ontology, preferred_ontologies)

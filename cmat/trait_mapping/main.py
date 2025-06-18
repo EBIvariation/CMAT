@@ -4,7 +4,7 @@ import multiprocessing
 from collections import Counter
 
 from cmat.clinvar_xml_io import ClinVarTrait
-from cmat.trait_mapping.ols import get_ols_results
+from cmat.trait_mapping.ols import get_ols_search_results
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
@@ -32,8 +32,8 @@ def get_uris_for_oxo(zooma_result_list: list) -> set:
 
 
 def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list: list, oxo_distance: int,
-                  ols_ontology_list: str, ols_query_fields: str, ols_field_list: str,
-                  target_ontology: str = 'EFO') -> Trait:
+                  ols_query_fields: str, ols_field_list: str,
+                  target_ontology: str, preferred_ontologies: list) -> Trait:
     """
     Process a single trait. First look for an exact string match in the target ontology and return immediately if found.
     Otherwise find any mappings in Zooma. If there are no high confidence Zooma mappings that are in EFO then query OxO
@@ -49,13 +49,14 @@ def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list:
     :param ols_ontology_list: A string listing ontologies used to query OLS
     :param ols_query_fields: A string listing query fields used to query OLS
     :param ols_field_list: A string listing fields to return from OLS query
-    :param target_ontology: ID of target ontology (default EFO)
+    :param target_ontology: ID of target ontology
+    :param preferred_ontologies: List of preferred non-target ontology IDs
     :return: The original trait after querying Zooma and possibly OxO, with any results found.
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
-    trait.ols_result_list = get_ols_results(trait.name.lower(), ols_ontology_list, ols_query_fields, ols_field_list,
-                                            target_ontology)
+    trait.ols_result_list = get_ols_search_results(trait.name.lower(), ols_query_fields, ols_field_list,
+                                                   target_ontology, preferred_ontologies)
     trait.process_ols_results()
     if trait.is_finished:
         return trait
@@ -117,7 +118,7 @@ def parse_traits(input_filepath, output_traits_filepath, output_for_platform=Non
 
 
 def process_traits(traits_filepath, output_mappings_filepath, output_curation_filepath, filters, zooma_host,
-                   oxo_target_list, oxo_distance, ols_ontology_list, ols_query_fields, ols_field_list, ontology):
+                   oxo_target_list, oxo_distance, ols_query_fields, ols_field_list, target_ontology, preferred_ontologies):
     trait_list = read_traits_from_csv(traits_filepath)
     logger.info(f'Read {len(trait_list)} traits from file')
     with open(output_mappings_filepath, "w", newline='') as mapping_file, \
@@ -130,8 +131,8 @@ def process_traits(traits_filepath, output_mappings_filepath, output_curation_fi
         processed_trait_list = [
             trait_process_pool.apply(
                 process_trait,
-                args=(trait, filters, zooma_host, oxo_target_list, oxo_distance, ols_ontology_list, ols_query_fields,
-                      ols_field_list, ontology)
+                args=(trait, filters, zooma_host, oxo_target_list, oxo_distance, ols_query_fields,
+                      ols_field_list, target_ontology, preferred_ontologies)
             )
             for trait in trait_list
         ]
@@ -139,7 +140,7 @@ def process_traits(traits_filepath, output_mappings_filepath, output_curation_fi
         logger.info('Writing output with the processed traits')
         finished_source_counts = Counter()
         for trait in processed_trait_list:
-            output_trait(trait, mapping_writer, curation_writer, finished_source_counts, ontology)
+            output_trait(trait, mapping_writer, curation_writer, finished_source_counts, target_ontology, preferred_ontologies)
 
     logger.info('Finished processing trait names')
     logger.info(f'Source counts for finished mappings: {finished_source_counts}')

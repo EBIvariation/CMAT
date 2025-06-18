@@ -172,20 +172,21 @@ class MatchType(Enum):
 
 
 class MappingSource(Enum):
-    # TODO generalise to target/preferred ontologies?
-    EFO_CURRENT = 0
-    EFO_OBSOLETE = 1
-    MONDO_HP_NOT_EFO = 2
-    NOT_MONDO_HP_EFO = 3
+    TARGET_CURRENT = 0
+    TARGET_OBSOLETE = 1
+    PREFERRED_NOT_TARGET = 2
+    NOT_PREFERRED_TARGET = 3
 
-    def __str__(self):
-        return self.name
+    def to_string(self, target_ontology, preferred_ontologies):
+        # Workaround to make more curation-friendly output strings while staying ontology-agnostic
+        target_string = target_ontology.upper()
+        preferred_string = '_'.join(p.upper() for p in preferred_ontologies)
+        return self.name.replace('TARGET', target_string).replace('PREFERRED', preferred_string)
 
 
 @total_ordering
 class OlsResult:
-    """Representation of one ontology term coming from OLS"""
-
+    """Representation of one ontology term coming from OLS search"""
     def __init__(self, uri, label, full_exact_match, contained_match, token_match, in_target_ontology,
                  in_preferred_ontology, is_current):
         self.uri = uri
@@ -256,10 +257,10 @@ class OlsResult:
 
     def get_mapping_source(self):
         if self.in_target_ontology:
-            return MappingSource.EFO_CURRENT if self.is_current else MappingSource.EFO_OBSOLETE
+            return MappingSource.TARGET_CURRENT if self.is_current else MappingSource.TARGET_OBSOLETE
         if self.in_preferred_ontology:
-            return MappingSource.MONDO_HP_NOT_EFO
-        return MappingSource.NOT_MONDO_HP_EFO
+            return MappingSource.PREFERRED_NOT_TARGET
+        return MappingSource.NOT_PREFERRED_TARGET
 
 
 def get_fields_with_match(search_term, query_fields, result_json):
@@ -296,22 +297,29 @@ def get_is_in_ontologies(uri, target_ontology, preferred_ontologies):
     return in_target_ontology, in_preferred_ontology
 
 
-def get_ols_results(term, ontologies, query_fields, field_list, target_ontology='EFO'):
-    """Returns a list of OlsResults."""
-    if ontologies is None or query_fields is None or field_list is None:
+def get_ols_search_results(trait_name, query_fields, field_list, target_ontology, preferred_ontologies):
+    """
+    Search OLS for a given trait name with the specified parameters.
+
+    :param trait_name: String containing a trait name from a ClinVar record.
+    :param ontologies: String containing list of ontologies to search
+    :param query_fields: String containing list of fields to query
+    :param field_list: String containing list of fields to return
+    :param target_ontology: ID of target ontology
+    :param preferred_ontologies: List of preferred non-target ontology IDs
+    :return: List of OlsResults
+    """
+    if query_fields is None or field_list is None:
         return []
     search_url = OLS_BASE_URL + "/search"
     params = {
-        'q': term,
+        'q': trait_name,
         'exact': 'false',
         'obsoletes': 'false',
-        'ontologies': ontologies,
+        'ontologies': target_ontology + ','.join(preferred_ontologies),
         'queryFields': query_fields,
         'fieldList': field_list
     }
-    preferred_ontologies = set(ontologies.split(','))
-    if target_ontology.lower() in preferred_ontologies:
-        preferred_ontologies.remove(target_ontology.lower())
 
     try:
         results = json_request(search_url, params=params)

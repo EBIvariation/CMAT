@@ -15,9 +15,9 @@ def previous_and_replacement_mappings(trait_name, previous_mappings, target_onto
         return
     for uri, label in previous_mappings[trait_name]:
         label, match_type, mapping_source = get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies)
-        trait_string = '|'.join([uri, label, str(match_type), str(mapping_source)])
+        trait_string = '|'.join([uri, label, str(match_type), mapping_source.to_string(target_ontology, preferred_ontologies)])
         replacement_string = ''
-        if mapping_source == MappingSource.EFO_OBSOLETE:
+        if mapping_source == MappingSource.TARGET_OBSOLETE:
             replacement_string = find_replacement_mapping(trait_name, uri, target_ontology)
         yield trait_string, replacement_string
 
@@ -28,7 +28,7 @@ def find_replacement_mapping(trait_name, previous_uri, ontology, max_depth=1):
         return ''
     label, match_type, mapping_source = get_mapping_attributes_from_ols(trait_name, replacement_uri, ontology)
     # If this term is also obsolete, try to find its replacement (at most max_depth times)
-    if mapping_source == MappingSource.EFO_OBSOLETE and replacement_uri.startswith('http') and max_depth > 0:
+    if mapping_source == MappingSource.TARGET_OBSOLETE and replacement_uri.startswith('http') and max_depth > 0:
         return find_replacement_mapping(replacement_uri, ontology, max_depth-1)
     trait_string = '|'.join([replacement_uri, label, match_type, mapping_source])
     return trait_string
@@ -73,14 +73,14 @@ if __name__ == '__main__':
         '-c', '--previous-comments',
         help='Table with last round of curator comments. TSV with columns: ClinVar trait name; comments')
     parser.add_argument(
+        '-p', '--preferred-ontologies', help='List of preferred ontologies to use', default='efo,hp,mondo')
+    parser.add_argument(
         '-o', '--output',
         help='Output TSV to be loaded in Google Sheets for manual curation')
     args = parser.parse_args()
 
     # Load all previous mappings: ClinVar trait name to ontology URI
     previous_mappings, target_ontology = load_ontology_mapping(args.previous_mappings)
-    # TODO how to pass this?
-    preferred_ontologies = 'efo,hp,mondo'
 
     # Load previous curator comments: ClinVar trait name to comment string
     try:
@@ -101,8 +101,8 @@ if __name__ == '__main__':
         # Use maximum of 50 mappings to improve Google Sheets performance
         mappings = fields[3:53]
         exact_match, exact_synonym_match = find_exact_mappings(mappings)
-        for previous_mapping, replacement_mapping in previous_and_replacement_mappings(trait_name, previous_mappings,
-                                                                                       target_ontology, preferred_ontologies):
+        for previous_mapping, replacement_mapping in previous_and_replacement_mappings(
+                trait_name, previous_mappings, target_ontology, args.preferred_ontologies):
             rows.append([trait_name, trait_freq, notes, previous_mapping, replacement_mapping,
                          exact_match, exact_synonym_match] + mappings)
 

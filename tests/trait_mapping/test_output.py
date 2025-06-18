@@ -3,7 +3,6 @@ import tempfile
 
 import cmat.trait_mapping.output as output
 from cmat.trait_mapping.ols import OlsResult
-from cmat.trait_mapping.oxo import OxOMapping, OxOResult
 from cmat.trait_mapping.trait import OntologyEntry, Trait
 import cmat.trait_mapping.zooma as zooma
 
@@ -102,7 +101,7 @@ def test_output_for_curation():
         )
         test_trait.ols_result_list = [test_ols_result]
 
-        output.output_for_curation(test_trait, curation_writer)
+        output.output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
 
     with open(tempfile_path, "rt") as curation_file:
         curation_reader = csv.reader(curation_file, delimiter="\t")

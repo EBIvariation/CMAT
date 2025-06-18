@@ -45,10 +45,11 @@ def run_pipeline(resource_name):
         zooma_host='https://www.ebi.ac.uk',
         oxo_target_list=['Orphanet', 'efo', 'hp', 'mondo'],
         oxo_distance=3,
-        ols_ontology_list='efo,hp,mondo',
+        # ols_ontology_list='efo,hp,mondo',
         ols_query_fields='label,synonym',
         ols_field_list='iri,label,ontology_name,synonym',
-        ontology='EFO'
+        target_ontology='EFO',
+        preferred_ontologies=['hp', 'mondo']
     )
     output_traits = [row for row in csv.reader(open(traits_file.name), delimiter=',')]
     output_mappings = [line.rstrip().split('\t') for line in open(mappings_file.name).read().splitlines()]
