@@ -17,9 +17,12 @@ EXACT_SYNONYM_KEY = 'http://www.geneontology.org/formats/oboInOwl#hasExactSynony
 logger = logging.getLogger(__package__)
 
 
-def build_ols_query(ontology_uri: str) -> str:
+def build_ols_query(ontology_uri: str, include_obsoletes: bool = False) -> str:
     """Build a url to query OLS for a given ontology uri."""
-    return "{}/classes?iri={}".format(OLS_BASE_URL, ontology_uri)
+    query_url = f'{OLS_BASE_URL}/classes?iri={ontology_uri}'
+    if include_obsoletes:
+        query_url = f'{query_url}&includeObsoleteEntities=true'
+    return query_url
 
 
 @lru_cache(maxsize=16384)
@@ -59,12 +62,17 @@ def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
             if isinstance(term[EXACT_SYNONYM_KEY], str):
                 synonyms.add(term[EXACT_SYNONYM_KEY])
             elif isinstance(term[EXACT_SYNONYM_KEY], list):
-                synonym_values = [syn if isinstance(syn, str) else syn['value'] for syn in term[EXACT_SYNONYM_KEY]]
+                synonym_values = get_as_string_list(term[EXACT_SYNONYM_KEY])
                 synonyms.update(synonym_values)
     if label is None:
         if '/medgen/' not in url and '/omim/' not in url:
             logger.warning('OLS queried OK, but there is no defining ontology in its results for URL {}'.format(url))
     return label, synonyms
+
+
+def get_as_string_list(field_value):
+    """ Takes a list of strings and dicts as returned by OLS and return a list of strings only. """
+    return [val if isinstance(val, str) else val['value'] for val in field_value]
 
 
 def double_encode_uri(uri: str) -> str:
@@ -293,8 +301,7 @@ def get_fields_with_match(search_term, query_fields, result_json):
                 else:
                     token_match.append(field)
             if isinstance(result_json[field], list):
-                # Lists can be mixture of strings and dicts
-                field_values = [element if isinstance(element, str) else element['value'] for element in result_json[field] ]
+                field_values = get_as_string_list(result_json[field])
                 if [element for element in field_values if search_term == element.lower().strip()]:
                     full_exact_match.append(field)
                 elif [element for element in field_values if search_term in element.lower()]:
