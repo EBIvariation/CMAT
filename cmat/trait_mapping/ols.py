@@ -338,15 +338,17 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
     """
     if query_fields is None or field_list is None:
         return []
-    search_url = OLS_BASE_URL + "/search"
+    # V2 of the OLS API does not support search currently, so for now use V1
+    search_url = 'https://www.ebi.ac.uk/ols4/api/search'
     params = {
         'q': trait_name,
-        'exact': 'false',
+        'exact': 'true',
         'obsoletes': 'false',
         'ontologies': target_ontology + ','.join(preferred_ontologies),
         'queryFields': query_fields,
         'fieldList': field_list
     }
+    query_fields_list = query_fields.split(',')
 
     try:
         results = json_request(search_url, params=params)
@@ -356,14 +358,27 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
             for result in results['response']['docs']:
                 uri = result.get('iri')
                 label = result.get('label')
-                full_exact_match, contained_match, token_match = get_fields_with_match(uri, query_fields.split(','),
-                                                                                       result)
-                in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology,
-                                                                                 preferred_ontologies)
+                ontology = result.get('ontology_name')
+                full_exact_match, contained_match, token_match = get_fields_with_match(uri, query_fields_list, result)
+                in_target_ontology = (ontology == target_ontology.lower())
+                in_preferred_ontology = (ontology in preferred_ontologies)
                 # Query includes obsoletes=false
                 is_current = True if in_target_ontology else False
-                search_results.add(OlsResult(uri, label, full_exact_match, contained_match, token_match,
-                                             in_target_ontology, in_preferred_ontology, is_current))
+                # If one of the matched fields is synonym, we must make an additional V2 API query in order to check
+                # that the synonym is exact, as the V1 search results do not separate synonym types.
+                if any('synonym' in l for l in [full_exact_match, contained_match, token_match]):
+                    classes_response = ols_ontology_query(uri, ontology)
+                    if classes_response.status_code != 200:
+                        continue
+                    full_exact_match, contained_match, token_match = get_fields_with_match(
+                        uri,
+                        [f if f != 'synonym' else EXACT_SYNONYM_KEY  for f in query_fields_list],
+                        classes_response.json()
+                    )
+                # Need to do this check, in case the only matches were to non-exact synonyms
+                if full_exact_match or contained_match or token_match:
+                    search_results.add(OlsResult(uri, label, full_exact_match, contained_match, token_match,
+                                                 in_target_ontology, in_preferred_ontology, is_current))
             return list(search_results)
         else:
             return []

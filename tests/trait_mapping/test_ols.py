@@ -1,3 +1,4 @@
+import pytest
 import requests_mock
 
 import cmat.trait_mapping.ols as ols
@@ -95,3 +96,19 @@ def test_ols_result():
 def test_mapping_source_to_string():
     assert MappingSource.TARGET_OBSOLETE.to_string('efo', ['mondo','hp']) == 'EFO_OBSOLETE'
     assert MappingSource.PREFERRED_NOT_TARGET.to_string('efo', ['mondo','hp']) == 'MONDO_HP_NOT_EFO'
+
+
+@pytest.mark.integration
+def test_get_ols_search_results():
+    results = ols.get_ols_search_results(
+        trait_name='Hereditary factor VIII deficiency disease',
+        query_fields='label,synonym',
+        field_list='iri,label,ontology_name,synonym',
+        target_ontology='EFO',
+        preferred_ontologies=['mondo', 'hp']
+    )
+    assert len(results) == 3
+    top_ranked_result = next(iter(sorted(results, reverse=True)))
+    assert top_ranked_result.label == 'hemophilia A'
+    assert top_ranked_result.get_match_type() == MatchType.TOKEN_MATCH_LABEL
+    assert top_ranked_result.get_mapping_source() == MappingSource.PREFERRED_NOT_TARGET

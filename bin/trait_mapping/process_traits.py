@@ -40,7 +40,7 @@ class ArgParser:
                             help="target ontologies to use with OxO")
         parser.add_argument("-d", dest="oxo_distance", default=3,
                             help="distance to use to query OxO.")
-        parser.add_argument("-l", dest="ols_ontology_list", default="efo,hp,mondo",
+        parser.add_argument("-l", dest="ols_ontology_list", default="efo,mondo,hp",
                             help="ontologies to use with OLS search")
         parser.add_argument("-q", dest="ols_query_fields", default="label,synonym",
                             help="query fields to use for OLS search")
