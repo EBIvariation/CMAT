@@ -9,7 +9,7 @@ def test_get_label_and_synonyms_from_ols():
     url = "http://www.orpha.net/ORDO/Orphanet_199318"
     ols_request_url = ols.build_ols_query(url)
     with requests_mock.mock() as m:
-        m.get(ols_request_url, json=test_ols_data.TestGetTraitNamesData.orphanet_199318_ols_terms_json)
+        m.get(ols_request_url, json=test_ols_data.orphanet_199318_ols_terms_json)
         label, synonyms = ols.get_label_and_synonyms_from_ols(url)
         assert label == '15q13.3 microdeletion syndrome'
         assert sorted(synonyms) == ['Del(15)(q13.3)', 'Monosomy 15q13.3']
@@ -18,8 +18,7 @@ def test_get_label_and_synonyms_from_ols():
 def test_is_current_and_in_efo():
     with requests_mock.mock() as m:
         url = f"{ols.OLS_BASE_URL}/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_1000062"
-        m.get(url,
-              json=test_ols_data.TestIsInEfoData.efo_1000062_ols_efo_json)
+        m.get(url, json=test_ols_data.efo_1000062_ols_efo_json)
 
         assert ols.is_current_and_in_ontology("http://www.ebi.ac.uk/efo/EFO_1000062") == True
 
@@ -27,17 +26,23 @@ def test_is_current_and_in_efo():
 def test_is_in_efo():
     with requests_mock.mock() as m:
         url = f"{ols.OLS_BASE_URL}/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_1000062"
-        m.get(url,
-              json=test_ols_data.TestIsInEfoData.efo_1000062_ols_efo_json)
+        m.get(url, json=test_ols_data.efo_1000062_ols_efo_json)
 
         assert ols.is_in_ontology("http://www.ebi.ac.uk/efo/EFO_1000062") == True
+
+
+def test_get_replacement_term():
+    with requests_mock.mock() as m:
+        url = f'{ols.OLS_BASE_URL}/ontologies/efo/classes/http%253A%252F%252Fwww.ebi.ac.uk%252Fefo%252FEFO_0001333'
+        m.get(url, json=test_ols_data.efo_0001333_ols_efo_json)
+        assert ols.get_replacement_term('http://www.ebi.ac.uk/efo/EFO_0001333', 'EFO') ==  'http://purl.obolibrary.org/obo/UBERON_0002115'
 
 
 def test_get_fields_with_match():
     search_term = 'lactose malabsorption'
     query_fields = ['label', EXACT_SYNONYM_KEY]
     exact, contained, token = ols.get_fields_with_match(search_term, query_fields,
-                                                        test_ols_data.TestIsInEfoData.efo_1000062_ols_efo_json)
+                                                        test_ols_data.efo_1000062_ols_efo_json)
     assert exact == []
     assert contained == [EXACT_SYNONYM_KEY]
     assert token == ['label']

@@ -6,12 +6,11 @@ from requests import RequestException
 from cmat.clinvar_xml_io.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request
 from cmat.trait_mapping.ols import build_ols_query, EXACT_SYNONYM_KEY, get_as_string_list, OLS_BASE_URL, \
-    double_encode_uri
+    double_encode_uri, REPLACEMENT_KEY
 
 logger = logging.getLogger(__package__)
 
 EXACT_MATCH_KEY = 'http://www.w3.org/2004/02/skos/core#exactMatch'
-REPLACEMENT_KEY = 'http://purl.obolibrary.org/obo/IAO_0100001'
 
 
 @lru_cache

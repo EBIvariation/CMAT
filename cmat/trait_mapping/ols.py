@@ -13,6 +13,7 @@ from cmat.trait_mapping.utils import json_request, ServerError
 
 OLS_BASE_URL = 'https://www.ebi.ac.uk/ols4/api/v2'
 EXACT_SYNONYM_KEY = 'http://www.geneontology.org/formats/oboInOwl#hasExactSynonym'
+REPLACEMENT_KEY = 'http://purl.obolibrary.org/obo/IAO_0100001'
 
 logger = logging.getLogger(__package__)
 
@@ -140,8 +141,8 @@ def get_replacement_term(uri: str, ontology: str = 'EFO') -> str:
     if response.status_code != 200:
         return ""
     response_json = response.json()
-    if response_json["term_replaced_by"] is not None:
-        replacement_uri = response_json["term_replaced_by"]
+    if REPLACEMENT_KEY in response_json and response_json[REPLACEMENT_KEY]:
+        replacement_uri = response_json[REPLACEMENT_KEY]
         if not replacement_uri.startswith('http'):
             try:
                 # Attempt to correct the most common weirdness found in this field - MONDO:0020783 or HP_0045074
