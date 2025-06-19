@@ -49,7 +49,7 @@ def test_ols_result():
         label='Transitional cell carcinoma of the bladder',
         full_exact_match=[],
         contained_match=['label'],
-        token_match=['synonym'],
+        token_match=[EXACT_SYNONYM_KEY],
         in_target_ontology=False,
         in_preferred_ontology=True,
         is_current=False
@@ -57,9 +57,9 @@ def test_ols_result():
     ols_result_2 = OlsResult(
         uri='http://purl.obolibrary.org/obo/MONDO_0004986',
         label='urinary bladder carcinoma',
-        full_exact_match=['synonym'],
+        full_exact_match=[EXACT_SYNONYM_KEY],
         contained_match=[],
-        token_match=['synonym'],
+        token_match=[EXACT_SYNONYM_KEY],
         in_target_ontology=False,
         in_preferred_ontology=True,
         is_current=False
@@ -67,7 +67,7 @@ def test_ols_result():
     ols_result_3 = OlsResult(
         uri='http://purl.obolibrary.org/obo/EFO_123',
         label='urinary bladder carcinoma',
-        full_exact_match=['synonym'],
+        full_exact_match=[EXACT_SYNONYM_KEY],
         contained_match=[],
         token_match=['synonym'],
         in_target_ontology=True,
