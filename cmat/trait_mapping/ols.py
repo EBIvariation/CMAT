@@ -96,7 +96,7 @@ def ols_ontology_query(uri: str, ontology: str = 'EFO') -> requests.Response:
     # V1 of the API returned 404 when a term was not present in the ontology, in which case we do not want to retry.
     # V2 returns 500 in this case, so to preserve this behaviour we check the error message as well.
     if 500 <= response.status_code < 600 and 'Expected at least 1 result' not in response.text:
-        raise ServerError
+        raise ServerError(f'Error for {uri}')
     return response
 
 

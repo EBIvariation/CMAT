@@ -99,6 +99,14 @@ def test_mapping_source_to_string():
 
 
 @pytest.mark.integration
+def test_get_is_in_ontologies():
+    in_target_ontology, in_preferred_ontologies = ols.get_is_in_ontologies(
+        'http://www.orpha.net/ORDO/Orphanet_590', 'efo', ['mondo', 'hp'])
+    assert in_target_ontology
+    assert not in_preferred_ontologies
+
+
+@pytest.mark.integration
 def test_get_ols_search_results():
     results = ols.get_ols_search_results(
         trait_name='Hereditary factor VIII deficiency disease',

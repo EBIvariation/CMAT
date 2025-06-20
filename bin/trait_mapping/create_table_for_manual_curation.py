@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import logging
 
 import pandas as pd
 
@@ -8,6 +9,8 @@ from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_map
 from cmat.trait_mapping.ols import get_replacement_term, is_current_and_in_ontology, OlsResult, \
     get_label_and_synonyms_from_ols, get_is_in_ontologies, MatchType, MappingSource, get_fields_with_match, \
     EXACT_SYNONYM_KEY
+
+logger = logging.getLogger(__package__)
 
 
 def previous_and_replacement_mappings(trait_name, previous_mappings, target_ontology, preferred_ontologies):
@@ -49,16 +52,20 @@ def find_exact_mappings(mappings):
 
 
 def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies):
-    in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology, preferred_ontologies)
-    is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
+    try:
+        in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology, preferred_ontologies)
+        is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
 
-    label, synonyms = get_label_and_synonyms_from_ols(uri)
-    exact_match, contained_match, token_match = get_fields_with_match(trait_name, f'label,{EXACT_SYNONYM_KEY}',
-                                                                      {'label': label, EXACT_SYNONYM_KEY: synonyms})
+        label, synonyms = get_label_and_synonyms_from_ols(uri)
+        exact_match, contained_match, token_match = get_fields_with_match(trait_name, f'label,{EXACT_SYNONYM_KEY}',
+                                                                          {'label': label, EXACT_SYNONYM_KEY: synonyms})
 
-    ols_result = OlsResult(uri, label, exact_match, contained_match, token_match, in_target_ontology,
-                           in_preferred_ontology, is_current)
-    return label, ols_result.get_match_type(), ols_result.get_mapping_source()
+        ols_result = OlsResult(uri, label, exact_match, contained_match, token_match, in_target_ontology,
+                               in_preferred_ontology, is_current)
+        return label, ols_result.get_match_type(), ols_result.get_mapping_source()
+    except Exception as e:
+        logger.warning(f'Error while getting mapping attributes from OLS: {e}')
+        return '', '', ''
 
 
 if __name__ == '__main__':
@@ -103,7 +110,7 @@ if __name__ == '__main__':
         mappings = fields[3:53]
         exact_match, exact_synonym_match = find_exact_mappings(mappings)
         for previous_mapping, replacement_mapping in previous_and_replacement_mappings(
-                trait_name, previous_mappings, target_ontology, args.preferred_ontologies):
+                trait_name, previous_mappings, target_ontology, args.preferred_ontologies.split(',')):
             rows.append([trait_name, trait_freq, notes, previous_mapping, replacement_mapping,
                          exact_match, exact_synonym_match] + mappings)
 
