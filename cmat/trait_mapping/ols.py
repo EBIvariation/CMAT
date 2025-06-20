@@ -73,7 +73,8 @@ def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
 
 def get_as_string_list(field_value):
     """ Takes a list of strings and dicts as returned by OLS and return a list of strings only. """
-    return [val if isinstance(val, str) else val['value'] for val in field_value]
+    return [val.lower().strip() if isinstance(val, str)
+            else val['value'].lower().strip() for val in field_value]
 
 
 def double_encode_uri(uri: str) -> str:
@@ -289,26 +290,27 @@ class OlsResult:
 
 def get_fields_with_match(search_term, query_fields, result_json):
     search_term = search_term.lower().strip()
+    search_term_tokens = set(search_term.split())
     full_exact_match = []
     contained_match = []
     token_match = []
     for field in query_fields:
         if field in result_json:
             if isinstance(result_json[field], str):
-                if search_term == result_json[field].lower().strip():
+                field_value = result_json[field].lower().strip()
+                if search_term == field_value:
                     full_exact_match.append(field)
-                elif search_term in result_json[field].lower():
+                elif search_term in field_value:
                     contained_match.append(field)
-                else:
+                elif search_term_tokens.intersection(field_value.split()):
                     token_match.append(field)
             if isinstance(result_json[field], list):
                 field_values = get_as_string_list(result_json[field])
-                if [element for element in field_values if search_term == element.lower().strip()]:
+                if [element for element in field_values if search_term == element]:
                     full_exact_match.append(field)
-                elif [element for element in field_values if search_term in element.lower()]:
+                elif [element for element in field_values if search_term in element]:
                     contained_match.append(field)
-                else:
-                    # If it's a search result and neither full or contained, must be a token match
+                elif [search_term_tokens.intersection(element.split()) for element in field_values]:
                     token_match.append(field)
 
     return full_exact_match, contained_match, token_match
@@ -338,17 +340,19 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
     """
     if query_fields is None or field_list is None:
         return []
+    query_fields_list = query_fields.split(',')
     # V2 of the OLS API does not support search currently, so for now use V1
     search_url = 'https://www.ebi.ac.uk/ols4/api/search'
     params = {
         'q': trait_name,
         'exact': 'true',
         'obsoletes': 'false',
-        'ontologies': target_ontology + ','.join(preferred_ontologies),
+        'ontologies': f'{target_ontology.lower()},{",".join(preferred_ontologies)}',
         'queryFields': query_fields,
-        'fieldList': field_list
+        'fieldList': field_list,
+        'rows': 1000
     }
-    query_fields_list = query_fields.split(',')
+
 
     try:
         results = json_request(search_url, params=params)
@@ -359,7 +363,7 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
                 uri = result.get('iri')
                 label = result.get('label')
                 ontology = result.get('ontology_name')
-                full_exact_match, contained_match, token_match = get_fields_with_match(uri, query_fields_list, result)
+                full_exact_match, contained_match, token_match = get_fields_with_match(trait_name, query_fields_list, result)
                 in_target_ontology = (ontology == target_ontology.lower())
                 in_preferred_ontology = (ontology in preferred_ontologies)
                 # Query includes obsoletes=false
@@ -371,7 +375,7 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
                     if classes_response.status_code != 200:
                         continue
                     full_exact_match, contained_match, token_match = get_fields_with_match(
-                        uri,
+                        trait_name,
                         [f if f != 'synonym' else EXACT_SYNONYM_KEY  for f in query_fields_list],
                         classes_response.json()
                     )

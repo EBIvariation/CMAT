@@ -13,7 +13,7 @@ def test_get_label_and_synonyms_from_ols():
         m.get(ols_request_url, json=test_ols_data.orphanet_199318_ols_terms_json)
         label, synonyms = ols.get_label_and_synonyms_from_ols(url)
         assert label == '15q13.3 microdeletion syndrome'
-        assert sorted(synonyms) == ['Del(15)(q13.3)', 'Monosomy 15q13.3']
+        assert sorted(synonyms) == ['del(15)(q13.3)', 'monosomy 15q13.3']
 
 
 def test_is_current_and_in_efo():
@@ -110,5 +110,5 @@ def test_get_ols_search_results():
     assert len(results) == 3
     top_ranked_result = next(iter(sorted(results, reverse=True)))
     assert top_ranked_result.label == 'hemophilia A'
-    assert top_ranked_result.get_match_type() == MatchType.TOKEN_MATCH_LABEL
+    assert top_ranked_result.get_match_type() == MatchType.EXACT_MATCH_SYNONYM
     assert top_ranked_result.get_mapping_source() == MappingSource.PREFERRED_NOT_TARGET
