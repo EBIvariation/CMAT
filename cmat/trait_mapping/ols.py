@@ -212,10 +212,11 @@ class MappingSource(Enum):
 @total_ordering
 class OlsResult:
     """Representation of one ontology term coming from OLS search"""
-    def __init__(self, uri, label, full_exact_match, contained_match, token_match, in_target_ontology,
+    def __init__(self, uri, label, ontology, full_exact_match, contained_match, token_match, in_target_ontology,
                  in_preferred_ontology, is_current):
         self.uri = uri
         self.label = label
+        self.ontology = ontology
         self.full_exact_match = full_exact_match
         self.contained_match = contained_match
         self.token_match = token_match
@@ -224,10 +225,11 @@ class OlsResult:
         self.is_current = is_current
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) and self.uri == other.uri and self.label == other.label
+        return (isinstance(other, type(self)) and self.uri == other.uri and self.label == other.label
+                and self.ontology == other.ontology)
 
     def __hash__(self):
-        return hash((self.uri, self.label))
+        return hash((self.uri, self.label, self.ontology))
 
     def __gt__(self, other):
         # Larger means better mapping
@@ -381,7 +383,7 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
                     )
                 # Need to do this check, in case the only matches were to non-exact synonyms
                 if full_exact_match or contained_match or token_match:
-                    search_results.add(OlsResult(uri, label, full_exact_match, contained_match, token_match,
+                    search_results.add(OlsResult(uri, label, ontology, full_exact_match, contained_match, token_match,
                                                  in_target_ontology, in_preferred_ontology, is_current))
             return list(search_results)
         else:

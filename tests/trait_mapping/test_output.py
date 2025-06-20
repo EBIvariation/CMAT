@@ -92,6 +92,7 @@ def test_output_for_curation():
         test_ols_result = OlsResult(
             uri='http://purl.obolibrary.org/obo/HP_0006740',
             label='Transitional cell carcinoma of the bladder',
+            ontology=None,  # not needed for output
             full_exact_match=[],
             contained_match=['label'],
             token_match=['synonym'],

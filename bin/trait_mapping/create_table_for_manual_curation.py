@@ -60,7 +60,7 @@ def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_
         exact_match, contained_match, token_match = get_fields_with_match(trait_name, f'label,{EXACT_SYNONYM_KEY}',
                                                                           {'label': label, EXACT_SYNONYM_KEY: synonyms})
 
-        ols_result = OlsResult(uri, label, exact_match, contained_match, token_match, in_target_ontology,
+        ols_result = OlsResult(uri, label, None, exact_match, contained_match, token_match, in_target_ontology,
                                in_preferred_ontology, is_current)
         return label, ols_result.get_match_type(), ols_result.get_mapping_source()
     except Exception as e:
