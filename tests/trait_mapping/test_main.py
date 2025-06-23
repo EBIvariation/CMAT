@@ -106,6 +106,7 @@ def test_process_trait():
     assert not processed_trait_3.is_finished
 
 
+@pytest.mark.integration
 def test_process_trait_exact_match():
     # Exact match with MONDO:0009061 (in EFO and Mondo)
     trait_name = 'Cystic Fibrosis'
