@@ -5,9 +5,12 @@ from requests import RequestException
 
 from cmat.clinvar_xml_io.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request
-from cmat.trait_mapping.ols import build_ols_query
+from cmat.trait_mapping.ols import build_ols_query, EXACT_SYNONYM_KEY, get_as_string_list, OLS_BASE_URL, \
+    double_encode_uri, REPLACEMENT_KEY
 
 logger = logging.getLogger(__package__)
+
+EXACT_MATCH_KEY = 'http://www.w3.org/2004/02/skos/core#exactMatch'
 
 
 @lru_cache
@@ -34,16 +37,16 @@ def fetch_eval_data(*, db_iden=None, uri=None, include_neighbors=False, target_o
     parents = {}
     children = {}
 
-    url = build_ols_query(ontology_uri)
+    url = build_ols_query(ontology_uri, include_obsoletes=True)
     try:
         json_response = json_request(url)
     except RequestException:
         logger.warning(f'OLS4 error for {url}, trying OLS3...')
-        json_response = json_request(url.replace('/ols4/', '/ols/'))
-    if json_response and '_embedded' in json_response:
-        for term in json_response['_embedded']['terms']:
+        json_response = json_request(url.replace('/ols4/api/v2/', '/ols/api'))
+    if json_response and 'elements' in json_response:
+        for term in json_response['elements']:
             # Get only target ontology terms (even if imported)
-            if term['ontology_name'].lower() == target_ontology.lower():
+            if term['ontologyId'].lower() == target_ontology.lower():
                 synonyms, is_obsolete = extract_synonyms_and_obsolete(term)
                 # If requested, fetch the parents and children of this term
                 if include_neighbors:
@@ -56,16 +59,16 @@ def fetch_eval_data(*, db_iden=None, uri=None, include_neighbors=False, target_o
 
 def extract_synonyms_and_obsolete(ontology_term):
     synonyms = {ontology_term['iri']}
-    is_obsolete = ontology_term['is_obsolete']
+    is_obsolete = ontology_term['isObsolete']
 
     # Add replacement term if this one is obsolete
-    if is_obsolete and ontology_term['term_replaced_by']:
-        synonyms.add(ontology_term['term_replaced_by'])
+    if is_obsolete and ontology_term[REPLACEMENT_KEY]:
+        synonyms.add(ontology_term[REPLACEMENT_KEY])
     # Also add exact matches
-    if 'exactMatch' in ontology_term['annotation']:
-        synonyms.update(ontology_term['annotation']['exactMatch'])
-    if 'has exact match' in ontology_term['annotation']:
-        synonyms.update(ontology_term['annotation']['has exact match'])
+    if EXACT_MATCH_KEY in ontology_term:
+        synonyms.update(get_as_string_list(ontology_term[EXACT_MATCH_KEY]))
+    if EXACT_SYNONYM_KEY in ontology_term:
+        synonyms.update(get_as_string_list(ontology_term[EXACT_SYNONYM_KEY]))
 
     # Synonyms contains current included URIs, convert to DB:ID style
     synonyms = {OntologyUri.uri_to_curie(s) for s in synonyms}
@@ -75,16 +78,17 @@ def extract_synonyms_and_obsolete(ontology_term):
 
 
 def extract_parents_and_children(ontology_term):
-    links = ontology_term['_links']
-    parents = get_all_term_curies(links['parents']['href']) if 'parents' in links else {}
-    children = get_all_term_curies(links['children']['href']) if 'children' in links else {}
+    parents = {OntologyUri.uri_to_curie(p) for p in get_as_string_list(ontology_term.get('directParent', []))}
+    # V2 of OLS API does not include children directly in the response, need to hit a separate endpoint
+    children = get_children_curies(ontology_term['iri'], ontology_term['definedBy'][0])
     return parents, children
 
 
-def get_all_term_curies(url):
+def get_children_curies(uri, ontology):
     curies = set()
-    json_response = json_request(url)
-    if json_response and '_embedded' in json_response:
-        for term in json_response['_embedded']['terms']:
-            curies.add(term['obo_id'])
+    children_endpoint = f'{OLS_BASE_URL}/ontologies/{ontology}/classes/{double_encode_uri(uri)}/children'
+    json_response = json_request(children_endpoint)
+    if json_response and 'elements' in json_response:
+        for term in json_response['elements']:
+            curies.add(term['curie'])
     return curies

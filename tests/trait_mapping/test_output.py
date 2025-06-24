@@ -2,7 +2,7 @@ import csv
 import tempfile
 
 import cmat.trait_mapping.output as output
-from cmat.trait_mapping.oxo import OxOMapping, OxOResult
+from cmat.trait_mapping.ols import OlsResult
 from cmat.trait_mapping.trait import OntologyEntry, Trait
 import cmat.trait_mapping.zooma as zooma
 
@@ -89,22 +89,25 @@ def test_output_for_curation():
 
         test_trait = Trait("transitional cell carcinoma of the bladder", '99999', 276)
 
-        test_oxo_result = OxOResult("HP:0006740", "Transitional cell carcinoma of the bladder",
-                                    "HP:0006740")
-        test_oxo_mapping = OxOMapping("bladder transitional cell carcinoma", "EFO:0006544", 2,
-                                      "HP:0006740")
-        test_oxo_mapping.in_ontology = test_oxo_mapping.is_current = True
-        test_oxo_mapping.ontology_label = "bladder transitional cell carcinoma"
-        test_oxo_result.mapping_list = [test_oxo_mapping]
+        test_ols_result = OlsResult(
+            uri='http://purl.obolibrary.org/obo/HP_0006740',
+            label='Transitional cell carcinoma of the bladder',
+            ontology=None,  # not needed for output
+            full_exact_match=[],
+            contained_match=['label'],
+            token_match=['synonym'],
+            in_target_ontology=False,
+            in_preferred_ontology=True,
+            is_current=False
+        )
+        test_trait.ols_result_list = [test_ols_result]
 
-        test_trait.oxo_result_list = [test_oxo_result]
-
-        output.output_for_curation(test_trait, curation_writer)
+        output.output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
 
     with open(tempfile_path, "rt") as curation_file:
         curation_reader = csv.reader(curation_file, delimiter="\t")
         expected_record = [
             "transitional cell carcinoma of the bladder", "276", '',
-            "http://www.ebi.ac.uk/efo/EFO_0006544|bladder transitional cell carcinoma|2|HP:0006740|EFO_CURRENT"
+            "http://purl.obolibrary.org/obo/HP_0006740|Transitional cell carcinoma of the bladder|CONTAINED_MATCH_LABEL|MONDO_HP_NOT_EFO"
         ]
         assert expected_record == next(curation_reader)

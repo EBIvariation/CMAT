@@ -2,7 +2,7 @@ from enum import Enum
 from functools import total_ordering
 import logging
 
-from cmat.trait_mapping.ols import get_ontology_label_from_ols, is_current_and_in_ontology, is_in_ontology
+from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, is_current_and_in_ontology, is_in_ontology
 from cmat.trait_mapping.utils import json_request
 
 
@@ -38,7 +38,7 @@ class ZoomaMapping:
         self.source = source
         self.ontology_label = ""
         self.in_ontology = False
-        # For non-EFO mappings, `is_current` property does not make sense and it not used
+        # For non-EFO mappings, `is_current` property does not make sense and is not used
         self.is_current = False
 
     def __eq__(self, other):
@@ -108,7 +108,7 @@ def get_zooma_results(trait_name: str, filters: dict, zooma_host: str, target_on
 
     for zooma_result in zooma_result_list:
         for zooma_mapping in zooma_result.mapping_list:
-            label = get_ontology_label_from_ols(zooma_mapping.uri)
+            label, _ = get_label_and_synonyms_from_ols(zooma_mapping.uri)
             if label is not None:
                 zooma_mapping.ontology_label = label
             else:

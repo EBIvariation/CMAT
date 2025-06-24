@@ -9,7 +9,8 @@ def launch():
 
     main.process_traits(parser.input_traits_filepath, parser.output_mappings_filepath,
                         parser.output_curation_filepath, parser.filters, parser.zooma_host,
-                        parser.oxo_target_list, parser.oxo_distance, parser.target_ontology)
+                        parser.oxo_target_list, parser.oxo_distance, parser.ols_query_fields, parser.ols_field_list,
+                        parser.target_ontology, parser.preferred_ontologies)
 
 
 class ArgParser:
@@ -39,6 +40,12 @@ class ArgParser:
                             help="target ontologies to use with OxO")
         parser.add_argument("-d", dest="oxo_distance", default=3,
                             help="distance to use to query OxO.")
+        parser.add_argument("-l", dest="ols_ontology_list", default="efo,mondo,hp",
+                            help="ontologies to use with OLS search")
+        parser.add_argument("-q", dest="ols_query_fields", default="label,synonym",
+                            help="query fields to use for OLS search")
+        parser.add_argument("-f", dest="ols_field_list", default="iri,label,ontology_name,synonym",
+                            help="field list to return from OLS search")
         parser.add_argument('--target-ontology', help='ID of target ontology (default EFO, for allowable values see'
                                                       'https://www.ebi.ac.uk/ols/ontologies)', default='EFO')
 
@@ -55,6 +62,11 @@ class ArgParser:
         self.zooma_host = args.zooma_host
         self.oxo_target_list = [target.strip() for target in args.oxo_target_list.split(",")]
         self.oxo_distance = args.oxo_distance
+        self.preferred_ontologies = [target.lower().strip() for target in args.ols_ontology_list.split(",")]
+        if args.target_ontology.lower() in self.preferred_ontologies:
+            self.preferred_ontologies.remove(args.target_ontology.lower())
+        self.ols_query_fields = args.ols_query_fields
+        self.ols_field_list = args.ols_field_list
         self.target_ontology = args.target_ontology
 
 

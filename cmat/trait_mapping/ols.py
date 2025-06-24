@@ -1,6 +1,7 @@
 import os
 import re
-from functools import lru_cache
+from enum import Enum
+from functools import lru_cache, total_ordering
 import logging
 import requests
 import urllib
@@ -10,52 +11,70 @@ from retry import retry
 from cmat.trait_mapping.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request, ServerError
 
-OLS_SERVER = 'https://www.ebi.ac.uk/ols4'
-# The setting for local OLS installation should be uncommented if necessary. Note that the link
-# for the local deployment is different from the production link in three regards: (1) it must use
-# HTTP instead of HTTPS; (2) it must include the port which you used when deploying the Docker
-# container; (3) it does *not* include /ols in its path.
-# OLS_EFO_SERVER = 'http://127.0.0.1:8080'
+OLS_BASE_URL = 'https://www.ebi.ac.uk/ols4/api/v2'
+EXACT_SYNONYM_KEY = 'http://www.geneontology.org/formats/oboInOwl#hasExactSynonym'
+REPLACEMENT_KEY = 'http://purl.obolibrary.org/obo/IAO_0100001'
 
 logger = logging.getLogger(__package__)
 
 
-def build_ols_query(ontology_uri: str) -> str:
+def build_ols_query(ontology_uri: str, include_obsoletes: bool = False) -> str:
     """Build a url to query OLS for a given ontology uri."""
-    return "{}/api/terms?iri={}".format(OLS_SERVER, ontology_uri)
+    query_url = f'{OLS_BASE_URL}/classes?iri={ontology_uri}'
+    if include_obsoletes:
+        query_url = f'{query_url}&includeObsoleteEntities=true'
+    return query_url
 
 
 @lru_cache(maxsize=16384)
-def get_ontology_label_from_ols(ontology_uri: str) -> str:
+def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
     """
-    Using provided ontology URI, build an OLS URL with which to make a request to find the term label for this URI.
+    Using provided ontology URI, build an OLS URL with which to make a request to find the term label and synonyms for this URI.
 
     :param ontology_uri: A URI for a term in an ontology.
-    :return: Term label for the ontology URI provided in the parameters.
+    :return: Term label for the ontology URI provided in the parameters and set of synonymes.
     """
-    url = build_ols_query(ontology_uri)
+    url = build_ols_query(ontology_uri, include_obsoletes=True)
     json_response = json_request(url)
 
     if not json_response:
-        return None
+        return '', set()
 
-    # If the '_embedded' section is missing from the response, it means that the term is not found in OLS
-    if '_embedded' not in json_response:
+    # If the 'elements' section is missing from the response, it means that the term is not found in OLS
+    if 'elements' not in json_response:
         if '/medgen/' not in url and '/omim/' not in url:
             logger.warning('OLS queried OK but did not return any results for URL {}'.format(url))
-        return None
+        return '', set()
 
     # Go through all terms found by the requested identifier and try to find the one where the _identifier_ and the
     # _term_ come from the same ontology (marked by a special flag). Example of such a situation would be a MONDO term
     # in the MONDO ontology. Example of a reverse situation is a MONDO term in EFO ontology (being *imported* into it
     # at some point).
-    for term in json_response["_embedded"]["terms"]:
-        if term["is_defining_ontology"]:
-            return term["label"]
+    label = ''
+    synonyms = set()
+    for term in json_response['elements']:
+        if term['isDefiningOntology']:
+            if len(term['label']) > 1:
+                logger.warning(f'Found multiple labels for {ontology_uri}, choosing the first')
+            label = term['label'][0]
+        # Synonyms are not always in the defining ontology, so we accumulate all exact synonyms from all terms
+        # Also this value can be either a single string or a list of strings _and/or_ dicts (!)
+        if EXACT_SYNONYM_KEY in term:
+            if isinstance(term[EXACT_SYNONYM_KEY], str):
+                synonyms.add(term[EXACT_SYNONYM_KEY])
+            elif isinstance(term[EXACT_SYNONYM_KEY], list):
+                synonym_values = get_as_string_list(term[EXACT_SYNONYM_KEY])
+                synonyms.update(synonym_values)
+    if label is None:
+        if '/medgen/' not in url and '/omim/' not in url:
+            logger.warning('OLS queried OK, but there is no defining ontology in its results for URL {}'.format(url))
+    return label, synonyms
 
-    if '/medgen/' not in url and '/omim/' not in url:
-        logger.warning('OLS queried OK, but there is no defining ontology in its results for URL {}'.format(url))
-    return None
+
+def get_as_string_list(field_value):
+    """ Takes a list of strings and dicts as returned by OLS and return a list of strings only. """
+    return [val.lower().strip() if isinstance(val, str)
+            else val['value'].lower().strip() for val in field_value]
 
 
 def double_encode_uri(uri: str) -> str:
@@ -73,9 +92,11 @@ def ols_ontology_query(uri: str, ontology: str = 'EFO') -> requests.Response:
     :return: Response from OLS
     """
     double_encoded_uri = double_encode_uri(uri)
-    response = requests.get(f"{OLS_SERVER}/api/ontologies/{ontology}/terms/{double_encoded_uri}")
-    if 500 <= response.status_code < 600:
-        raise ServerError
+    response = requests.get(f"{OLS_BASE_URL}/ontologies/{ontology}/classes/{double_encoded_uri}")
+    # V1 of the API returned 404 when a term was not present in the ontology, in which case we do not want to retry.
+    # V2 returns 500 in this case, so to preserve this behaviour we check the error message as well.
+    if 500 <= response.status_code < 600 and 'Expected at least 1 result' not in response.text:
+        raise ServerError(f'Error for {uri}')
     return response
 
 
@@ -92,7 +113,7 @@ def is_current_and_in_ontology(uri: str, ontology: str = 'EFO') -> bool:
     if response.status_code != 200:
         return False
     response_json = response.json()
-    return not response_json["is_obsolete"]
+    return not response_json["isObsolete"]
 
 
 @lru_cache(maxsize=16384)
@@ -121,8 +142,8 @@ def get_replacement_term(uri: str, ontology: str = 'EFO') -> str:
     if response.status_code != 200:
         return ""
     response_json = response.json()
-    if response_json["term_replaced_by"] is not None:
-        replacement_uri = response_json["term_replaced_by"]
+    if REPLACEMENT_KEY in response_json and response_json[REPLACEMENT_KEY]:
+        replacement_uri = response_json[REPLACEMENT_KEY]
         if not replacement_uri.startswith('http'):
             try:
                 # Attempt to correct the most common weirdness found in this field - MONDO:0020783 or HP_0045074
@@ -144,7 +165,7 @@ def get_uri_from_exact_match(text, ontology='EFO'):
     :param ontology: ID of target ontology to query (default EFO)
     :return: URI of matching term or None if not found
     """
-    search_url = os.path.join(OLS_SERVER, f'api/search?ontology={ontology}&q={text}&queryFields=label&exact=true')
+    search_url = os.path.join(OLS_BASE_URL, f'search?ontology={ontology}&q={text}&queryFields=label&exact=true')
     response = requests.get(search_url)
     response.raise_for_status()
     data = response.json()
@@ -160,3 +181,214 @@ def get_uri_from_exact_match(text, ontology='EFO'):
             return candidates.pop()
     logger.warning(f'Could not find an IRI for {text}')
     return None
+
+
+class MatchType(Enum):
+    EXACT_MATCH_LABEL = 0
+    EXACT_MATCH_SYNONYM = 1
+    CONTAINED_MATCH_LABEL = 2
+    CONTAINED_MATCH_SYNONYM = 3
+    TOKEN_MATCH_LABEL = 4
+    TOKEN_MATCH_SYNONYM = 5
+    NO_MATCH = 6
+
+    def __str__(self):
+        return self.name
+
+
+class MappingSource(Enum):
+    TARGET_CURRENT = 0
+    TARGET_OBSOLETE = 1
+    PREFERRED_NOT_TARGET = 2
+    NOT_PREFERRED_TARGET = 3
+
+    def to_string(self, target_ontology, preferred_ontologies):
+        # Workaround to make more curation-friendly output strings while staying ontology-agnostic
+        target_string = target_ontology.upper()
+        preferred_string = '_'.join(p.upper() for p in preferred_ontologies)
+        return self.name.replace('TARGET', target_string).replace('PREFERRED', preferred_string)
+
+
+@total_ordering
+class OlsResult:
+    """Representation of one ontology term coming from OLS search"""
+    def __init__(self, uri, label, ontology, full_exact_match, contained_match, token_match, in_target_ontology,
+                 in_preferred_ontology, is_current):
+        self.uri = uri
+        self.label = label
+        self.ontology = ontology
+        self.full_exact_match = full_exact_match
+        self.contained_match = contained_match
+        self.token_match = token_match
+        self.in_target_ontology = in_target_ontology
+        self.in_preferred_ontology = in_preferred_ontology
+        self.is_current = is_current
+
+    def __eq__(self, other):
+        return (isinstance(other, type(self)) and self.uri == other.uri and self.label == other.label
+                and self.ontology == other.ontology)
+
+    def __hash__(self):
+        return hash((self.uri, self.label, self.ontology))
+
+    def __gt__(self, other):
+        # Larger means better mapping
+        # In general, full exact matches > contained matches > token matches,
+        # and target ontology > preferred ontologies > neither
+        if self.full_exact_match:
+            if other.full_exact_match:
+                return self.ontology_rank() > other.ontology_rank()
+            else:
+                return True
+        if self.contained_match:
+            if other.full_exact_match:
+                return False
+            if other.contained_match:
+                return self.ontology_rank() > other.ontology_rank()
+            else:
+                return True
+        if self.token_match:
+            if other.full_exact_match:
+                return False
+            if other.contained_match:
+                return False
+            if other.token_match:
+                return self.ontology_rank() > other.ontology_rank()
+            else:
+                return True
+
+    def ontology_rank(self):
+        if self.in_target_ontology:
+            return 2
+        if self.in_preferred_ontology:
+            return 1
+        return 0
+
+    def get_match_type(self):
+        if self.full_exact_match:
+            if 'label' in self.full_exact_match:
+                return MatchType.EXACT_MATCH_LABEL
+            if EXACT_SYNONYM_KEY in self.full_exact_match:
+                return MatchType.EXACT_MATCH_SYNONYM
+        if self.contained_match:
+            if 'label' in self.contained_match:
+                return MatchType.CONTAINED_MATCH_LABEL
+            if EXACT_SYNONYM_KEY in self.contained_match:
+                return MatchType.CONTAINED_MATCH_SYNONYM
+        if self.token_match:
+            if 'label' in self.token_match:
+                return MatchType.TOKEN_MATCH_LABEL
+            if EXACT_SYNONYM_KEY in self.token_match:
+                return MatchType.TOKEN_MATCH_SYNONYM
+        return MatchType.NO_MATCH
+
+    def get_mapping_source(self):
+        if self.in_target_ontology:
+            return MappingSource.TARGET_CURRENT if self.is_current else MappingSource.TARGET_OBSOLETE
+        if self.in_preferred_ontology:
+            return MappingSource.PREFERRED_NOT_TARGET
+        return MappingSource.NOT_PREFERRED_TARGET
+
+
+def get_fields_with_match(search_term, query_fields, result_json):
+    search_term = search_term.lower().strip()
+    search_term_tokens = set(search_term.split())
+    full_exact_match = []
+    contained_match = []
+    token_match = []
+    for field in query_fields:
+        if field in result_json:
+            if isinstance(result_json[field], str):
+                field_value = result_json[field].lower().strip()
+                if search_term == field_value:
+                    full_exact_match.append(field)
+                elif search_term in field_value:
+                    contained_match.append(field)
+                elif search_term_tokens.intersection(field_value.split()):
+                    token_match.append(field)
+            if isinstance(result_json[field], list):
+                field_values = get_as_string_list(result_json[field])
+                if [element for element in field_values if search_term == element]:
+                    full_exact_match.append(field)
+                elif [element for element in field_values if search_term in element]:
+                    contained_match.append(field)
+                elif [search_term_tokens.intersection(element.split()) for element in field_values]:
+                    token_match.append(field)
+
+    return full_exact_match, contained_match, token_match
+
+
+def get_is_in_ontologies(uri, target_ontology, preferred_ontologies):
+    in_target_ontology = is_in_ontology(uri, target_ontology)
+    in_preferred_ontology = False
+    for ontology in preferred_ontologies:
+        if is_in_ontology(uri, ontology):
+            in_preferred_ontology = True
+            break
+    return in_target_ontology, in_preferred_ontology
+
+
+def get_ols_search_results(trait_name, query_fields, field_list, target_ontology, preferred_ontologies):
+    """
+    Search OLS for a given trait name with the specified parameters.
+
+    :param trait_name: String containing a trait name from a ClinVar record.
+    :param ontologies: String containing list of ontologies to search
+    :param query_fields: String containing list of fields to query
+    :param field_list: String containing list of fields to return
+    :param target_ontology: ID of target ontology
+    :param preferred_ontologies: List of preferred non-target ontology IDs
+    :return: List of OlsResults
+    """
+    if query_fields is None or field_list is None:
+        return []
+    query_fields_list = query_fields.split(',')
+    # V2 of the OLS API does not support search currently, so for now use V1
+    search_url = 'https://www.ebi.ac.uk/ols4/api/search'
+    params = {
+        'q': trait_name,
+        'exact': 'true',
+        'obsoletes': 'false',
+        'ontologies': f'{target_ontology.lower()},{",".join(preferred_ontologies)}',
+        'queryFields': query_fields,
+        'fieldList': field_list,
+        'rows': 1000
+    }
+
+
+    try:
+        results = json_request(search_url, params=params)
+        if results['response']['numFound'] > 0:
+            search_results = set()
+
+            for result in results['response']['docs']:
+                uri = result.get('iri')
+                label = result.get('label')
+                ontology = result.get('ontology_name')
+                full_exact_match, contained_match, token_match = get_fields_with_match(trait_name, query_fields_list, result)
+                in_target_ontology = (ontology == target_ontology.lower())
+                in_preferred_ontology = (ontology in preferred_ontologies)
+                # Query includes obsoletes=false
+                is_current = True if in_target_ontology else False
+                # If one of the matched fields is synonym, we must make an additional V2 API query in order to check
+                # that the synonym is exact, as the V1 search results do not separate synonym types.
+                if any('synonym' in l for l in [full_exact_match, contained_match, token_match]):
+                    classes_response = ols_ontology_query(uri, ontology)
+                    if classes_response.status_code != 200:
+                        continue
+                    full_exact_match, contained_match, token_match = get_fields_with_match(
+                        trait_name,
+                        [f if f != 'synonym' else EXACT_SYNONYM_KEY  for f in query_fields_list],
+                        classes_response.json()
+                    )
+                # Need to do this check, in case the only matches were to non-exact synonyms
+                if full_exact_match or contained_match or token_match:
+                    search_results.add(OlsResult(uri, label, ontology, full_exact_match, contained_match, token_match,
+                                                 in_target_ontology, in_preferred_ontology, is_current))
+            return list(search_results)
+        else:
+            return []
+
+    except requests.RequestException as e:
+        logger.warning(f"Error querying OLS4: {e}")
+        return []

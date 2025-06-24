@@ -50,7 +50,6 @@ class TestGetMappingsTest:
 
 
 class TestGetTermsFromFileTest:
-    # TODO do the same for adapt terms file?
     @classmethod
     def setup_class(cls):
         ignore_file = os.path.join(os.path.dirname(__file__), 'resources', 'ignore_file.txt')
