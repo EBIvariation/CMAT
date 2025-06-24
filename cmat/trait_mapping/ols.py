@@ -29,7 +29,7 @@ def build_ols_query(ontology_uri: str, include_obsoletes: bool = False) -> str:
 @lru_cache(maxsize=16384)
 def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
     """
-    Using provided ontology URI, build an OLS URL with which to make a request to find the term label for this URI.
+    Using provided ontology URI, build an OLS URL with which to make a request to find the term label and synonyms for this URI.
 
     :param ontology_uri: A URI for a term in an ontology.
     :return: Term label for the ontology URI provided in the parameters and set of synonymes.
