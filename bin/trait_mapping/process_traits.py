@@ -2,6 +2,7 @@ import argparse
 import sys
 
 import cmat.trait_mapping.main as main
+from cmat.trait_mapping.utils import string_to_preferred_ontologies
 
 
 def launch():
@@ -62,12 +63,10 @@ class ArgParser:
         self.zooma_host = args.zooma_host
         self.oxo_target_list = [target.strip() for target in args.oxo_target_list.split(",")]
         self.oxo_distance = args.oxo_distance
-        self.preferred_ontologies = [target.lower().strip() for target in args.ols_ontology_list.split(",")]
-        if args.target_ontology.lower() in self.preferred_ontologies:
-            self.preferred_ontologies.remove(args.target_ontology.lower())
         self.ols_query_fields = args.ols_query_fields
         self.ols_field_list = args.ols_field_list
         self.target_ontology = args.target_ontology
+        self.preferred_ontologies = string_to_preferred_ontologies(args.ols_ontology_list, self.target_ontology)
 
 
 if __name__ == '__main__':
