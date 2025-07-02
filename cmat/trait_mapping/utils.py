@@ -18,3 +18,15 @@ def json_request(url: str, payload: dict = None, params: dict = None, method=req
     result = method(url, data=payload, params=params)
     result.raise_for_status()
     return result.json()
+
+
+def string_to_preferred_ontologies(ontology_string, target_ontology):
+    """
+    Takes a comma-separated string listing ontology IDs and returns a list of ontology IDs in a consistent order
+    with the target ontology removed.
+    E.g. 'efo,hp,mondo' with target='efo' => ['mondo', 'hp']
+    """
+    preferred_ontologies = sorted([ontology.lower().strip() for ontology in ontology_string.split(",")], reverse=True)
+    if target_ontology.lower() in preferred_ontologies:
+        preferred_ontologies.remove(target_ontology.lower())
+    return preferred_ontologies

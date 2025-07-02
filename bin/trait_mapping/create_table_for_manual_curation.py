@@ -9,6 +9,7 @@ from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_map
 from cmat.trait_mapping.ols import get_replacement_term, is_current_and_in_ontology, OlsResult, \
     get_label_and_synonyms_from_ols, get_is_in_ontologies, MatchType, MappingSource, get_fields_with_match, \
     EXACT_SYNONYM_KEY
+from cmat.trait_mapping.utils import string_to_preferred_ontologies
 
 logger = logging.getLogger(__package__)
 
@@ -91,6 +92,7 @@ if __name__ == '__main__':
 
     # Load all previous mappings: ClinVar trait name to ontology URI
     previous_mappings, target_ontology = load_ontology_mapping(args.previous_mappings)
+    preferred_ontologies = string_to_preferred_ontologies(args.preferred_ontologies, target_ontology)
 
     # Load previous curator comments: ClinVar trait name to comment string
     try:
@@ -112,7 +114,7 @@ if __name__ == '__main__':
         mappings = fields[3:53]
         exact_match, exact_synonym_match = find_exact_mappings(mappings)
         for previous_mapping, replacement_mapping in previous_and_replacement_mappings(
-                trait_name, previous_mappings, target_ontology, args.preferred_ontologies.split(',')):
+                trait_name, previous_mappings, target_ontology, preferred_ontologies):
             rows.append([trait_name, trait_freq, notes, previous_mapping, replacement_mapping,
                          exact_match, exact_synonym_match] + mappings)
 
