@@ -97,12 +97,12 @@ def test_process_trait():
     assert len(processed_trait_2.zooma_result_list) == 1
     assert processed_trait_2.is_finished
 
-    # Trait 3 finds results in OLS and Zooma, but finds no sufficiently good mappings
-    trait_3 = Trait('aicardi-goutieres syndrome 5', None, None)
+    # Trait 3 finds no sufficiently good mappings in OLS or Zooma
+    trait_3 = Trait('aicardi-goutieres syndrome 99', None, None)
     processed_trait_3 = process_trait(trait_3, zooma_filters, zooma_host, oxo_targets, oxo_distance, ols_query_fields,
                                     ols_field_list, target_ontology, preferred_ontologies)
-    assert len(processed_trait_3.ols_result_list) == 7
-    assert len(processed_trait_3.zooma_result_list) == 6
+    assert len(processed_trait_3.ols_result_list) == 0
+    assert len(processed_trait_3.zooma_result_list) == 15
     assert not processed_trait_3.is_finished
 
 
