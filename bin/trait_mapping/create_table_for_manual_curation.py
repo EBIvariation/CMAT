@@ -60,8 +60,8 @@ def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_
         is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
 
         label, synonyms = get_label_and_synonyms_from_ols(uri)
-        exact_match, contained_match, token_match = get_fields_with_match(trait_name, f'label,{EXACT_SYNONYM_KEY}',
-                                                                          {'label': label, EXACT_SYNONYM_KEY: synonyms})
+        exact_match, contained_match, token_match = get_fields_with_match(
+            trait_name, ['label', EXACT_SYNONYM_KEY], {'label': label, EXACT_SYNONYM_KEY: list(synonyms)})
 
         ols_result = OlsResult(uri, label, None, exact_match, contained_match, token_match, in_target_ontology,
                                in_preferred_ontology, is_current)
