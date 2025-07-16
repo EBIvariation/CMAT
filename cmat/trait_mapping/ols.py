@@ -165,7 +165,8 @@ def get_uri_from_exact_match(text, ontology='EFO'):
     :param ontology: ID of target ontology to query (default EFO)
     :return: URI of matching term or None if not found
     """
-    search_url = os.path.join(OLS_BASE_URL, f'search?ontology={ontology}&q={text}&queryFields=label&exact=true')
+    # V2 of the OLS API does not support search currently, so for now use V1
+    search_url = f'https://www.ebi.ac.uk/ols4/api/search?ontology={ontology}&q={text}&queryFields=label&exact=true'
     response = requests.get(search_url)
     response.raise_for_status()
     data = response.json()
