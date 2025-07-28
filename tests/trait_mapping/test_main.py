@@ -89,11 +89,11 @@ def test_process_trait():
     assert len(processed_trait_1.ols_result_list) == 7
     assert processed_trait_1.is_finished
 
-    # Trait 2 finds nothing via OLS, so goes through Zooma as well and finds a high-confidence result
-    trait_2 = Trait('isolated nonsyndromic congenital heart disease', None, None)
+    # Trait 2 finds nothing exact via OLS, so goes through Zooma as well and finds a high-confidence result
+    trait_2 = Trait('11p partial monosomy syndrome', None, None)
     processed_trait_2 = process_trait(trait_2, zooma_filters, zooma_host, oxo_targets, oxo_distance, ols_query_fields,
                                     ols_field_list, target_ontology, preferred_ontologies)
-    assert len(processed_trait_2.ols_result_list) == 0
+    assert len(processed_trait_2.ols_result_list) == 9
     assert len(processed_trait_2.zooma_result_list) == 1
     assert processed_trait_2.is_finished
 
