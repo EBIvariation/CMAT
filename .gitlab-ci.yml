@@ -4,7 +4,7 @@ stages:
 
 test:
   stage: test
-  image: python:3.11-slim-buster
+  image: python:3.11-slim-bullseye
   before_script:
     - python -m pip install --upgrade pip
     - pip install pytest certifi
@@ -27,7 +27,7 @@ test:
 # Not executed, parent job definition
 .deploy-python-tool:
   stage: deploy
-  image: python:3.11-slim-buster
+  image: python:3.11-slim-bullseye
   environment:
     name: $ENVIRONMENT_NAME
   script:
