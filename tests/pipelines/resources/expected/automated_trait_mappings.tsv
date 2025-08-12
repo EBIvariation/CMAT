@@ -1,24 +1,24 @@
 #clinvar_trait_name	uri	label
 2-aminoadipic 2-oxoadipic aciduria	http://purl.obolibrary.org/obo/MONDO_0008774	2-aminoadipic 2-oxoadipic aciduria
-3-methylcrotonyl-coa carboxylase 2 deficiency	http://purl.obolibrary.org/obo/MONDO_0008862	3-methylcrotonyl-coa carboxylase 2 deficiency
-3-methylglutaconic aciduria with deafness, encephalopathy, and leigh-like syndrome	http://purl.obolibrary.org/obo/MONDO_0013875	3-methylglutaconic aciduria with deafness, encephalopathy, and leigh-like syndrome
-46,xy sex reversal 1	http://purl.obolibrary.org/obo/MONDO_0020712	46,xy sex reversal 1
-abnormality of neuronal migration	http://purl.obolibrary.org/obo/HP_0002269	abnormality of neuronal migration
+3-methylcrotonyl-coa carboxylase 2 deficiency	http://purl.obolibrary.org/obo/MONDO_0008862	3-methylcrotonyl-CoA carboxylase 2 deficiency
+3-methylglutaconic aciduria with deafness, encephalopathy, and leigh-like syndrome	http://purl.obolibrary.org/obo/MONDO_0013875	3-methylglutaconic aciduria with deafness, encephalopathy, and Leigh-like syndrome
+46,xy sex reversal 1	http://purl.obolibrary.org/obo/MONDO_0020712	46,XY sex reversal 1
+abnormality of neuronal migration	http://purl.obolibrary.org/obo/HP_0002269	Abnormality of neuronal migration
 achromatopsia 2	http://purl.obolibrary.org/obo/MONDO_0018852	achromatopsia
 acrocallosal syndrome	http://purl.obolibrary.org/obo/MONDO_0008708	acrocallosal syndrome
-acromicric dysplasia	http://purl.obolibrary.org/obo/MONDO_0007055	acromicric dysplasia
-actin accumulation myopathy	http://purl.obolibrary.org/obo/MONDO_0008070	nemaline myopathy 3
-acute infantile liver failure due to synthesis defect of mtdna-encoded proteins	http://purl.obolibrary.org/obo/MONDO_0013111	acute infantile liver failure due to synthesis defect of mtdna-encoded proteins
+acromicric dysplasia	http://purl.obolibrary.org/obo/MONDO_0007055	Acromicric dysplasia
+actin accumulation myopathy	http://purl.obolibrary.org/obo/MONDO_0008070	congenital myopathy 2a, typical, autosomal dominant
+acute infantile liver failure due to synthesis defect of mtdna-encoded proteins	http://purl.obolibrary.org/obo/MONDO_0013111	acute infantile liver failure due to synthesis defect of mtDNA-encoded proteins
 acute myeloid leukemia	http://www.ebi.ac.uk/efo/EFO_0000222	acute myeloid leukemia
 adams-oliver syndrome 5	http://purl.obolibrary.org/obo/MONDO_0007034	Adams-Oliver syndrome
 adrenoleukodystrophy	http://purl.obolibrary.org/obo/MONDO_0018544	adrenoleukodystrophy
 adult-onset foveomacular vitelliform dystrophy	http://purl.obolibrary.org/obo/MONDO_0011979	adult-onset foveomacular vitelliform dystrophy
-aicardi-goutieres syndrome 1	http://purl.obolibrary.org/obo/MONDO_0009165	aicardi-goutieres syndrome 1
+aicardi-goutieres syndrome 1	http://purl.obolibrary.org/obo/MONDO_0009165	Aicardi-Goutieres syndrome 1
 aicardi-goutieres syndrome 5	http://www.orpha.net/ORDO/Orphanet_51	Aicardi-Goutières syndrome
-aicardi-goutieres syndrome 7	http://purl.obolibrary.org/obo/MONDO_0014367	aicardi-goutieres syndrome 7
-alagille syndrome due to a jag1 point mutation	http://purl.obolibrary.org/obo/MONDO_0016862	alagille syndrome due to a jag1 point mutation
-alport syndrome	http://purl.obolibrary.org/obo/MONDO_0018965	alport syndrome
-alstrom syndrome	http://purl.obolibrary.org/obo/MONDO_0008763	alstrom syndrome
+aicardi-goutieres syndrome 7	http://purl.obolibrary.org/obo/MONDO_0014367	Aicardi-Goutieres syndrome 7
+alagille syndrome due to a jag1 point mutation	http://purl.obolibrary.org/obo/MONDO_0016862	Alagille syndrome due to a JAG1 point mutation
+alport syndrome	http://purl.obolibrary.org/obo/MONDO_0018965	Alport syndrome
+alstrom syndrome	http://purl.obolibrary.org/obo/MONDO_0008763	Alstrom syndrome
 amelogenesis imperfecta, recessive	http://www.ebi.ac.uk/efo/EFO_0021800	recessive amelogenesis imperfecta
 amyotrophic lateral sclerosis type 1	http://purl.obolibrary.org/obo/MONDO_0004976	amyotrophic lateral sclerosis
 amyotrophic lateral sclerosis type 1	http://www.ebi.ac.uk/efo/EFO_0001356	familial amyotrophic lateral sclerosis
@@ -26,7 +26,7 @@ amyotrophic lateral sclerosis type 1	http://www.ebi.ac.uk/efo/EFO_0001357	sporad
 amyotrophic lateral sclerosis type 4	http://purl.obolibrary.org/obo/MONDO_0011223	amyotrophic lateral sclerosis type 4
 amyotrophic neuralgia	http://purl.obolibrary.org/obo/MONDO_0017362	neuralgic amyotrophy
 anauxetic dysplasia	http://purl.obolibrary.org/obo/MONDO_0011773	anauxetic dysplasia
-anemia, nonspherocytic hemolytic, due to g6pd deficiency	http://purl.obolibrary.org/obo/MONDO_0010480	anemia, nonspherocytic hemolytic, due to g6pd deficiency
+anemia, nonspherocytic hemolytic, due to g6pd deficiency	http://purl.obolibrary.org/obo/MONDO_0010480	anemia, nonspherocytic hemolytic, due to G6PD deficiency
 ankrd1-related dilated cardiomyopathy	http://www.ebi.ac.uk/efo/EFO_0021799	ankrd1-related dilated cardiomyopathy
 aortic aneurysm, familial thoracic 6	http://purl.obolibrary.org/obo/MONDO_0012730	aortic aneurysm, familial thoracic 6
 aortic aneurysm, familial thoracic 7	http://purl.obolibrary.org/obo/MONDO_0013418	aortic aneurysm, familial thoracic 7
@@ -44,27 +44,27 @@ ataxia-telangiectasia syndrome	http://www.orpha.net/ORDO/Orphanet_100	Ataxia-tel
 ataxia-telangiectasia-like disorder	http://purl.obolibrary.org/obo/MONDO_0011457	ataxia-telangiectasia-like disorder
 atrial septal defect 5	http://purl.obolibrary.org/obo/MONDO_0013011	atrial septal defect 5
 autism spectrum disorder	http://www.ebi.ac.uk/efo/EFO_0003756	autism spectrum disorder
-autism, susceptibility to, x-linked 3	http://purl.obolibrary.org/obo/MONDO_0010342	autism, susceptibility to, x-linked 3
+autism, susceptibility to, x-linked 3	http://purl.obolibrary.org/obo/MONDO_0010342	autism, susceptibility to, X-linked 3
 autoimmune interstitial lung disease-arthritis syndrome	http://purl.obolibrary.org/obo/MONDO_0014629	autoimmune interstitial lung disease-arthritis syndrome
 autoinflammatory syndrome	http://purl.obolibrary.org/obo/MONDO_0019751	autoinflammatory syndrome
 autosomal dominant distal renal tubular acidosis	http://purl.obolibrary.org/obo/MONDO_0008368	autosomal dominant distal renal tubular acidosis
 autosomal dominant epilepsy with auditory features	http://purl.obolibrary.org/obo/MONDO_0010898	autosomal dominant epilepsy with auditory features
 autosomal dominant hypocalcemia 1	http://purl.obolibrary.org/obo/MONDO_0011013	autosomal dominant hypocalcemia 1
-autosomal dominant limb-girdle muscular dystrophy type 1f	http://purl.obolibrary.org/obo/MONDO_0012034	autosomal dominant limb-girdle muscular dystrophy type 1f
+autosomal dominant limb-girdle muscular dystrophy type 1f	http://purl.obolibrary.org/obo/MONDO_0012034	autosomal dominant limb-girdle muscular dystrophy type 1F
 autosomal dominant nocturnal frontal lobe epilepsy	http://purl.obolibrary.org/obo/MONDO_0020300	autosomal dominant nocturnal frontal lobe epilepsy
 autosomal dominant nocturnal frontal lobe epilepsy 5	http://purl.obolibrary.org/obo/MONDO_0014002	autosomal dominant nocturnal frontal lobe epilepsy 5
 autosomal dominant nonsyndromic hearing loss 1	http://purl.obolibrary.org/obo/MONDO_0007424	autosomal dominant nonsyndromic hearing loss 1
 autosomal dominant nonsyndromic hearing loss 12	http://purl.obolibrary.org/obo/MONDO_0019587	autosomal dominant nonsyndromic hearing loss
 autosomal dominant nonsyndromic hearing loss 56	http://purl.obolibrary.org/obo/MONDO_0019587	autosomal dominant nonsyndromic hearing loss
 autosomal dominant slowed nerve conduction velocity	http://purl.obolibrary.org/obo/MONDO_0011998	autosomal dominant slowed nerve conduction velocity
-autosomal recessive ataxia, beauce type	http://purl.obolibrary.org/obo/MONDO_0012549	autosomal recessive ataxia, beauce type
+autosomal recessive ataxia, beauce type	http://purl.obolibrary.org/obo/MONDO_0012549	autosomal recessive ataxia, Beauce type
 autosomal recessive congenital ichthyosis 5	http://purl.obolibrary.org/obo/MONDO_0017778	lamellar ichthyosis
 autosomal recessive distal spinal muscular atrophy 1	http://purl.obolibrary.org/obo/MONDO_0011436	autosomal recessive distal spinal muscular atrophy 1
 autosomal recessive inherited pseudoxanthoma elasticum	http://purl.obolibrary.org/obo/MONDO_0009925	autosomal recessive inherited pseudoxanthoma elasticum
-autosomal recessive limb-girdle muscular dystrophy type 2b	http://purl.obolibrary.org/obo/MONDO_0009676	autosomal recessive limb-girdle muscular dystrophy type 2b
-autosomal recessive limb-girdle muscular dystrophy type 2j	http://purl.obolibrary.org/obo/MONDO_0012127	autosomal recessive limb-girdle muscular dystrophy type 2j
-autosomal recessive limb-girdle muscular dystrophy type 2q	http://purl.obolibrary.org/obo/MONDO_0013390	autosomal recessive limb-girdle muscular dystrophy type 2q
-autosomal recessive limb-girdle muscular dystrophy type 2y	http://purl.obolibrary.org/obo/MONDO_0014900	autosomal recessive limb-girdle muscular dystrophy type 2y
+autosomal recessive limb-girdle muscular dystrophy type 2b	http://purl.obolibrary.org/obo/MONDO_0009676	autosomal recessive limb-girdle muscular dystrophy type 2B
+autosomal recessive limb-girdle muscular dystrophy type 2j	http://purl.obolibrary.org/obo/MONDO_0012127	autosomal recessive limb-girdle muscular dystrophy type 2J
+autosomal recessive limb-girdle muscular dystrophy type 2q	http://purl.obolibrary.org/obo/MONDO_0013390	autosomal recessive limb-girdle muscular dystrophy type 2Q
+autosomal recessive limb-girdle muscular dystrophy type 2y	http://purl.obolibrary.org/obo/MONDO_0014900	autosomal recessive limb-girdle muscular dystrophy type 2Y
 autosomal recessive nonsyndromic hearing loss 12	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 28	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 3	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
@@ -72,18 +72,19 @@ autosomal recessive nonsyndromic hearing loss 66	http://purl.obolibrary.org/obo/
 autosomal recessive nonsyndromic hearing loss 77	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 9	http://purl.obolibrary.org/obo/MONDO_0010986	autosomal recessive nonsyndromic hearing loss 9
 autosomal recessive omodysplasia	http://purl.obolibrary.org/obo/MONDO_0009779	autosomal recessive omodysplasia
-autosomal recessive robinow syndrome	http://purl.obolibrary.org/obo/MONDO_0009999	autosomal recessive robinow syndrome
-baller-gerold syndrome	http://purl.obolibrary.org/obo/MONDO_0009039	baller-gerold syndrome
-bap1-related tumor predisposition syndrome	http://purl.obolibrary.org/obo/MONDO_0013692	bap1-related tumor predisposition syndrome
-bardet-biedl syndrome	http://purl.obolibrary.org/obo/MONDO_0015229	bardet-biedl syndrome
-bardet-biedl syndrome 10	http://www.ebi.ac.uk/efo/EFO_0009022	bardet-biedl syndrome 10
-bardet-biedl syndrome 14	http://purl.obolibrary.org/obo/MONDO_0014442	bardet-biedl syndrome 14
+autosomal recessive robinow syndrome	http://purl.obolibrary.org/obo/MONDO_0009999	autosomal recessive Robinow syndrome
+baller-gerold syndrome	http://purl.obolibrary.org/obo/MONDO_0009039	Baller-Gerold syndrome
+bap1-related tumor predisposition syndrome	http://purl.obolibrary.org/obo/MONDO_0013692	BAP1-related tumor predisposition syndrome
+bardet-biedl syndrome	http://purl.obolibrary.org/obo/MONDO_0015229	Bardet-Biedl syndrome
+bardet-biedl syndrome 10	http://www.ebi.ac.uk/efo/EFO_0009022	Bardet-Biedl syndrome 10
+bardet-biedl syndrome 14	http://purl.obolibrary.org/obo/MONDO_0014442	Bardet-Biedl syndrome 14
 bardet-biedl syndrome 2	http://purl.obolibrary.org/obo/MONDO_0015229	Bardet-Biedl syndrome
-bartsocas-papas syndrome 1	http://purl.obolibrary.org/obo/MONDO_0009901	bartsocas-papas syndrome 1
-becker muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0010311	becker muscular dystrophy
-beckwith-wiedemann syndrome	http://purl.obolibrary.org/obo/MONDO_0007534	beckwith-wiedemann syndrome
+bartsocas-papas syndrome 1	http://purl.obolibrary.org/obo/MONDO_0009901	Bartsocas-Papas syndrome 1
+becker muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0010311	Becker muscular dystrophy
+beckwith-wiedemann syndrome	http://purl.obolibrary.org/obo/MONDO_0007534	Beckwith-Wiedemann syndrome
 biotinidase deficiency	http://purl.obolibrary.org/obo/MONDO_0009665	biotinidase deficiency
-bloom syndrome	http://purl.obolibrary.org/obo/MONDO_0008876	bloom syndrome
+blepharophimosis, ptosis, and epicanthus inversus, type i	http://purl.obolibrary.org/obo/MONDO_0017138	Opitz G/BBB syndrome
+bloom syndrome	http://purl.obolibrary.org/obo/MONDO_0008876	Bloom syndrome
 breast and/or ovarian cancer	http://www.orpha.net/ORDO/Orphanet_145	Hereditary breast and/or ovarian cancer syndrome
 breast ductal adenocarcinoma	http://www.ebi.ac.uk/efo/EFO_0006318	breast ductal adenocarcinoma
 breast neoplasm	http://www.ebi.ac.uk/efo/EFO_0003869	breast neoplasm
@@ -91,9 +92,9 @@ breast-ovarian cancer, familial, susceptibility to, 1	http://purl.obolibrary.org
 breast-ovarian cancer, familial, susceptibility to, 2	http://purl.obolibrary.org/obo/MONDO_0012933	breast-ovarian cancer, familial, susceptibility to, 2
 breast-ovarian cancer, familial, susceptibility to, 4	http://www.orpha.net/ORDO/Orphanet_145	Hereditary breast and/or ovarian cancer syndrome
 brittle cornea syndrome 2	http://purl.obolibrary.org/obo/MONDO_0009242	brittle cornea syndrome
-brody myopathy	http://purl.obolibrary.org/obo/MONDO_0010977	brody myopathy
-brugada syndrome	http://purl.obolibrary.org/obo/MONDO_0015263	brugada syndrome
-brugada syndrome 5	http://purl.obolibrary.org/obo/MONDO_0015263	Brugada syndrome
+brody myopathy	http://purl.obolibrary.org/obo/MONDO_0010977	Brody myopathy
+brugada syndrome	http://purl.obolibrary.org/obo/MONDO_0015263	Brugada syndrome
+brugada syndrome 5	http://purl.obolibrary.org/obo/MONDO_0013015	Brugada syndrome 5
 capillary malformation-arteriovenous malformation syndrome	http://purl.obolibrary.org/obo/MONDO_0012016	capillary malformation-arteriovenous malformation syndrome
 carcinoma	http://www.ebi.ac.uk/efo/EFO_0000313	carcinoma
 carcinoma of esophagus	http://www.ebi.ac.uk/efo/EFO_0002916	esophageal carcinoma
@@ -102,7 +103,7 @@ cardiac arrhythmia, ankyrin-b-related	http://www.orpha.net/ORDO/Orphanet_101016	
 cardiomyopathy	http://www.ebi.ac.uk/efo/EFO_0000318	cardiomyopathy
 cardiomyopathy, familial restrictive, 3	http://purl.obolibrary.org/obo/MONDO_0012900	cardiomyopathy, familial restrictive, 3
 cardiovascular phenotype	http://purl.obolibrary.org/obo/HP_0001626	Abnormality of the cardiovascular system
-carnitine palmitoyl transferase 1a deficiency	http://purl.obolibrary.org/obo/MONDO_0009705	carnitine palmitoyl transferase 1a deficiency
+carnitine palmitoyl transferase 1a deficiency	http://purl.obolibrary.org/obo/MONDO_0009705	carnitine palmitoyl transferase 1A deficiency
 cataract 15 multiple types	http://purl.obolibrary.org/obo/MONDO_0011060	early-onset non-syndromic cataract
 cataract 15 multiple types	http://www.orpha.net/ORDO/Orphanet_98985	Early-onset sutural cataract
 cataract 15 multiple types	http://www.orpha.net/ORDO/Orphanet_98994	Total early-onset cataract
@@ -110,43 +111,44 @@ cataract 18	http://www.orpha.net/ORDO/Orphanet_98992	Early-onset partial catarac
 cataract 6 multiple types	http://purl.obolibrary.org/obo/MONDO_0011060	early-onset non-syndromic cataract
 cataract 6 multiple types	http://www.orpha.net/ORDO/Orphanet_98993	Early-onset posterior polar cataract
 cataract 6 multiple types	http://www.orpha.net/ORDO/Orphanet_98994	Total early-onset cataract
-charcot-marie-tooth disease	http://purl.obolibrary.org/obo/MONDO_0015626	charcot-marie-tooth disease
-charcot-marie-tooth disease axonal type 2o	http://purl.obolibrary.org/obo/MONDO_0013644	charcot-marie-tooth disease axonal type 2o
-charcot-marie-tooth disease axonal type 2s	http://purl.obolibrary.org/obo/MONDO_0014511	charcot-marie-tooth disease axonal type 2s
-charcot-marie-tooth disease dominant intermediate b	http://purl.obolibrary.org/obo/MONDO_0011674	charcot-marie-tooth disease dominant intermediate b
-charcot-marie-tooth disease type 2	http://purl.obolibrary.org/obo/MONDO_0018993	charcot-marie-tooth disease type 2
-charcot-marie-tooth disease type 2e	http://purl.obolibrary.org/obo/MONDO_0011894	charcot-marie-tooth disease type 2e
-charcot-marie-tooth disease type 4	http://purl.obolibrary.org/obo/MONDO_0018995	charcot-marie-tooth disease type 4
-charcot-marie-tooth disease type 4b2	http://purl.obolibrary.org/obo/MONDO_0011475	charcot-marie-tooth disease type 4b2
-charcot-marie-tooth disease type 4h	http://purl.obolibrary.org/obo/MONDO_0012250	charcot-marie-tooth disease type 4h
+charcot-marie-tooth disease	http://purl.obolibrary.org/obo/MONDO_0015626	Charcot-Marie-Tooth disease
+charcot-marie-tooth disease axonal type 2o	http://purl.obolibrary.org/obo/MONDO_0013644	Charcot-Marie-Tooth disease axonal type 2O
+charcot-marie-tooth disease axonal type 2s	http://purl.obolibrary.org/obo/MONDO_0014511	Charcot-Marie-Tooth disease axonal type 2S
+charcot-marie-tooth disease dominant intermediate b	http://purl.obolibrary.org/obo/MONDO_0011674	Charcot-Marie-Tooth disease dominant intermediate B
+charcot-marie-tooth disease type 2	http://purl.obolibrary.org/obo/MONDO_0018993	Charcot-Marie-Tooth disease type 2
+charcot-marie-tooth disease type 2e	http://purl.obolibrary.org/obo/MONDO_0011894	Charcot-Marie-Tooth disease type 2E
+charcot-marie-tooth disease type 4	http://purl.obolibrary.org/obo/MONDO_0018995	Charcot-Marie-Tooth disease type 4
+charcot-marie-tooth disease type 4b2	http://purl.obolibrary.org/obo/MONDO_0011475	Charcot-Marie-Tooth disease type 4B2
+charcot-marie-tooth disease type 4h	http://purl.obolibrary.org/obo/MONDO_0012250	Charcot-Marie-Tooth disease type 4H
 charge association	http://purl.obolibrary.org/obo/MONDO_0008965	CHARGE syndrome
 chilblain lupus 1	http://purl.obolibrary.org/obo/MONDO_0012500	chilblain lupus 1
 chitotriosidase deficiency	http://www.ebi.ac.uk/efo/EFO_0022489	chitotriosidase deficiency
 chorea-acanthocytosis	http://purl.obolibrary.org/obo/MONDO_0008695	chorea-acanthocytosis
-chuvash polycythemia	http://purl.obolibrary.org/obo/MONDO_0009892	chuvash polycythemia
-chédiak-higashi syndrome	http://www.orpha.net/ORDO/Orphanet_167	chédiak-higashi syndrome
+chuvash polycythemia	http://purl.obolibrary.org/obo/MONDO_0009892	Chuvash polycythemia
+chédiak-higashi syndrome	http://www.orpha.net/ORDO/Orphanet_167	Chédiak-Higashi syndrome
 cobalamin c disease	http://purl.obolibrary.org/obo/MONDO_0010184	methylmalonic aciduria and homocystinuria type cblC
 cobalamin c disease	http://www.orpha.net/ORDO/Orphanet_26	Methylmalonic acidemia with homocystinuria
 cobalamin c disease	http://www.orpha.net/ORDO/Orphanet_79282	Methylmalonic acidemia with homocystinuria, type cblC
-coffin-siris syndrome 1	http://purl.obolibrary.org/obo/MONDO_0007617	coffin-siris syndrome 1
+coffin-siris syndrome 1	http://purl.obolibrary.org/obo/MONDO_0007617	Coffin-Siris syndrome 1
 cog1 congenital disorder of glycosylation	http://purl.obolibrary.org/obo/MONDO_0012637	COG1-congenital disorder of glycosylation
 cog7 congenital disorder of glycosylation	http://purl.obolibrary.org/obo/MONDO_0012118	COG7-congenital disorder of glycosylation
-cohen syndrome	http://purl.obolibrary.org/obo/MONDO_0008999	cohen syndrome
+cohen syndrome	http://purl.obolibrary.org/obo/MONDO_0008999	Cohen syndrome
 collagen 6-related myopathy	http://purl.obolibrary.org/obo/MONDO_0100225	collagen 6-related myopathy
 colorectal cancer, hereditary nonpolyposis, type 2	http://purl.obolibrary.org/obo/MONDO_0005835	Lynch syndrome
 colorectal cancer, susceptibility to, 10	http://purl.obolibrary.org/obo/MONDO_0012953	colorectal cancer, susceptibility to, 10
 colorectal cancer, susceptibility to, 12	http://purl.obolibrary.org/obo/MONDO_0014038	colorectal cancer, susceptibility to, 12
-combined immunodeficiency due to stim1 deficiency	http://purl.obolibrary.org/obo/MONDO_0013008	combined immunodeficiency due to stim1 deficiency
+combined immunodeficiency due to stim1 deficiency	http://purl.obolibrary.org/obo/MONDO_0013008	combined immunodeficiency due to STIM1 deficiency
 combined malonic and methylmalonic acidemia	http://purl.obolibrary.org/obo/MONDO_0013661	combined malonic and methylmalonic acidemia
-compton-north congenital myopathy	http://purl.obolibrary.org/obo/MONDO_0012929	compton-north congenital myopathy
+compton-north congenital myopathy	http://purl.obolibrary.org/obo/MONDO_0012929	Compton-North congenital myopathy
 cone-rod dystrophy 5	http://www.orpha.net/ORDO/Orphanet_1872	Cone rod dystrophy
-congenital bilateral aplasia of vas deferens from cftr mutation	http://purl.obolibrary.org/obo/MONDO_0010178	congenital bilateral aplasia of vas deferens from cftr mutation
+congenital bilateral aplasia of vas deferens from cftr mutation	http://purl.obolibrary.org/obo/MONDO_0010178	congenital bilateral aplasia of vas deferens from CFTR mutation
 congenital cerebellar hypoplasia	http://purl.obolibrary.org/obo/MONDO_0008939	isolated cerebellar hypoplasia/agenesis
 congenital dyserythropoietic anemia, type i	http://purl.obolibrary.org/obo/MONDO_0020337	congenital dyserythropoietic anemia type 1
 congenital dyserythropoietic anemia, type i	http://www.orpha.net/ORDO/Orphanet_98869	Congenital dyserythropoietic anemia type I
 congenital insensitivity to pain-hypohidrosis syndrome	http://purl.obolibrary.org/obo/MONDO_0014662	congenital insensitivity to pain-hypohidrosis syndrome
 congenital long qt syndrome	http://purl.obolibrary.org/obo/MONDO_0019171	familial long QT syndrome
 congenital muscular dystrophy due to integrin alpha-7 deficiency	http://purl.obolibrary.org/obo/MONDO_0013177	congenital muscular dystrophy due to integrin alpha-7 deficiency
+congenital muscular dystrophy, alpha-dystroglycan related	http://purl.obolibrary.org/obo/MONDO_0013160	muscular dystrophy-dystroglycanopathy (congenital with intellectual disability), type B2
 congenital myasthenic syndrome 10	http://www.orpha.net/ORDO/Orphanet_590	Congenital myasthenic syndrome
 congenital myasthenic syndrome 11	http://www.orpha.net/ORDO/Orphanet_590	Congenital myasthenic syndrome
 congenital myasthenic syndrome 19	http://www.orpha.net/ORDO/Orphanet_590	Congenital myasthenic syndrome
@@ -154,11 +156,11 @@ congenital myasthenic syndrome 4a	http://www.orpha.net/ORDO/Orphanet_590	Congeni
 congenital myasthenic syndrome 5	http://www.orpha.net/ORDO/Orphanet_590	Congenital myasthenic syndrome
 congenital myasthenic syndrome 8	http://purl.obolibrary.org/obo/MONDO_0014052	congenital myasthenic syndrome 8
 congenital myopathy with internal nuclei and atypical cores	http://purl.obolibrary.org/obo/MONDO_0013890	congenital myopathy with internal nuclei and atypical cores
-corneal dystrophy, fuchs endothelial, 3	http://purl.obolibrary.org/obo/MONDO_0013203	corneal dystrophy, fuchs endothelial, 3
+corneal dystrophy, fuchs endothelial, 3	http://purl.obolibrary.org/obo/MONDO_0013203	corneal dystrophy, Fuchs endothelial, 3
 cornelia de lange syndrome 1	http://purl.obolibrary.org/obo/MONDO_0016033	Cornelia de Lange syndrome
 cortical dysplasia-focal epilepsy syndrome	http://purl.obolibrary.org/obo/MONDO_0012400	cortical dysplasia-focal epilepsy syndrome
-costello syndrome	http://purl.obolibrary.org/obo/MONDO_0009026	costello syndrome
-cowden syndrome 6	http://purl.obolibrary.org/obo/MONDO_0014048	cowden syndrome 6
+costello syndrome	http://purl.obolibrary.org/obo/MONDO_0009026	Costello syndrome
+cowden syndrome 6	http://purl.obolibrary.org/obo/MONDO_0014048	Cowden syndrome 6
 cranioectodermal dysplasia 1	http://purl.obolibrary.org/obo/MONDO_0009032	cranioectodermal dysplasia
 craniometaphyseal dysplasia, autosomal dominant	http://purl.obolibrary.org/obo/MONDO_0015465	craniometaphyseal dysplasia
 cutis laxa, x-linked	http://purl.obolibrary.org/obo/MONDO_0010572	occipital horn syndrome
@@ -170,70 +172,70 @@ desmin-related myofibrillar myopathy	http://purl.obolibrary.org/obo/MONDO_001107
 desmin-related myofibrillar myopathy	http://www.orpha.net/ORDO/Orphanet_363543	Autosomal recessive limb-girdle muscular dystrophy type 2R
 desmin-related myofibrillar myopathy	http://www.orpha.net/ORDO/Orphanet_98909	Desminopathy
 developmental and epileptic encephalopathy 94	http://www.ebi.ac.uk/efo/EFO_0020000	developmental and epileptic encephalopathy 94
-developmental and epileptic encephalopathy, 11	http://purl.obolibrary.org/obo/MONDO_0100062	developmental and epileptic encephalopathy
+developmental and epileptic encephalopathy, 11	http://purl.obolibrary.org/obo/MONDO_0013388	developmental and epileptic encephalopathy, 11
 developmental and epileptic encephalopathy, 12	http://purl.obolibrary.org/obo/MONDO_0013389	developmental and epileptic encephalopathy, 12
 developmental and epileptic encephalopathy, 13	http://purl.obolibrary.org/obo/MONDO_0013801	developmental and epileptic encephalopathy, 13
 developmental and epileptic encephalopathy, 24	http://purl.obolibrary.org/obo/MONDO_0018614	undetermined early-onset epileptic encephalopathy
 developmental and epileptic encephalopathy, 25	http://purl.obolibrary.org/obo/MONDO_0018614	undetermined early-onset epileptic encephalopathy
-developmental and epileptic encephalopathy, 27	http://purl.obolibrary.org/obo/MONDO_0018097	West syndrome
+developmental and epileptic encephalopathy, 27	http://purl.obolibrary.org/obo/MONDO_0018097	infantile spasms
 developmental and epileptic encephalopathy, 31	http://purl.obolibrary.org/obo/MONDO_0016532	Lennox-Gastaut syndrome
 developmental and epileptic encephalopathy, 34	http://purl.obolibrary.org/obo/MONDO_0017385	malignant migrating partial seizures of infancy
 developmental and epileptic encephalopathy, 36	http://purl.obolibrary.org/obo/MONDO_0010472	developmental and epileptic encephalopathy, 36
 developmental and epileptic encephalopathy, 42	http://purl.obolibrary.org/obo/MONDO_0014917	developmental and epileptic encephalopathy, 42
-developmental and epileptic encephalopathy, 53	http://purl.obolibrary.org/obo/MONDO_0100062	developmental and epileptic encephalopathy
-developmental and epileptic encephalopathy, 7	http://purl.obolibrary.org/obo/MONDO_0100062	developmental and epileptic encephalopathy
+developmental and epileptic encephalopathy, 53	http://purl.obolibrary.org/obo/MONDO_0100062	genetic developmental and epileptic encephalopathy
+developmental and epileptic encephalopathy, 7	http://purl.obolibrary.org/obo/MONDO_0100062	genetic developmental and epileptic encephalopathy
 developmental and epileptic encephalopathy, 8	http://purl.obolibrary.org/obo/MONDO_0010375	developmental and epileptic encephalopathy, 8
 diamond-blackfan anemia 10	http://www.orpha.net/ORDO/Orphanet_124	Diamond-Blackfan anemia
-dicer1-related tumor predisposition	http://purl.obolibrary.org/obo/MONDO_0100216	dicer1-related tumor predisposition
+dicer1-related tumor predisposition	http://purl.obolibrary.org/obo/MONDO_0100216	DICER1-related tumor predisposition
 digeorge syndrome	http://purl.obolibrary.org/obo/MONDO_0018923	22q11.2 deletion syndrome
 dilated cardiomyopathy 1d	http://purl.obolibrary.org/obo/MONDO_0018901	left ventricular noncompaction
-dilated cardiomyopathy 1dd	http://purl.obolibrary.org/obo/MONDO_0013168	dilated cardiomyopathy 1dd
-dilated cardiomyopathy 1g	http://purl.obolibrary.org/obo/MONDO_0011400	dilated cardiomyopathy 1g
-dilated cardiomyopathy 1j	http://purl.obolibrary.org/obo/MONDO_0011541	dilated cardiomyopathy 1j
-dilated cardiomyopathy 1kk	http://purl.obolibrary.org/obo/MONDO_0014100	dilated cardiomyopathy 1kk
+dilated cardiomyopathy 1dd	http://purl.obolibrary.org/obo/MONDO_0013168	dilated cardiomyopathy 1DD
+dilated cardiomyopathy 1g	http://purl.obolibrary.org/obo/MONDO_0011400	dilated cardiomyopathy 1G
+dilated cardiomyopathy 1j	http://purl.obolibrary.org/obo/MONDO_0011541	dilated cardiomyopathy 1J
+dilated cardiomyopathy 1kk	http://purl.obolibrary.org/obo/MONDO_0014100	dilated cardiomyopathy 1KK
 dilated cardiomyopathy 1r	http://purl.obolibrary.org/obo/MONDO_0018901	left ventricular noncompaction
-dilated cardiomyopathy 1w	http://purl.obolibrary.org/obo/MONDO_0012667	dilated cardiomyopathy 1w
+dilated cardiomyopathy 1w	http://purl.obolibrary.org/obo/MONDO_0012667	dilated cardiomyopathy 1W
 dilated cardiomyopathy, dominant	http://www.ebi.ac.uk/efo/EFO_0009142	autosomal dominant dilated cardiomyopathy
-dock2 deficiency	http://purl.obolibrary.org/obo/MONDO_0014637	dock2 deficiency
-duchenne muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0010679	duchenne muscular dystrophy
-dyrk1a-related intellectual disability syndrome	http://purl.obolibrary.org/obo/MONDO_0013578	dyrk1a-related intellectual disability syndrome
+dock2 deficiency	http://purl.obolibrary.org/obo/MONDO_0014637	DOCK2 deficiency
+duchenne muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0010679	Duchenne muscular dystrophy
+dyrk1a-related intellectual disability syndrome	http://purl.obolibrary.org/obo/MONDO_0013578	DYRK1A-related intellectual disability syndrome
 dyskeratosis congenita, autosomal recessive 5	http://purl.obolibrary.org/obo/MONDO_0014076	dyskeratosis congenita, autosomal recessive 5
 dystonic disorder	http://purl.obolibrary.org/obo/MONDO_0003441	dystonic disorder
-dystrophin deficiency	http://purl.obolibrary.org/obo/MONDO_0016147	qualitative or quantitative defects of dystrophin
-early infantile epileptic encephalopathy with suppression bursts	http://purl.obolibrary.org/obo/MONDO_0100062	developmental and epileptic encephalopathy
+dystrophin deficiency	http://purl.obolibrary.org/obo/MONDO_0016147	neuromuscular disease caused by qualitative or quantitative defects of dystrophin
+early infantile epileptic encephalopathy with suppression bursts	http://purl.obolibrary.org/obo/MONDO_0100062	genetic developmental and epileptic encephalopathy
 early myoclonic encephalopathy	http://purl.obolibrary.org/obo/MONDO_0016022	early myoclonic encephalopathy
 early-onset myopathy with fatal cardiomyopathy	http://purl.obolibrary.org/obo/MONDO_0012714	early-onset myopathy with fatal cardiomyopathy
 early-onset parkinson disease 20	http://purl.obolibrary.org/obo/MONDO_0018321	atypical juvenile parkinsonism
 ectopia lentis 2, isolated, autosomal recessive	http://purl.obolibrary.org/obo/MONDO_0015998	isolated ectopia lentis
 ectopia lentis et pupillae	http://purl.obolibrary.org/obo/MONDO_0015998	isolated ectopia lentis
-eem syndrome	http://purl.obolibrary.org/obo/MONDO_0009155	eem syndrome
-egfr-related lung cancer	http://www.ebi.ac.uk/efo/EFO_0022194	egfr-related lung cancer
+eem syndrome	http://purl.obolibrary.org/obo/MONDO_0009155	EEM syndrome
+egfr-related lung cancer	http://www.ebi.ac.uk/efo/EFO_0022194	EGFR-related lung cancer
 ehlers-danlos syndrome, arthrochalasia type, 2	http://www.orpha.net/ORDO/Orphanet_1899	Arthrochalasia Ehlers-Danlos syndrome
 ehlers-danlos syndrome, type 4	http://purl.obolibrary.org/obo/MONDO_0017314	Ehlers-Danlos syndrome, vascular type
-ellis-van creveld syndrome	http://purl.obolibrary.org/obo/MONDO_0009162	ellis-van creveld syndrome
-emery-dreifuss muscular dystrophy 4, autosomal dominant	http://purl.obolibrary.org/obo/MONDO_0013071	emery-dreifuss muscular dystrophy 4, autosomal dominant
+ellis-van creveld syndrome	http://purl.obolibrary.org/obo/MONDO_0009162	Ellis-van Creveld syndrome
+emery-dreifuss muscular dystrophy 4, autosomal dominant	http://purl.obolibrary.org/obo/MONDO_0013071	Emery-Dreifuss muscular dystrophy 4, autosomal dominant
 emery-dreifuss muscular dystrophy 5, autosomal dominant	http://purl.obolibrary.org/obo/MONDO_0016830	Emery-Dreifuss muscular dystrophy
-enhanced s-cone syndrome	http://purl.obolibrary.org/obo/MONDO_0100288	enhanced s-cone syndrome
+enhanced s-cone syndrome	http://purl.obolibrary.org/obo/MONDO_0100288	enhanced S-cone syndrome
 epidermodysplasia verruciformis	http://purl.obolibrary.org/obo/MONDO_0009176	epidermodysplasia verruciformis
-epidermolysis bullosa simplex 3, localized or generalized intermediate, with bp230 deficiency	http://purl.obolibrary.org/obo/MONDO_0014180	epidermolysis bullosa simplex 3, localized or generalized intermediate, with bp230 deficiency
-epidermolysis bullosa simplex 5b, with muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0009181	epidermolysis bullosa simplex 5b, with muscular dystrophy
-epidermolysis bullosa simplex 5c, with pyloric atresia	http://purl.obolibrary.org/obo/MONDO_0012807	epidermolysis bullosa simplex 5c, with pyloric atresia
+epidermolysis bullosa simplex 3, localized or generalized intermediate, with bp230 deficiency	http://purl.obolibrary.org/obo/MONDO_0014180	epidermolysis bullosa simplex 3, localized or generalized intermediate, with BP230 deficiency
+epidermolysis bullosa simplex 5b, with muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0009181	epidermolysis bullosa simplex 5B, with muscular dystrophy
+epidermolysis bullosa simplex 5c, with pyloric atresia	http://purl.obolibrary.org/obo/MONDO_0012807	epidermolysis bullosa simplex 5C, with pyloric atresia
 epidermolysis bullosa simplex with nail dystrophy	http://purl.obolibrary.org/obo/MONDO_0014661	epidermolysis bullosa simplex with nail dystrophy
-epidermolysis bullosa simplex, ogna type	http://www.orpha.net/ORDO/Orphanet_79401	epidermolysis bullosa simplex, ogna type
+epidermolysis bullosa simplex, ogna type	http://www.orpha.net/ORDO/Orphanet_79401	Epidermolysis bullosa simplex, Ogna type
 epilepsy, familial adult myoclonic, 3	http://purl.obolibrary.org/obo/MONDO_0019448	benign adult familial myoclonic epilepsy
 epilepsy, progressive myoclonic, 1b	http://www.orpha.net/ORDO/Orphanet_308	Progressive myoclonic epilepsy type 1
-epileptic encephalopathy	http://purl.obolibrary.org/obo/HP_0200134	epileptic encephalopathy
+epileptic encephalopathy	http://purl.obolibrary.org/obo/HP_0200134	Epileptic encephalopathy
 episodic ataxia type 1	http://purl.obolibrary.org/obo/MONDO_0008047	episodic ataxia type 1
 episodic ataxia type 2	http://purl.obolibrary.org/obo/MONDO_0007163	episodic ataxia type 2
 erythrocytosis, familial, 3	http://purl.obolibrary.org/obo/MONDO_0012353	erythrocytosis, familial, 3
 exostoses, multiple, type 2	http://purl.obolibrary.org/obo/MONDO_0007586	exostoses, multiple, type 2
 exudative vitreoretinopathy 1	http://www.orpha.net/ORDO/Orphanet_891	Familial exudative vitreoretinopathy
-factor v deficiency	http://purl.obolibrary.org/obo/MONDO_0020586	factor v deficiency
+factor v deficiency	http://purl.obolibrary.org/obo/MONDO_0020586	factor V deficiency
 familial adenomatous polyposis 1	http://purl.obolibrary.org/obo/MONDO_0021056	familial adenomatous polyposis 1
 familial aplasia of the vermis	http://purl.obolibrary.org/obo/MONDO_0018772	Joubert syndrome
 familial cancer of breast	http://purl.obolibrary.org/obo/MONDO_0016419	hereditary breast carcinoma
 familial cold autoinflammatory syndrome 3	http://purl.obolibrary.org/obo/MONDO_0013766	familial cold autoinflammatory syndrome 3
-familial dysautonomia	http://www.orpha.net/ORDO/Orphanet_1764	familial dysautonomia
+familial dysautonomia	http://www.orpha.net/ORDO/Orphanet_1764	Familial dysautonomia
 familial focal epilepsy with variable foci	http://purl.obolibrary.org/obo/MONDO_0020310	familial focal epilepsy with variable foci
 familial hemophagocytic lymphohistiocytosis 2	http://www.orpha.net/ORDO/Orphanet_540	Familial hemophagocytic lymphohistiocytosis
 familial hemophagocytic lymphohistiocytosis 3	http://www.orpha.net/ORDO/Orphanet_540	Familial hemophagocytic lymphohistiocytosis
@@ -241,37 +243,37 @@ familial hemophagocytic lymphohistiocytosis 4	http://www.orpha.net/ORDO/Orphanet
 familial hypercholesterolemia	http://www.ebi.ac.uk/efo/EFO_0004911	familial hypercholesterolemia
 familial hypocalciuric hypercalcemia	http://purl.obolibrary.org/obo/MONDO_0018458	familial hypocalciuric hypercalcemia
 familial infantile myasthenia	http://www.orpha.net/ORDO/Orphanet_590	Congenital myasthenic syndrome
-familial mediterranean fever	http://purl.obolibrary.org/obo/MONDO_0018088	familial mediterranean fever
+familial mediterranean fever	http://purl.obolibrary.org/obo/MONDO_0018088	familial Mediterranean fever
 familial multiple polyposis syndrome	http://purl.obolibrary.org/obo/MONDO_0021055	classic familial adenomatous polyposis
 familial temporal lobe epilepsy 7	http://purl.obolibrary.org/obo/MONDO_0014639	familial temporal lobe epilepsy 7
 familial thoracic aortic aneurysm and aortic dissection	http://purl.obolibrary.org/obo/MONDO_0019625	familial thoracic aortic aneurysm and aortic dissection
 familial thyroid dyshormonogenesis 1	http://purl.obolibrary.org/obo/MONDO_0010132	familial thyroid dyshormonogenesis
 familial x-linked hypophosphatemic vitamin d refractory rickets	http://purl.obolibrary.org/obo/MONDO_0010619	X-linked dominant hypophosphatemic rickets
 familial x-linked hypophosphatemic vitamin d refractory rickets	http://www.orpha.net/ORDO/Orphanet_89936	X-linked hypophosphatemia
-fanconi anemia	http://purl.obolibrary.org/obo/MONDO_0019391	fanconi anemia
-fanconi anemia complementation group c	http://purl.obolibrary.org/obo/MONDO_0009213	fanconi anemia complementation group c
-fanconi anemia complementation group j	http://purl.obolibrary.org/obo/MONDO_0012187	fanconi anemia complementation group j
+fanconi anemia	http://purl.obolibrary.org/obo/MONDO_0019391	Fanconi anemia
+fanconi anemia complementation group c	http://purl.obolibrary.org/obo/MONDO_0009213	Fanconi anemia complementation group C
+fanconi anemia complementation group j	http://purl.obolibrary.org/obo/MONDO_0012187	Fanconi anemia complementation group J
 fanconi anemia complementation group o	http://purl.obolibrary.org/obo/MONDO_0019391	Fanconi anemia
-farber lipogranulomatosis	http://purl.obolibrary.org/obo/MONDO_0009218	farber lipogranulomatosis
+farber lipogranulomatosis	http://purl.obolibrary.org/obo/MONDO_0009218	Farber lipogranulomatosis
 fetal akinesia deformation sequence 1	http://purl.obolibrary.org/obo/MONDO_0100101	fetal akinesia deformation sequence 1
 fibromuscular dysplasia, multifocal	http://purl.obolibrary.org/obo/MONDO_0859151	fibromuscular dysplasia, multifocal
-fragile x syndrome	http://purl.obolibrary.org/obo/MONDO_0010383	fragile x syndrome
+fragile x syndrome	http://purl.obolibrary.org/obo/MONDO_0010383	fragile X syndrome
 frontometaphyseal dysplasia	http://purl.obolibrary.org/obo/MONDO_0015942	frontometaphyseal dysplasia
 frontotemporal dementia and/or amyotrophic lateral sclerosis 1	http://purl.obolibrary.org/obo/MONDO_0007105	frontotemporal dementia and/or amyotrophic lateral sclerosis 1
 galactosylceramide beta-galactosidase deficiency	http://purl.obolibrary.org/obo/MONDO_0009499	Krabbe disease
 generalized epilepsy with febrile seizures plus, type 2	http://purl.obolibrary.org/obo/MONDO_0011461	generalized epilepsy with febrile seizures plus, type 2
 generalized epilepsy with febrile seizures plus, type 7	http://purl.obolibrary.org/obo/MONDO_0013470	generalized epilepsy with febrile seizures plus, type 7
-generalized hypotonia	http://purl.obolibrary.org/obo/HP_0001290	generalized hypotonia
+generalized hypotonia	http://purl.obolibrary.org/obo/HP_0001290	Generalized hypotonia
 gestational diabetes mellitus uncontrolled	http://www.ebi.ac.uk/efo/EFO_0004593	gestational diabetes
-glanzmann thrombasthenia 1	http://purl.obolibrary.org/obo/MONDO_0031332	glanzmann thrombasthenia 1
-global developmental delay	http://purl.obolibrary.org/obo/HP_0001263	global developmental delay
+glanzmann thrombasthenia 1	http://purl.obolibrary.org/obo/MONDO_0031332	Glanzmann thrombasthenia 1
+global developmental delay	http://purl.obolibrary.org/obo/HP_0001263	Global developmental delay
 glucocorticoid-remediable aldosteronism	http://purl.obolibrary.org/obo/MONDO_0007080	glucocorticoid-remediable aldosteronism
 glutaric aciduria, type 1	http://purl.obolibrary.org/obo/MONDO_0009281	glutaryl-CoA dehydrogenase deficiency
 glycogen storage disease type iii	http://purl.obolibrary.org/obo/MONDO_0009291	glycogen storage disease III
 glycogen storage disease, type ii	http://purl.obolibrary.org/obo/MONDO_0009290	glycogen storage disease II
 glycogen storage disease, type ii	http://www.orpha.net/ORDO/Orphanet_365	Glycogen storage disease due to acid maltase deficiency
 glycogen storage disease, type v	http://purl.obolibrary.org/obo/MONDO_0009293	glycogen storage disease V
-gne myopathy	http://purl.obolibrary.org/obo/MONDO_0011603	gne myopathy
+gne myopathy	http://purl.obolibrary.org/obo/MONDO_0011603	GNE myopathy
 growth delay due to insulin-like growth factor type 1 deficiency	http://purl.obolibrary.org/obo/MONDO_0012110	growth delay due to insulin-like growth factor type 1 deficiency
 hennekam lymphangiectasia-lymphedema syndrome 1	http://purl.obolibrary.org/obo/MONDO_0016256	Hennekam syndrome
 hepatoencephalopathy due to combined oxidative phosphorylation defect type 1	http://purl.obolibrary.org/obo/MONDO_0012191	hepatoencephalopathy due to combined oxidative phosphorylation defect type 1
@@ -297,15 +299,13 @@ hermansky-pudlak syndrome 5	http://purl.obolibrary.org/obo/MONDO_0016502	Hermans
 hermansky-pudlak syndrome 5	http://purl.obolibrary.org/obo/MONDO_0019312	Hermansky-Pudlak syndrome
 herpes simplex encephalitis, susceptibility to, 3	http://purl.obolibrary.org/obo/MONDO_0013920	herpes simplex encephalitis, susceptibility to, 3
 herpes simplex encephalitis, susceptibility to, 4	http://purl.obolibrary.org/obo/MONDO_0013921	herpes simplex encephalitis, susceptibility to, 4
-heterotopia, periventricular, x-linked dominant	http://purl.obolibrary.org/obo/MONDO_0010233	heterotopia, periventricular, x-linked dominant
+heterotopia, periventricular, x-linked dominant	http://purl.obolibrary.org/obo/MONDO_0010233	heterotopia, periventricular, X-linked dominant
 holoprosencephaly 5	http://purl.obolibrary.org/obo/MONDO_0012322	holoprosencephaly 5
 holoprosencephaly sequence	http://purl.obolibrary.org/obo/MONDO_0016296	holoprosencephaly
-hyperaldosteronism, familial, type iv	http://purl.obolibrary.org/obo/MONDO_0016525	familial hyperaldosteronism
-hyperammonemic encephalopathy due to carbonic anhydrase va deficiency	http://purl.obolibrary.org/obo/MONDO_0014332	hyperammonemic encephalopathy due to carbonic anhydrase va deficiency
+hyperammonemic encephalopathy due to carbonic anhydrase va deficiency	http://purl.obolibrary.org/obo/MONDO_0014332	hyperammonemic encephalopathy due to carbonic anhydrase VA deficiency
 hypercholesterolemia, autosomal dominant, 3	http://purl.obolibrary.org/obo/MONDO_0011369	hypercholesterolemia, autosomal dominant, 3
 hypercholesterolemia, familial, 1	http://purl.obolibrary.org/obo/MONDO_0007750	hypercholesterolemia, familial, 1
-hyperekplexia 3	http://purl.obolibrary.org/obo/MONDO_0021022	hereditary hyperekplexia
-hyperglycinuria	http://purl.obolibrary.org/obo/HP_0003108	hyperglycinuria
+hyperglycinuria	http://purl.obolibrary.org/obo/HP_0003108	Hyperglycinuria
 hyperimmunoglobulin d with periodic fever	http://purl.obolibrary.org/obo/MONDO_0009849	hyperimmunoglobulinemia D with periodic fever
 hyperinsulinemic hypoglycemia, familial, 1	http://purl.obolibrary.org/obo/MONDO_0009734	hyperinsulinemic hypoglycemia, familial, 1
 hyperornithinemia-hyperammonemia-homocitrullinuria syndrome	http://purl.obolibrary.org/obo/MONDO_0009393	ornithine translocase deficiency
@@ -321,165 +321,145 @@ hypoalphalipoproteinemia, primary, 1	http://purl.obolibrary.org/obo/MONDO_001139
 hypochondrogenesis	http://purl.obolibrary.org/obo/MONDO_0019669	hypochondrogenesis
 hypogonadotropic hypogonadism 3 with or without anosmia	http://purl.obolibrary.org/obo/MONDO_0009482	hypogonadotropic hypogonadism 3 with or without anosmia
 hypokalemic periodic paralysis, type 1	http://purl.obolibrary.org/obo/MONDO_0042979	hypokalemic periodic paralysis, type 1
-hypokalemic periodic paralysis, type 2	http://purl.obolibrary.org/obo/MONDO_0008223	hypokalemic periodic paralysis
 idiopathic generalized epilepsy	http://www.ebi.ac.uk/efo/EFO_0005917	generalised epilepsy
-immunodeficiency	http://purl.obolibrary.org/obo/HP_0002721	immunodeficiency
+immunodeficiency	http://purl.obolibrary.org/obo/HP_0002721	Immunodeficiency
 immunodeficiency 19	http://purl.obolibrary.org/obo/MONDO_0014280	immunodeficiency 19
 immunodeficiency 23	http://purl.obolibrary.org/obo/MONDO_0014353	immunodeficiency 23
 immunodeficiency 35	http://purl.obolibrary.org/obo/MONDO_0012682	immunodeficiency 35
 immunodeficiency 51	http://purl.obolibrary.org/obo/MONDO_0013500	immunodeficiency 51
 immunodeficiency 76	http://purl.obolibrary.org/obo/MONDO_0030898	immunodeficiency 76
 inborn genetic diseases	http://www.ebi.ac.uk/efo/EFO_0000508	genetic disorder
-inclusion body myopathy, recessive	http://www.orpha.net/ORDO/Orphanet_602	GNE myopathy
 infantile myofibromatosis	http://purl.obolibrary.org/obo/MONDO_0016824	infantile myofibromatosis
 infantile-onset ascending hereditary spastic paralysis	http://purl.obolibrary.org/obo/MONDO_0011797	infantile-onset ascending hereditary spastic paralysis
 inflammatory bowel disease 1	http://purl.obolibrary.org/obo/MONDO_0009960	inflammatory bowel disease 1
 inflammatory skin and bowel disease, neonatal, 1	http://purl.obolibrary.org/obo/MONDO_0017411	neonatal inflammatory skin and bowel disease
 intellectual developmental disorder, autosomal dominant 64	http://purl.obolibrary.org/obo/MONDO_0030934	intellectual developmental disorder, autosomal dominant 64
-intellectual disability	http://purl.obolibrary.org/obo/HP_0001249	intellectual disability
+intellectual disability	http://purl.obolibrary.org/obo/HP_0001249	Intellectual disability
 intellectual disability, autosomal dominant 1	http://purl.obolibrary.org/obo/MONDO_0016459	2q23.1 microdeletion syndrome
 intellectual disability, autosomal dominant 20	http://purl.obolibrary.org/obo/MONDO_0013266	intellectual disability, autosomal dominant 20
 intellectual disability, autosomal dominant 5	http://purl.obolibrary.org/obo/MONDO_0012960	intellectual disability, autosomal dominant 5
-intellectual disability, autosomal dominant 6	http://purl.obolibrary.org/obo/MONDO_0100172	intellectual disability, autosomal dominant
 intellectual disability, autosomal dominant 9	http://purl.obolibrary.org/obo/MONDO_0013656	intellectual disability, autosomal dominant 9
 intellectual disability, autosomal recessive 42	http://purl.obolibrary.org/obo/MONDO_0019502	autosomal recessive non-syndromic intellectual disability
 intestinal hypomagnesemia 1	http://purl.obolibrary.org/obo/MONDO_0011176	intestinal hypomagnesemia 1
 isolated focal non-epidermolytic palmoplantar keratoderma	http://www.orpha.net/ORDO/Orphanet_2337	Diffuse palmoplantar keratoderma, Bothnian type
 isolated neonatal sclerosing cholangitis	http://www.ebi.ac.uk/efo/EFO_0004268	sclerosing cholangitis
-isolated thoracic aortic aneurysm	http://www.ebi.ac.uk/efo/EFO_0004282	thoracic aortic aneurysm
 jeune thoracic dystrophy	http://purl.obolibrary.org/obo/MONDO_0018770	Jeune syndrome
-joubert syndrome 2	http://purl.obolibrary.org/obo/MONDO_0018772	Joubert syndrome
-joubert syndrome 25	http://purl.obolibrary.org/obo/MONDO_0018772	Joubert syndrome
-joubert syndrome 38	http://purl.obolibrary.org/obo/MONDO_0030353	joubert syndrome 38
-joubert syndrome 8	http://purl.obolibrary.org/obo/MONDO_0018772	Joubert syndrome
-juvenile polyposis	http://purl.obolibrary.org/obo/MONDO_0017380	juvenile polyposis syndrome
+joubert syndrome 25	http://purl.obolibrary.org/obo/MONDO_0014770	Joubert syndrome 25
+joubert syndrome 38	http://purl.obolibrary.org/obo/MONDO_0030353	Joubert syndrome 38
 juvenile polyposis syndrome	http://purl.obolibrary.org/obo/MONDO_0017380	juvenile polyposis syndrome
-kleefstra syndrome 2	http://purl.obolibrary.org/obo/MONDO_0054701	kleefstra syndrome 2
-koolen-de vries syndrome	http://purl.obolibrary.org/obo/MONDO_0012496	koolen-de vries syndrome
-lafora disease	http://purl.obolibrary.org/obo/MONDO_0009697	lafora disease
-lama2-related muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0100228	lama2-related muscular dystrophy
-lamb-shaffer syndrome	http://purl.obolibrary.org/obo/MONDO_0017782	developmental and speech delay due to SOX5 deficiency
-landau-kleffner syndrome	http://www.ebi.ac.uk/efo/EFO_1001010	landau-kleffner syndrome
-large for gestational age	http://purl.obolibrary.org/obo/HP_0001520	large for gestational age
-larsen syndrome	http://purl.obolibrary.org/obo/MONDO_0007875	larsen syndrome
-leber congenital amaurosis 14	http://purl.obolibrary.org/obo/MONDO_0018998	Leber congenital amaurosis
+kleefstra syndrome 2	http://purl.obolibrary.org/obo/MONDO_0054701	Kleefstra syndrome 2
+koolen-de vries syndrome	http://purl.obolibrary.org/obo/MONDO_0012496	Koolen-de Vries syndrome
+lafora disease	http://purl.obolibrary.org/obo/MONDO_0009697	Lafora disease
+lama2-related muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0100228	LAMA2-related muscular dystrophy
+landau-kleffner syndrome	http://www.ebi.ac.uk/efo/EFO_1001010	Landau-Kleffner syndrome
+large for gestational age	http://purl.obolibrary.org/obo/HP_0001520	Large for gestational age
+larsen syndrome	http://purl.obolibrary.org/obo/MONDO_0007875	Larsen syndrome
 lethal congenital glycogen storage disease of heart	http://purl.obolibrary.org/obo/MONDO_0009867	lethal congenital glycogen storage disease of heart
-limb-girdle muscular dystrophy, recessive	http://purl.obolibrary.org/obo/MONDO_0015152	autosomal recessive limb-girdle muscular dystrophy
-lissencephaly, recessive	http://www.ebi.ac.uk/efo/EFO_0011063	recessive lissencephaly
-long chain 3-hydroxyacyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0012173	long chain 3-hydroxyacyl-coa dehydrogenase deficiency
-long qt syndrome	http://purl.obolibrary.org/obo/HP_0001657	Prolonged QT interval
-long qt syndrome 1	http://purl.obolibrary.org/obo/MONDO_0100316	long qt syndrome 1
-luscan-lumish syndrome	http://purl.obolibrary.org/obo/MONDO_0014791	luscan-lumish syndrome
-lynch syndrome	http://purl.obolibrary.org/obo/MONDO_0005835	lynch syndrome
+long chain 3-hydroxyacyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0012173	long chain 3-hydroxyacyl-CoA dehydrogenase deficiency
+long qt syndrome 1	http://purl.obolibrary.org/obo/MONDO_0100316	long QT syndrome 1
+luscan-lumish syndrome	http://purl.obolibrary.org/obo/MONDO_0014791	Luscan-Lumish syndrome
+lynch syndrome	http://purl.obolibrary.org/obo/MONDO_0005835	Lynch syndrome
 lynch syndrome 1	http://purl.obolibrary.org/obo/MONDO_0005835	Lynch syndrome
 macrocephaly, dysmorphic facies, and psychomotor retardation	http://purl.obolibrary.org/obo/MONDO_0014863	macrocephaly, dysmorphic facies, and psychomotor retardation
 malignant hyperthermia, susceptibility to, 5	http://purl.obolibrary.org/obo/MONDO_0011163	malignant hyperthermia, susceptibility to, 5
-malignant neoplasm of body of uterus	http://www.ebi.ac.uk/efo/EFO_0003859	uterine neoplasm
 malignant tumor of breast	http://purl.obolibrary.org/obo/MONDO_0007254	breast cancer
-malignant tumor of prostate	http://purl.obolibrary.org/obo/MONDO_0008315	prostate cancer
-malignant tumor of prostate	http://www.orpha.net/ORDO/Orphanet_1331	Familial prostate cancer
 mandibuloacral dysplasia	http://purl.obolibrary.org/obo/MONDO_0016584	mandibuloacral dysplasia
-marfan syndrome	http://purl.obolibrary.org/obo/MONDO_0007947	marfan syndrome
+marfan syndrome	http://purl.obolibrary.org/obo/MONDO_0007947	Marfan syndrome
 meckel syndrome, type 1	http://purl.obolibrary.org/obo/MONDO_0018921	Meckel syndrome
 meckel syndrome, type 2	http://purl.obolibrary.org/obo/MONDO_0018921	Meckel syndrome
 meckel-gruber syndrome	http://purl.obolibrary.org/obo/MONDO_0018921	Meckel syndrome
 megabladder, congenital	http://www.ebi.ac.uk/efo/EFO_0010655	megabladder, congenital
 megalencephaly-polymicrogyria-polydactyly-hydrocephalus syndrome 1	http://www.orpha.net/ORDO/Orphanet_83473	Megalencephaly-polymicrogyria-postaxial polydactyly-hydrocephalus syndrome
 megalencephaly-polymicrogyria-polydactyly-hydrocephalus syndrome 2	http://purl.obolibrary.org/obo/MONDO_0014407	megalencephaly-polymicrogyria-polydactyly-hydrocephalus syndrome 2
-megf10-related myopathy	http://purl.obolibrary.org/obo/MONDO_0013731	megf10-related myopathy
-melnick-needles syndrome	http://purl.obolibrary.org/obo/MONDO_0010650	melnick-needles syndrome
+megf10-related myopathy	http://purl.obolibrary.org/obo/MONDO_0013731	MEGF10-related myopathy
+melnick-needles syndrome	http://purl.obolibrary.org/obo/MONDO_0010650	Melnick-Needles syndrome
 menkes kinky-hair syndrome	http://purl.obolibrary.org/obo/MONDO_0010651	Menkes disease
 metachromatic leukodystrophy	http://purl.obolibrary.org/obo/MONDO_0018868	metachromatic leukodystrophy
 metaphyseal chondrodysplasia, mckusick type	http://purl.obolibrary.org/obo/MONDO_0009595	cartilage-hair hypoplasia
-methylmalonic acidemia due to methylmalonyl-coa epimerase deficiency	http://purl.obolibrary.org/obo/MONDO_0009615	methylmalonic acidemia due to methylmalonyl-coa epimerase deficiency
-mhc class i deficiency	http://purl.obolibrary.org/obo/MONDO_0011476	mhc class i deficiency
-microcephalic osteodysplastic primordial dwarfism type ii	http://purl.obolibrary.org/obo/MONDO_0008872	microcephalic osteodysplastic primordial dwarfism type ii
+methylmalonic acidemia due to methylmalonyl-coa epimerase deficiency	http://purl.obolibrary.org/obo/MONDO_0009615	methylmalonic acidemia due to methylmalonyl-CoA epimerase deficiency
+mhc class i deficiency	http://purl.obolibrary.org/obo/MONDO_0011476	MHC class I deficiency
+microcephalic osteodysplastic primordial dwarfism type ii	http://purl.obolibrary.org/obo/MONDO_0008872	microcephalic osteodysplastic primordial dwarfism type II
 microcephaly, normal intelligence and immunodeficiency	http://purl.obolibrary.org/obo/MONDO_0009623	Nijmegen breakage syndrome
 microcephaly-intellectual disability-sensorineural hearing loss-epilepsy-abnormal muscle tone syndrome	http://www.ebi.ac.uk/efo/EFO_0009647	epilepsy, hearing loss, and intellectual disability syndrome
 migraine, familial hemiplegic, 3	http://purl.obolibrary.org/obo/MONDO_0012320	migraine, familial hemiplegic, 3
-mitochondrial complex i deficiency, nuclear type 1	http://purl.obolibrary.org/obo/MONDO_0100133	mitochondrial complex I deficiency
-mitochondrial complex iv deficiency, nuclear type 1	http://purl.obolibrary.org/obo/MONDO_0859160	mitochondrial complex IV deficiency, nuclear type 22
+mitochondrial complex iv deficiency, nuclear type 1	http://purl.obolibrary.org/obo/MONDO_0009068	obsolete cytochrome-c oxidase deficiency disease
+mitochondrial complex iv deficiency, nuclear type 1	http://www.orpha.net/ORDO/Orphanet_254905	Isolated cytochrome C oxidase deficiency
 monogenic diabetes	http://www.ebi.ac.uk/efo/EFO_1001511	monogenic diabetes
 mucopolysaccharidosis type 6	http://purl.obolibrary.org/obo/MONDO_0009661	mucopolysaccharidosis type 6
 mucopolysaccharidosis type 7	http://purl.obolibrary.org/obo/MONDO_0009662	mucopolysaccharidosis type 7
 mucopolysaccharidosis, mps-iii-b	http://purl.obolibrary.org/obo/MONDO_0009656	mucopolysaccharidosis type 3B
 mucopolysaccharidosis, mps-iii-c	http://purl.obolibrary.org/obo/MONDO_0009657	mucopolysaccharidosis type 3C
 mucopolysaccharidosis, mps-iv-a	http://purl.obolibrary.org/obo/MONDO_0009659	mucopolysaccharidosis type 4A
-multiple acyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0009282	multiple acyl-coa dehydrogenase deficiency
+multiple acyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0009282	multiple acyl-CoA dehydrogenase deficiency
 multiple congenital anomalies-hypotonia-seizures syndrome 2	http://purl.obolibrary.org/obo/MONDO_0010466	multiple congenital anomalies-hypotonia-seizures syndrome 2
 multiple cutaneous and mucosal venous malformations	http://purl.obolibrary.org/obo/MONDO_0010842	multiple cutaneous and mucosal venous malformations
 multiple endocrine neoplasia, type 2	http://purl.obolibrary.org/obo/MONDO_0019003	multiple endocrine neoplasia type 2
 multiple epiphyseal dysplasia type 4	http://purl.obolibrary.org/obo/MONDO_0009189	multiple epiphyseal dysplasia type 4
 myasthenic syndrome, congenital, 22	http://www.orpha.net/ORDO/Orphanet_590	Congenital myasthenic syndrome
-myh7-related skeletal myopathy	http://purl.obolibrary.org/obo/MONDO_0008050	myh7-related skeletal myopathy
+myh7-related skeletal myopathy	http://purl.obolibrary.org/obo/MONDO_0008050	MYH7-related skeletal myopathy
+myopathy	http://purl.obolibrary.org/obo/HP_0003198	Myopathy
 myopathy	http://www.ebi.ac.uk/efo/EFO_0004145	myopathy
 myopathy with tubular aggregates	http://purl.obolibrary.org/obo/MONDO_0008051	tubular aggregate myopathy
 myopathy, myofibrillar, 9, with early respiratory failure	http://purl.obolibrary.org/obo/MONDO_0011362	myopathy, myofibrillar, 9, with early respiratory failure
-nance-horan syndrome	http://purl.obolibrary.org/obo/MONDO_0010545	nance-horan syndrome
-nemaline myopathy 2	http://purl.obolibrary.org/obo/MONDO_0018958	nemaline myopathy
+nance-horan syndrome	http://purl.obolibrary.org/obo/MONDO_0010545	Nance-Horan syndrome
+nephronophthisis	http://purl.obolibrary.org/obo/HP_0000090	Nephronophthisis
 nephronophthisis	http://purl.obolibrary.org/obo/MONDO_0019005	nephronophthisis
-nephronophthisis 15	http://purl.obolibrary.org/obo/MONDO_0017842	Senior-Loken syndrome
-nephronophthisis-like nephropathy 1	http://purl.obolibrary.org/obo/MONDO_0019005	nephronophthisis
-nephrotic syndrome, type 2	http://purl.obolibrary.org/obo/MONDO_0019006	familial idiopathic steroid-resistant nephrotic syndrome
-neu-laxova syndrome 2	http://purl.obolibrary.org/obo/MONDO_0014466	neu-laxova syndrome 2
+neu-laxova syndrome 2	http://purl.obolibrary.org/obo/MONDO_0014466	Neu-Laxova syndrome 2
 neuroblastoma, susceptibility to, 2	http://purl.obolibrary.org/obo/MONDO_0700041	neuroblastoma, susceptibility to, 2
 neuroblastoma, susceptibility to, 3	http://purl.obolibrary.org/obo/MONDO_0013083	neuroblastoma, susceptibility to, 3
 neurodegeneration with brain iron accumulation 5	http://purl.obolibrary.org/obo/MONDO_0010476	neurodegeneration with brain iron accumulation 5
-neurodevelopmental disorder	http://www.ebi.ac.uk/efo/EFO_0010642	neurodevelopmental disorder
+neurodevelopmental disorder	http://www.ebi.ac.uk/efo/EFO_0010642	Neurodevelopmental disorder
 neurofibromatosis, type 1	http://purl.obolibrary.org/obo/MONDO_0018975	neurofibromatosis type 1
 neuronal ceroid lipofuscinosis	http://purl.obolibrary.org/obo/MONDO_0016295	neuronal ceroid lipofuscinosis
 neuronal ceroid lipofuscinosis 3	http://purl.obolibrary.org/obo/MONDO_0008767	neuronal ceroid lipofuscinosis 3
 neuronal ceroid lipofuscinosis 7	http://purl.obolibrary.org/obo/MONDO_0012588	neuronal ceroid lipofuscinosis 7
-neuronopathy, distal hereditary motor, type 2b	http://purl.obolibrary.org/obo/MONDO_0012080	neuronopathy, distal hereditary motor, type 2b
-neuronopathy, distal hereditary motor, type 7b	http://purl.obolibrary.org/obo/MONDO_0011879	neuronopathy, distal hereditary motor, type 7b
+neuronopathy, distal hereditary motor, type 2b	http://purl.obolibrary.org/obo/MONDO_0012080	neuronopathy, distal hereditary motor, type 2B
+neuronopathy, distal hereditary motor, type 7b	http://purl.obolibrary.org/obo/MONDO_0011879	neuronopathy, distal hereditary motor, type 7B
 neuropathy, hereditary sensory and autonomic, type 2a	http://purl.obolibrary.org/obo/MONDO_0019941	hereditary sensory and autonomic neuropathy type 2
-neuropathy, hereditary sensory, type 2c	http://purl.obolibrary.org/obo/MONDO_0013634	neuropathy, hereditary sensory, type 2c
+neuropathy, hereditary sensory, type 2c	http://purl.obolibrary.org/obo/MONDO_0013634	neuropathy, hereditary sensory, type 2C
 neutral lipid storage myopathy	http://purl.obolibrary.org/obo/MONDO_0012545	neutral lipid storage myopathy
 niemann-pick disease, type a	http://purl.obolibrary.org/obo/MONDO_0009756	Niemann-Pick disease type A
-niemann-pick disease, type c1	http://purl.obolibrary.org/obo/MONDO_0018982	Niemann-Pick disease type C
-non-ketotic hyperglycinemia	http://purl.obolibrary.org/obo/MONDO_0011612	glycine encephalopathy
-noonan syndrome 6	http://purl.obolibrary.org/obo/MONDO_0013186	noonan syndrome 6
-normal pregnancy	http://www.ebi.ac.uk/efo/EFO_0002950	pregnancy
-norman-roberts syndrome	http://purl.obolibrary.org/obo/MONDO_0009760	norman-roberts syndrome
+noonan syndrome 6	http://purl.obolibrary.org/obo/MONDO_0013186	Noonan syndrome 6
+norman-roberts syndrome	http://purl.obolibrary.org/obo/MONDO_0009760	Norman-Roberts syndrome
 obesity due to congenital leptin deficiency	http://purl.obolibrary.org/obo/MONDO_0013991	obesity due to congenital leptin deficiency
 oculofaciocardiodental syndrome	http://purl.obolibrary.org/obo/MONDO_0010261	microphthalmia, syndromic 2
 oligodontia-cancer predisposition syndrome	http://purl.obolibrary.org/obo/MONDO_0012075	oligodontia-cancer predisposition syndrome
 ornithine aminotransferase deficiency	http://purl.obolibrary.org/obo/MONDO_0009796	ornithine aminotransferase deficiency
 osteogenesis imperfecta	http://purl.obolibrary.org/obo/MONDO_0019019	osteogenesis imperfecta
 oto-palato-digital syndrome, type ii	http://purl.obolibrary.org/obo/MONDO_0010571	otopalatodigital syndrome type 2
-paramyotonia congenita of von eulenburg	http://purl.obolibrary.org/obo/MONDO_0008195	paramyotonia congenita of von eulenburg
-parathyroid carcinoma	http://www.ebi.ac.uk/efo/EFO_1001087	parathyroid adenoma
+paramyotonia congenita of von eulenburg	http://purl.obolibrary.org/obo/MONDO_0008195	paramyotonia congenita of Von Eulenburg
+parathyroid carcinoma	http://www.ebi.ac.uk/efo/EFO_1000456	Parathyroid Gland Carcinoma
 parietal foramina 2	http://purl.obolibrary.org/obo/MONDO_0012309	parietal foramina 2
 parkinson disease, late-onset	http://purl.obolibrary.org/obo/MONDO_0005180	Parkinson disease
+parkinson disease, late-onset	http://purl.obolibrary.org/obo/MONDO_0008199	late-onset Parkinson disease
 paroxysmal extreme pain disorder	http://purl.obolibrary.org/obo/MONDO_0008179	paroxysmal extreme pain disorder
 paroxysmal nonkinesigenic dyskinesia	http://purl.obolibrary.org/obo/MONDO_0700088	paroxysmal nonkinesigenic dyskinesia
 peroxisome biogenesis disorder	http://purl.obolibrary.org/obo/MONDO_0019234	peroxisome biogenesis disorder
-peroxisome biogenesis disorder 10a (zellweger)	http://purl.obolibrary.org/obo/MONDO_0013948	peroxisome biogenesis disorder 10a (zellweger)
-peroxisome biogenesis disorder 5a (zellweger)	http://purl.obolibrary.org/obo/MONDO_0013932	peroxisome biogenesis disorder 5a (zellweger)
-perry syndrome	http://purl.obolibrary.org/obo/MONDO_0008201	perry syndrome
-peutz-jeghers syndrome	http://purl.obolibrary.org/obo/MONDO_0008280	peutz-jeghers syndrome
-pgm1-congenital disorder of glycosylation	http://purl.obolibrary.org/obo/MONDO_0013968	pgm1-congenital disorder of glycosylation
-pharc syndrome	http://purl.obolibrary.org/obo/MONDO_0012984	pharc syndrome
-phgdh deficiency	http://purl.obolibrary.org/obo/MONDO_0011152	phgdh deficiency
-pierpont syndrome	http://purl.obolibrary.org/obo/MONDO_0011213	pierpont syndrome
+peroxisome biogenesis disorder 10a (zellweger)	http://purl.obolibrary.org/obo/MONDO_0013948	peroxisome biogenesis disorder 10A (Zellweger)
+peroxisome biogenesis disorder 5a (zellweger)	http://purl.obolibrary.org/obo/MONDO_0013932	peroxisome biogenesis disorder 5A (Zellweger)
+perry syndrome	http://purl.obolibrary.org/obo/MONDO_0008201	Perry syndrome
+peutz-jeghers syndrome	http://purl.obolibrary.org/obo/MONDO_0008280	Peutz-Jeghers syndrome
+pgm1-congenital disorder of glycosylation	http://purl.obolibrary.org/obo/MONDO_0013968	PGM1-congenital disorder of glycosylation
+pharc syndrome	http://purl.obolibrary.org/obo/MONDO_0012984	PHARC syndrome
+phgdh deficiency	http://purl.obolibrary.org/obo/MONDO_0011152	PHGDH deficiency
+pierpont syndrome	http://purl.obolibrary.org/obo/MONDO_0011213	Pierpont syndrome
 pigmentary retinal dystrophy	http://purl.obolibrary.org/obo/MONDO_0007639	fundus albipunctatus
-pitt-hopkins syndrome	http://purl.obolibrary.org/obo/MONDO_0012589	pitt-hopkins syndrome
+pitt-hopkins syndrome	http://purl.obolibrary.org/obo/MONDO_0012589	Pitt-Hopkins syndrome
 pituitary stalk interruption syndrome	http://purl.obolibrary.org/obo/MONDO_0019828	pituitary stalk interruption syndrome
 pityriasis rubra pilaris	http://purl.obolibrary.org/obo/MONDO_0100017	pityriasis rubra pilaris
-pol iii-related leukodystrophy	http://www.orpha.net/ORDO/Orphanet_289494	4H leukodystrophy
 polydactyly of a triphalangeal thumb	http://purl.obolibrary.org/obo/MONDO_0008270	polydactyly of a triphalangeal thumb
 polyglandular autoimmune syndrome, type 1	http://purl.obolibrary.org/obo/MONDO_0009411	autoimmune polyendocrine syndrome type 1
 polyglandular autoimmune syndrome, type 1	http://www.orpha.net/ORDO/Orphanet_3453	Autoimmune polyendocrinopathy type 1
 preeclampsia	http://www.ebi.ac.uk/efo/EFO_0000668	preeclampsia
 premature ovarian failure	http://www.ebi.ac.uk/efo/EFO_0004266	primary ovarian insufficiency
 premature ovarian failure 1	http://purl.obolibrary.org/obo/MONDO_0010706	premature ovarian failure 1
-primary amenorrhea	http://purl.obolibrary.org/obo/HP_0000786	primary amenorrhea
+primary amenorrhea	http://purl.obolibrary.org/obo/HP_0000786	Primary amenorrhea
 primary ciliary dyskinesia	http://purl.obolibrary.org/obo/MONDO_0016575	primary ciliary dyskinesia
 primary ciliary dyskinesia 28	http://purl.obolibrary.org/obo/MONDO_0016575	primary ciliary dyskinesia
 primary ciliary dyskinesia 30	http://purl.obolibrary.org/obo/MONDO_0016575	primary ciliary dyskinesia
 primary dilated cardiomyopathy	http://www.ebi.ac.uk/efo/EFO_0000407	dilated cardiomyopathy
 primary pulmonary hypertension	http://purl.obolibrary.org/obo/MONDO_0001999	primary pulmonary hypertension
-progressive familial heart block type ib	http://www.orpha.net/ORDO/Orphanet_871	Familial progressive cardiac conduction defect
+progressive familial heart block type ib	http://www.orpha.net/ORDO/Orphanet_871	Hereditary progressive cardiac conduction defect
 progressive familial intrahepatic cholestasis type 1	http://purl.obolibrary.org/obo/MONDO_0008892	progressive familial intrahepatic cholestasis type 1
 progressive microcephaly-seizures-cortical blindness-developmental delay syndrome	http://purl.obolibrary.org/obo/MONDO_0014714	progressive microcephaly-seizures-cortical blindness-developmental delay syndrome
 progressive pseudorheumatoid dysplasia	http://purl.obolibrary.org/obo/MONDO_0008827	progressive pseudorheumatoid arthropathy of childhood
@@ -488,88 +468,77 @@ propionic acidemia	http://purl.obolibrary.org/obo/MONDO_0011628	propionic acidem
 prostate cancer, hereditary, 1	http://www.orpha.net/ORDO/Orphanet_1331	Familial prostate cancer
 protoporphyria, erythropoietic, 1	http://purl.obolibrary.org/obo/MONDO_0019263	autosomal erythropoietic protoporphyria
 psoriasis 2	http://purl.obolibrary.org/obo/MONDO_0011269	psoriasis 2
-pten hamartoma tumor syndrome	http://purl.obolibrary.org/obo/MONDO_0017623	pten hamartoma tumor syndrome
-pulmonary fibrosis and/or bone marrow failure, telomere-related, 3	http://purl.obolibrary.org/obo/MONDO_0014613	pulmonary fibrosis and/or bone marrow failure, telomere-related, 3
+pten hamartoma tumor syndrome	http://purl.obolibrary.org/obo/MONDO_0017623	PTEN hamartoma tumor syndrome
+pulmonary fibrosis and/or bone marrow failure, telomere-related, 3	http://purl.obolibrary.org/obo/MONDO_0014613	pulmonary fibrosis and/or bone marrow failure, Telomere-related, 3
 pulmonary hypertension, primary, 1	http://purl.obolibrary.org/obo/MONDO_0024533	pulmonary hypertension, primary, 1
-pyogenic bacterial infections due to myd88 deficiency	http://purl.obolibrary.org/obo/MONDO_0012839	pyogenic bacterial infections due to myd88 deficiency
-rabson-mendenhall syndrome	http://purl.obolibrary.org/obo/MONDO_0009874	rabson-mendenhall syndrome
+pyogenic bacterial infections due to myd88 deficiency	http://purl.obolibrary.org/obo/MONDO_0012839	pyogenic bacterial infections due to MyD88 deficiency
+rabson-mendenhall syndrome	http://purl.obolibrary.org/obo/MONDO_0009874	Rabson-Mendenhall syndrome
 rasopathy	http://www.ebi.ac.uk/efo/EFO_1001502	rasopathy
 renal cell carcinoma	http://www.ebi.ac.uk/efo/EFO_0000681	renal cell carcinoma
 retinal degeneration	http://purl.obolibrary.org/obo/MONDO_0004580	retinal degeneration
-retinal dystrophy	http://purl.obolibrary.org/obo/HP_0000556	retinal dystrophy
+retinal dystrophy	http://purl.obolibrary.org/obo/HP_0000556	Retinal dystrophy
 retinal vasculopathy with cerebral leukoencephalopathy and systemic manifestations	http://purl.obolibrary.org/obo/MONDO_0008641	retinal vasculopathy with cerebral leukoencephalopathy and systemic manifestations
 retinitis pigmentosa	http://purl.obolibrary.org/obo/MONDO_0019200	retinitis pigmentosa
 retinitis pigmentosa 11	http://purl.obolibrary.org/obo/MONDO_0019200	retinitis pigmentosa
 retinitis pigmentosa 39	http://purl.obolibrary.org/obo/MONDO_0019200	retinitis pigmentosa
-retinitis pigmentosa 7, digenic	http://purl.obolibrary.org/obo/MONDO_0019200	retinitis pigmentosa
-retinitis pigmentosa 80	http://purl.obolibrary.org/obo/MONDO_0019200	retinitis pigmentosa
 retinitis pigmentosa 88	http://purl.obolibrary.org/obo/MONDO_0032940	retinitis pigmentosa 88
-retinitis pigmentosa-deafness syndrome	http://purl.obolibrary.org/obo/MONDO_0019501	Usher syndrome
 retinoblastoma	http://purl.obolibrary.org/obo/MONDO_0008380	retinoblastoma
-rett syndrome	http://purl.obolibrary.org/obo/MONDO_0010726	rett syndrome
-rett syndrome, congenital variant	http://purl.obolibrary.org/obo/MONDO_0010726	Rett syndrome
+rett syndrome	http://purl.obolibrary.org/obo/MONDO_0010726	Rett syndrome
 rhabdoid tumor predisposition syndrome 2	http://purl.obolibrary.org/obo/MONDO_0013224	rhabdoid tumor predisposition syndrome 2
-rod-cone dystrophy	http://www.orpha.net/ORDO/Orphanet_1872	Cone rod dystrophy
-rubinstein-taybi syndrome	http://purl.obolibrary.org/obo/MONDO_0019188	rubinstein-taybi syndrome
+rubinstein-taybi syndrome	http://purl.obolibrary.org/obo/MONDO_0019188	Rubinstein-Taybi syndrome
 ryr1-related disorders	http://www.ebi.ac.uk/efo/EFO_0009143	ryr1-related disorders
 saldino-mainzer syndrome	http://purl.obolibrary.org/obo/MONDO_0009964	short-rib thoracic dysplasia 9 with or without polydactyly
-schimke immuno-osseous dysplasia	http://purl.obolibrary.org/obo/MONDO_0009458	schimke immuno-osseous dysplasia
+schimke immuno-osseous dysplasia	http://purl.obolibrary.org/obo/MONDO_0009458	Schimke immuno-osseous dysplasia
 schnyder crystalline corneal dystrophy	http://purl.obolibrary.org/obo/MONDO_0007374	Schnyder corneal dystrophy
-schwartz-jampel syndrome	http://purl.obolibrary.org/obo/MONDO_0009717	schwartz-jampel syndrome
-seizures, benign familial infantile, 3	http://www.orpha.net/ORDO/Orphanet_140927	Benign familial neonatal-infantile seizures
+schwartz-jampel syndrome	http://purl.obolibrary.org/obo/MONDO_0009717	Schwartz-Jampel syndrome
+seizures, benign familial infantile, 3	http://purl.obolibrary.org/obo/MONDO_0011904	seizures, benign familial infantile, 3
 septo-optic dysplasia sequence	http://purl.obolibrary.org/obo/MONDO_0008428	septooptic dysplasia
 septo-optic dysplasia sequence	http://www.orpha.net/ORDO/Orphanet_3157	Septo-optic dysplasia spectrum
-severe combined immunodeficiency due to dna-pkcs deficiency	http://purl.obolibrary.org/obo/MONDO_0014423	severe combined immunodeficiency due to dna-pkcs deficiency
+severe combined immunodeficiency due to dna-pkcs deficiency	http://purl.obolibrary.org/obo/MONDO_0014423	severe combined immunodeficiency due to DNA-PKcs deficiency
 severe early-childhood-onset retinal dystrophy	http://purl.obolibrary.org/obo/MONDO_0009549	severe early-childhood-onset retinal dystrophy
 severe myoclonic epilepsy in infancy	http://purl.obolibrary.org/obo/MONDO_0100135	Dravet syndrome
 severe neonatal-onset encephalopathy with microcephaly	http://purl.obolibrary.org/obo/MONDO_0010397	severe neonatal-onset encephalopathy with microcephaly
 severe x-linked myotubular myopathy	http://purl.obolibrary.org/obo/MONDO_0010683	X-linked myotubular myopathy
 short rib-polydactyly syndrome	http://purl.obolibrary.org/obo/MONDO_0015461	short rib-polydactyly syndrome
-short stature	http://purl.obolibrary.org/obo/HP_0004322	short stature
-singleton-merten syndrome 1	http://purl.obolibrary.org/obo/MONDO_0024535	singleton-merten syndrome 1
+short stature	http://purl.obolibrary.org/obo/HP_0004322	Short stature
+singleton-merten syndrome 1	http://purl.obolibrary.org/obo/MONDO_0024535	Singleton-Merten syndrome 1
 skeletal dysplasia, mild, with joint laxity and advanced bone age	http://purl.obolibrary.org/obo/MONDO_0030029	skeletal dysplasia, mild, with joint laxity and advanced bone age
-sotos syndrome	http://purl.obolibrary.org/obo/MONDO_0019349	sotos syndrome
+sotos syndrome	http://purl.obolibrary.org/obo/MONDO_0019349	Sotos syndrome
 spastic ataxia 2	http://purl.obolibrary.org/obo/MONDO_0012651	spastic ataxia 2
-spastic paraplegia	http://purl.obolibrary.org/obo/HP_0001258	spastic paraplegia
+spastic paraplegia	http://purl.obolibrary.org/obo/HP_0001258	Spastic paraplegia
 spastic paraplegia-severe developmental delay-epilepsy syndrome	http://purl.obolibrary.org/obo/MONDO_0014764	spastic paraplegia-severe developmental delay-epilepsy syndrome
 spermatogenic failure 7	http://purl.obolibrary.org/obo/MONDO_0013070	spermatogenic failure 7
 spinocerebellar ataxia, autosomal recessive, with axonal neuropathy 2	http://purl.obolibrary.org/obo/MONDO_0018996	spinocerebellar ataxia, autosomal recessive, with axonal neuropathy 2
-spondylometaphyseal dysplasia, kozlowski type	http://purl.obolibrary.org/obo/MONDO_0008477	spondylometaphyseal dysplasia, kozlowski type
+spondylometaphyseal dysplasia, kozlowski type	http://purl.obolibrary.org/obo/MONDO_0008477	spondylometaphyseal dysplasia, Kozlowski type
 squamous cell carcinoma of the head and neck	http://www.ebi.ac.uk/efo/EFO_0000181	head and neck squamous cell carcinoma
 squamous cell lung carcinoma	http://www.ebi.ac.uk/efo/EFO_0000708	squamous cell lung carcinoma
-stargardt disease	http://purl.obolibrary.org/obo/MONDO_0019353	stargardt disease
+stargardt disease	http://purl.obolibrary.org/obo/MONDO_0019353	Stargardt disease
 steinert myotonic dystrophy syndrome	http://purl.obolibrary.org/obo/MONDO_0008056	myotonic dystrophy type 1
 steinert myotonic dystrophy syndrome	http://www.orpha.net/ORDO/Orphanet_273	Steinert myotonic dystrophy
-stormorken syndrome	http://purl.obolibrary.org/obo/MONDO_0008497	stormorken syndrome
-sulfite oxidase deficiency due to molybdenum cofactor deficiency type c	http://purl.obolibrary.org/obo/MONDO_0014212	sulfite oxidase deficiency due to molybdenum cofactor deficiency type c
-t-cell immunodeficiency, congenital alopecia, and nail dystrophy	http://purl.obolibrary.org/obo/MONDO_0011132	t-cell immunodeficiency, congenital alopecia, and nail dystrophy
-teebi hypertelorism syndrome 1	http://purl.obolibrary.org/obo/MONDO_0800025	teebi hypertelorism syndrome 1
+stormorken syndrome	http://purl.obolibrary.org/obo/MONDO_0008497	Stormorken syndrome
+sulfite oxidase deficiency due to molybdenum cofactor deficiency type c	http://purl.obolibrary.org/obo/MONDO_0014212	sulfite oxidase deficiency due to molybdenum cofactor deficiency type C
+t-cell immunodeficiency, congenital alopecia, and nail dystrophy	http://purl.obolibrary.org/obo/MONDO_0011132	T-cell immunodeficiency, congenital alopecia, and nail dystrophy
+teebi hypertelorism syndrome 1	http://purl.obolibrary.org/obo/MONDO_0800025	Teebi hypertelorism syndrome 1
 telangiectasia, hereditary hemorrhagic, type 1	http://purl.obolibrary.org/obo/MONDO_0008535	telangiectasia, hereditary hemorrhagic, type 1
-thrombophilia due to protein c deficiency, autosomal dominant	http://purl.obolibrary.org/obo/MONDO_0019145	hereditary thrombophilia due to congenital protein C deficiency
 tibial muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0010870	tibial muscular dystrophy
-tip-toe gait	http://purl.obolibrary.org/obo/HP_0030051	tip-toe gait
+tip-toe gait	http://purl.obolibrary.org/obo/HP_0030051	Tip-toe gait
 tooth agenesis, selective, 3	http://www.ebi.ac.uk/efo/EFO_0005410	tooth agenesis
 tp63-related spectrum disorders	http://www.ebi.ac.uk/efo/EFO_0022486	tp63-related spectrum disorders
-transcobalamin ii deficiency	http://purl.obolibrary.org/obo/MONDO_0010149	transcobalamin ii deficiency
-treacher collins syndrome 3	http://purl.obolibrary.org/obo/MONDO_0002457	Treacher-Collins syndrome
-troyer syndrome	http://purl.obolibrary.org/obo/MONDO_0010156	troyer syndrome
-tuberous sclerosis 1	http://purl.obolibrary.org/obo/MONDO_0001734	tuberous sclerosis
-tuberous sclerosis 2	http://purl.obolibrary.org/obo/MONDO_0001734	tuberous sclerosis
+transcobalamin ii deficiency	http://purl.obolibrary.org/obo/MONDO_0010149	transcobalamin II deficiency
+troyer syndrome	http://purl.obolibrary.org/obo/MONDO_0010156	Troyer syndrome
 tuberous sclerosis syndrome	http://purl.obolibrary.org/obo/MONDO_0001734	tuberous sclerosis
 tyrosinase-positive oculocutaneous albinism	http://purl.obolibrary.org/obo/MONDO_0008746	oculocutaneous albinism type 2
-usher syndrome	http://purl.obolibrary.org/obo/MONDO_0019501	usher syndrome
-usher syndrome type 1	http://purl.obolibrary.org/obo/MONDO_0010168	usher syndrome type 1
-usher syndrome type 1f	http://purl.obolibrary.org/obo/MONDO_0019501	Usher syndrome
-usher syndrome type 2a	http://purl.obolibrary.org/obo/MONDO_0010169	usher syndrome type 2a
-uterine carcinosarcoma	http://www.ebi.ac.uk/efo/EFO_1000613	uterine carcinosarcoma
-very long chain acyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0008723	very long chain acyl-coa dehydrogenase deficiency
-visual impairment	http://purl.obolibrary.org/obo/HP_0000505	visual impairment
+usher syndrome	http://purl.obolibrary.org/obo/MONDO_0019501	Usher syndrome
+usher syndrome type 1	http://purl.obolibrary.org/obo/MONDO_0010168	Usher syndrome type 1
+usher syndrome type 2a	http://purl.obolibrary.org/obo/MONDO_0010169	Usher syndrome type 2A
+uterine carcinosarcoma	http://www.ebi.ac.uk/efo/EFO_1000613	Uterine Carcinosarcoma
+very long chain acyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0008723	very long chain acyl-CoA dehydrogenase deficiency
+visual impairment	http://purl.obolibrary.org/obo/HP_0000505	Visual impairment
 von hippel-lindau syndrome	http://purl.obolibrary.org/obo/MONDO_0008667	von Hippel-Lindau disease
 wagner syndrome	http://purl.obolibrary.org/obo/MONDO_0007740	Wagner disease
-weaver syndrome	http://purl.obolibrary.org/obo/MONDO_0010193	weaver syndrome
-weill-marchesani 4 syndrome, recessive	http://purl.obolibrary.org/obo/MONDO_0013176	weill-marchesani 4 syndrome, recessive
+weaver syndrome	http://purl.obolibrary.org/obo/MONDO_0010193	Weaver syndrome
+weill-marchesani 4 syndrome, recessive	http://purl.obolibrary.org/obo/MONDO_0013176	Weill-Marchesani 4 syndrome, recessive
 wolcott-rallison dysplasia	http://purl.obolibrary.org/obo/MONDO_0009192	Wolcott-Rallison syndrome
-x-linked distal spinal muscular atrophy type 3	http://purl.obolibrary.org/obo/MONDO_0010338	x-linked distal spinal muscular atrophy type 3
-x-linked myopathy with postural muscle atrophy	http://purl.obolibrary.org/obo/MONDO_0010401	x-linked myopathy with postural muscle atrophy
+x-linked distal spinal muscular atrophy type 3	http://purl.obolibrary.org/obo/MONDO_0010338	X-linked distal spinal muscular atrophy type 3
+x-linked myopathy with postural muscle atrophy	http://purl.obolibrary.org/obo/MONDO_0010401	X-linked myopathy with postural muscle atrophy
 xeroderma pigmentosum	http://purl.obolibrary.org/obo/MONDO_0019600	xeroderma pigmentosum
-zap70-related severe combined immunodeficiency	http://purl.obolibrary.org/obo/MONDO_0010023	combined immunodeficiency due to ZAP70 deficiency
