@@ -69,7 +69,7 @@ def test_main():
 
 
 @pytest.mark.integration
-def test_process_trait():
+class TestProcessTrait:
     # Use all default filters
     zooma_filters = {'ontologies': 'efo,ordo,hp,mondo',
                      'required': 'cttv,eva-clinvar,clinvar-xrefs,gwas',
@@ -82,32 +82,45 @@ def test_process_trait():
     target_ontology = 'EFO'
     preferred_ontologies = 'mondo,hp'
 
-    # Trait 1 only goes through OLS as it finds an exact match in EFO
-    trait_1 = Trait('chédiak-higashi syndrome', None, None)
-    processed_trait_1 = process_trait(trait_1, zooma_filters, zooma_host, oxo_targets, oxo_distance, ols_query_fields,
-                                    ols_field_list, target_ontology, preferred_ontologies)
-    assert len(processed_trait_1.ols_result_list) == 7
-    assert processed_trait_1.is_finished
+    def run_process_trait(self, trait):
+        return process_trait(trait, self.zooma_filters, self.zooma_host, self.oxo_targets, self.oxo_distance,
+                             self.ols_query_fields, self.ols_field_list, self.target_ontology,
+                             self.preferred_ontologies)
 
-    # Trait 2 finds nothing exact via OLS, so goes through Zooma as well and finds a high-confidence result
-    trait_2 = Trait('11p partial monosomy syndrome', None, None)
-    processed_trait_2 = process_trait(trait_2, zooma_filters, zooma_host, oxo_targets, oxo_distance, ols_query_fields,
-                                    ols_field_list, target_ontology, preferred_ontologies)
-    assert len(processed_trait_2.ols_result_list) == 9
-    assert len(processed_trait_2.zooma_result_list) == 1
-    assert processed_trait_2.is_finished
+    def test_ols_exact_match(self):
+        # Only goes through OLS as it finds an exact match in EFO
+        trait = Trait('chédiak-higashi syndrome', None, None)
+        processed_trait = self.run_process_trait(trait)
+        assert len(processed_trait.ols_result_list) == 3
+        assert processed_trait.is_finished
 
-    # Trait 3 finds no sufficiently good mappings in OLS or Zooma
-    trait_3 = Trait('aicardi-goutieres syndrome 99', None, None)
-    processed_trait_3 = process_trait(trait_3, zooma_filters, zooma_host, oxo_targets, oxo_distance, ols_query_fields,
-                                    ols_field_list, target_ontology, preferred_ontologies)
-    assert len(processed_trait_3.ols_result_list) == 0
-    assert len(processed_trait_3.zooma_result_list) == 15
-    assert not processed_trait_3.is_finished
+    def test_zooma_high_confidence(self):
+        # Finds nothing exact via OLS, so goes through Zooma as well and finds a high-confidence result
+        trait = Trait('11p partial monosomy syndrome', None, None)
+        processed_trai = self.run_process_trait(trait)
+        assert len(processed_trai.ols_result_list) == 6
+        assert len(processed_trai.zooma_result_list) == 1
+        assert processed_trai.is_finished
+
+    def test_not_finished(self):
+        # No sufficiently good mappings in OLS or Zooma
+        trait = Trait('aicardi-goutieres syndrome 99', None, None)
+        processed_trait = self.run_process_trait(trait)
+        assert len(processed_trait.ols_result_list) == 0
+        assert len(processed_trait.zooma_result_list) == 15
+        assert not processed_trait.is_finished
+
+    def test_ols_exact_ascii_match(self):
+        # Search should be agnostic to accents and other non-ASCII characters
+        trait = Trait('pelger-huët anomaly', None, None)
+        processed_trait = self.run_process_trait(trait)
+        assert len(processed_trait.ols_result_list) == 11
+        assert processed_trait.is_finished
+        assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://www.ebi.ac.uk/efo/EFO_1001093'}
 
 
 @pytest.mark.integration
-def test_process_trait_exact_match():
+def test_process_trait_zooma_exact_match():
     # Exact match with MONDO:0009061 (in EFO and Mondo)
     trait_name = 'Cystic Fibrosis'
     # Use our default Zooma filters

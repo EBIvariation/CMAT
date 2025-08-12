@@ -68,7 +68,7 @@ def test_get_obsolete_efo_mapping():
 
 
 def test_get_current_efo_mapping():
-    """If mapping is in EFO and is current, ii *should* be selected for curation."""
+    """If mapping is in EFO and is current, it *should* be selected for curation."""
     test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
                                           'Abnormal neutrophil chemotactic response',
                                           'MEDIUM', 'eva-clinvar')

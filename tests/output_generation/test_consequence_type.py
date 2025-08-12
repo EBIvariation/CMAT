@@ -44,4 +44,4 @@ def test_repeat_expansion_so_term():
 
 def test_get_so_accession_dict():
     results = get_so_accession_dict(page_size=100)
-    assert len(results) == 222
+    assert len(results) == 229
