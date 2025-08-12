@@ -42,16 +42,19 @@ def find_replacement_mapping(trait_name, previous_uri, ontology, preferred_ontol
 
 
 def find_exact_mappings(mappings):
-    """Returns the top ranked exact label match and exact synonym match mappings."""
+    """Returns the top ranked exact label match and exact synonym match mappings, along with the remaining mappings."""
     exact_label_match_mapping = ''
     exact_synonym_match_mapping = ''
+    other_mappings = []
     for mapping in mappings:
         match_type = mapping.split('|')[2]
         if match_type == str(MatchType.EXACT_MATCH_LABEL) and exact_label_match_mapping == '':
             exact_label_match_mapping = mapping
         elif match_type == str(MatchType.EXACT_MATCH_SYNONYM) and exact_synonym_match_mapping == '':
             exact_synonym_match_mapping = mapping
-    return exact_label_match_mapping, exact_synonym_match_mapping
+        else:
+            other_mappings.append(mapping)
+    return exact_label_match_mapping, exact_synonym_match_mapping, other_mappings
 
 
 def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies):
@@ -112,11 +115,11 @@ if __name__ == '__main__':
             notes = f'"{notes}\n{previous_comments[trait_name]}"'
         # Use maximum of 50 mappings to improve Google Sheets performance
         mappings = fields[3:53]
-        exact_match, exact_synonym_match = find_exact_mappings(mappings)
+        exact_match, exact_synonym_match, other_mappings = find_exact_mappings(mappings)
         for previous_mapping, replacement_mapping in previous_and_replacement_mappings(
                 trait_name, previous_mappings, target_ontology, preferred_ontologies):
             rows.append([trait_name, trait_freq, notes, previous_mapping, replacement_mapping,
-                         exact_match, exact_synonym_match] + mappings)
+                         exact_match, exact_synonym_match] + other_mappings)
 
     rows.sort(key=lambda x: (x[2], int(x[1])), reverse=True)
     with open(args.output, 'w') as outfile:

@@ -46,10 +46,10 @@ def test_get_non_efo_mapping():
     mapping.confidence = zooma.ZoomaConfidence.HIGH
     mapping.in_ontology = False
     mapping.is_current = False
-    mapping.ontology_label = ""
+    mapping.ontology_label = 'abnormal bleeding'
     mapping.source = 'eva-clinvar'
     mapping.uri = 'http://purl.obolibrary.org/obo/HP_0000483'
-    assert [mapping] == output.get_mappings_for_curation([test_zooma_result])
+    assert [mapping] == output.get_mappings_for_curation([test_zooma_result], 'abnormal bleeding')
 
 
 def test_get_obsolete_efo_mapping():
@@ -64,11 +64,11 @@ def test_get_obsolete_efo_mapping():
     mapping.ontology_label = "Adenine phosphoribosyltransferase deficiency"
     mapping.source = 'eva-clinvar'
     mapping.uri = 'http://www.orpha.net/ORDO/Orphanet_976'
-    assert [] == output.get_mappings_for_curation([test_zooma_result])
+    assert [] == output.get_mappings_for_curation([test_zooma_result], 'adenine phosphoribosyltransferase deficiency')
 
 
 def test_get_current_efo_mapping():
-    """If mapping is in EFO and is current, is *should* be selected for curation."""
+    """If mapping is in EFO and is current, ii *should* be selected for curation."""
     test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
                                           'Abnormal neutrophil chemotactic response',
                                           'MEDIUM', 'eva-clinvar')
@@ -79,7 +79,22 @@ def test_get_current_efo_mapping():
     mapping.ontology_label = "Abnormal neutrophil chemotactic response"
     mapping.source = 'eva-clinvar'
     mapping.uri = 'http://purl.obolibrary.org/obo/MONDO_0008091'
-    assert [mapping] == output.get_mappings_for_curation([test_zooma_result])
+    assert [mapping] == output.get_mappings_for_curation([test_zooma_result], 'Abnormal neutrophil chemotactic response')
+
+
+def test_get_current_efo_nonexact_mapping():
+    """If mapping is in EFO and is current but is not an exact match, it *should* be selected for curation."""
+    test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
+                                          'Abnormal neutrophil chemotactic response',
+                                          'MEDIUM', 'eva-clinvar')
+    mapping = test_zooma_result.mapping_list[0]
+    mapping.confidence = zooma.ZoomaConfidence.HIGH
+    mapping.in_ontology = True
+    mapping.is_current = True
+    mapping.ontology_label = "Abnormal neutrophil chemotactic response"
+    mapping.source = 'eva-clinvar'
+    mapping.uri = 'http://purl.obolibrary.org/obo/MONDO_0008091'
+    assert [] == output.get_mappings_for_curation([test_zooma_result], 'neutrophil chemotactic response')
 
 
 def test_output_for_curation():

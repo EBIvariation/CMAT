@@ -1,6 +1,7 @@
 import csv
 from collections import Counter
 
+from cmat.trait_mapping.ols import MappingSource, MatchType
 from cmat.trait_mapping.trait import Trait
 
 
@@ -26,20 +27,21 @@ def output_trait_mapping(trait: Trait, mapping_writer: csv.writer, finished_sour
         mapping_writer.writerow([trait.name, ontology_entry.uri, ontology_entry.label])
 
 
-def get_mappings_for_curation(result_list) -> list:
-    """Sorted in reverse so the highest ranked oxo mappings are shown first"""
+def get_mappings_for_curation(result_list, trait_name) -> list:
+    """Sorted in reverse so the highest ranked mappings are shown first, and filtered to only include exact matches"""
     curation_mapping_list = []
     for result in result_list:
         for mapping in result.mapping_list:
-            if (mapping.in_ontology and mapping.is_current) or (not mapping.in_ontology):
-                curation_mapping_list.append(mapping)
+            if mapping.ontology_label.lower() == trait_name.lower():
+                if (mapping.in_ontology and mapping.is_current) or (not mapping.in_ontology):
+                    curation_mapping_list.append(mapping)
     curation_mapping_list.sort(reverse=True)
     return curation_mapping_list
 
 
 def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontology: str, preferred_ontologies: list):
     """
-    Write any non-finished OLS mappings of a trait to a file for manual curation.
+    Write any non-finished OLS, Zooma or OxO mappings of a trait to a file for manual curation.
     Also outputs traits without any ontology mappings.
 
     :param trait: A Trait with no finished ontology mappings in finished_mapping_set
@@ -52,10 +54,24 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     # records they are associated with is low. This is added to the "Notes" column.
     output_row = [trait.name, trait.frequency, 'NT expansion' if trait.associated_with_nt_expansion else '']
 
+    # Include all OLS mappings
     for ols_result in sorted(trait.ols_result_list, reverse=True):
         match_type = ols_result.get_match_type()
         mapping_source = ols_result.get_mapping_source()
         cell = [ols_result.uri, ols_result.label, str(match_type), mapping_source.to_string(target_ontology, preferred_ontologies)]
+        output_row.append("|".join(cell))
+
+    # Include only exact label matches from Zooma and OxO
+    zooma_mapping_list = get_mappings_for_curation(trait.zooma_result_list, trait.name)
+    for zooma_mapping in zooma_mapping_list:
+        cell = [zooma_mapping.uri, zooma_mapping.ontology_label, str(MatchType.EXACT_MATCH_LABEL),
+                MappingSource.NOT_PREFERRED_TARGET.to_string(target_ontology, preferred_ontologies)]
+        output_row.append("|".join(cell))
+
+    oxo_mapping_list = get_mappings_for_curation(trait.oxo_result_list, trait.name)
+    for oxo_mapping in oxo_mapping_list:
+        cell = [str(oxo_mapping.uri), oxo_mapping.ontology_label, str(MatchType.EXACT_MATCH_LABEL),
+                MappingSource.NOT_PREFERRED_TARGET.to_string(target_ontology, preferred_ontologies)]
         output_row.append("|".join(cell))
 
     curation_writer.writerow(output_row)
