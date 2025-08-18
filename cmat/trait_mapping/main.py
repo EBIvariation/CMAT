@@ -3,6 +3,8 @@ import logging
 import multiprocessing
 from collections import Counter
 
+from unidecode import unidecode
+
 from cmat.clinvar_xml_io import ClinVarTrait
 from cmat.trait_mapping.ols import get_ols_search_results
 from cmat.trait_mapping.output import output_trait
@@ -55,13 +57,22 @@ def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list:
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
-    trait.ols_result_list = get_ols_search_results(trait.name.lower(), ols_query_fields, ols_field_list,
+    lowercased_trait_name = trait.name.lower()
+    trait.ols_result_list = get_ols_search_results(lowercased_trait_name, ols_query_fields, ols_field_list,
                                                    target_ontology, preferred_ontologies)
     trait.process_ols_results()
     if trait.is_finished:
         return trait
+    # Search again with accents and other non-ASCII symbols replaced, if necessary
+    normalised_trait_name = unidecode(lowercased_trait_name)
+    if normalised_trait_name != lowercased_trait_name:
+        trait.ols_result_list += get_ols_search_results(normalised_trait_name, ols_query_fields, ols_field_list,
+                                                        target_ontology, preferred_ontologies)
+        trait.process_ols_results()
+        if trait.is_finished:
+            return trait
 
-    trait.zooma_result_list = get_zooma_results(trait.name.lower(), filters, zooma_host, target_ontology)
+    trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, zooma_host, target_ontology)
     trait.process_zooma_results()
     if (trait.is_finished
             or len(trait.zooma_result_list) == 0

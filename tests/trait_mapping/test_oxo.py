@@ -1,3 +1,4 @@
+import pytest
 import requests_mock
 
 import cmat.trait_mapping.oxo as oxo
@@ -71,3 +72,12 @@ class TestGetOxoResultsFromResponse:
             expected_oxo_results = [expected_oxo_result]
 
             assert oxo.get_oxo_results_from_response(oxo_response) == expected_oxo_results
+
+    @pytest.mark.integration
+    def test_get_oxo_results(self):
+        id_list = ["OMIM:314580", "MeSH:D002277"]
+        target_list = ["Orphanet", "efo", "hp"]
+        results = oxo.get_oxo_results(id_list, target_list, distance=1)
+        assert len(results) == 2
+        assert len(results[0].mapping_list) == 2
+        assert len(results[1].mapping_list) == 2

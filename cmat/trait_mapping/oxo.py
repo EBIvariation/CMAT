@@ -192,7 +192,7 @@ def get_oxo_results(id_list: list, target_list: list, distance: int) -> list:
     url = "https://www.ebi.ac.uk/spot/oxo/api/search?size=5000"
     payload = build_oxo_payload(id_list, target_list, distance)
     try:
-        oxo_response = json_request(url, payload, requests.post)
+        oxo_response = json_request(url, payload, method=requests.post)
     except requests.HTTPError:
         # Sometimes, OxO fails to process a completely valid request even after several attempts.
         # See https://github.com/EBISPOT/OXO/issues/26 for details
