@@ -1,13 +1,13 @@
 # Manual curation, part II, biological: perform manual curation
 
-The goal of the manual curation is to map traits in ClinVar to terms in EFO. We try to map as many as possible, but the 
-following are priorities:
+The goal of the manual curation is to map traits in ClinVar to terms in EFO. We try to map as many as possible,
+prioritising the following:
 * Traits which are linked to NT expansion (nucleotide repeat expansion) variants. These are marked as "NT expansion" in
   the "Notes" column and ranked at the top of the spreadsheet.
 * Traits with high frequency (≥ 10), as indicated in the "ClinVar Freq" column. The spreadsheet is sorted by this column
-  to help with this.
+  (after the NT traits).
 
-Besides EFO, terms MONDO and HP are preferred, as these can be directly imported into EFO if not present.
+Besides EFO, terms in MONDO and HP are preferred, as these can be directly imported into EFO if not present.
 Terms from other sources cannot be directly imported, but can be used as the basis for new EFO terms.
 
 ## Criteria to manually evaluate mapping quality
@@ -44,8 +44,8 @@ The spreadsheet is populated by the pipeline with suggested mappings. The mappin
     * `MONDO_HP_NOT_EFO`: contained in Mondo or HP but not EFO (yellow)
     * `NOT_MONDO_HP_EFO`: any other (no color)
 
-Some mappings will be in dedicated columns to help with filtering, while the rest are present in a ranked list "All
-other mappings".
+Some mappings will be in dedicated columns to help with filtering, while the rest are present in a ranked list under
+"All other mappings".
 
 ## Curation workflow
 
@@ -66,12 +66,13 @@ the filtered selection.
         * 1.1.1 Copy the cell contents into "Mapping to use" and mark as `DONE`
             * Overwrite any mappings from 1.1 and 1.2, as these are our most preferred mappings
 2. **Medium-confidence mappings:** These are often good suggested mappings, but must be checked manually.
-    * 2.1 **Replacement mappings**
-        * 2.1.1 Filter "Previous mapping" column by fill colour: red (#F4C73C)
-        * 2.1.2 Determine if the mapping in "Replacement mapping" is suitable, if not find a new term to use as mapping
-    * 2.2 **Exact synonym matches**
-        * 2.2.1 Remove "Blank" from "Exact synonym matches" column
-        * 2.2.2 Determine if the mapping is suitable, if not find a new term to use as mapping
+    * 2.1 Set the "Status" column to only include "Blank" entries
+    * 2.2 **Replacement mappings**
+        * 2.2.1 Filter "Previous mapping" column by fill colour: red (#F4C73C)
+        * 2.2.2 Determine if the mapping in "Replacement mapping" is suitable, if not find a new term to use as mapping
+    * 2.3 **Exact synonym matches**
+        * 2.3.1 Remove "Blank" from "Exact synonym matches" column
+        * 2.3.2 Determine if the mapping is suitable, if not find a new term to use as mapping
 3. **Low-confidence mappings or unmapped terms**
     * 3.1 Set the "Status" column to only include "Blank" entries
     * 3.2 Look for suitable mappings from the "All other mappings" columns, or perform your own searches
@@ -156,4 +157,4 @@ ${PYTHON_BIN} ${CODE_ROOT}/bin/trait_mapping/get_children_with_keywords.py --ont
 ```
 
 Keep in mind however that EFO is not able to modify imported ontology hierarchies such as MONDO, so suggested child 
-terms may not be respected.
+terms may not be included in the new term.
