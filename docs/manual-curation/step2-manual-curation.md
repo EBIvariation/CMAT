@@ -55,15 +55,15 @@ the filtered selection.
 1. **High-confidence mappings:** These require minimal manual checking, as they include terms that match the trait
    perfectly or terms we've previously mapped.
     * 1.1 **Previous mappings**
-        * 1.3.1 Filter "Previous mapping" column by fill colour: green (#B7E1CD)
-        * 1.3.2 Copy the cell contents into "Mapping to use" and mark as `DONE`
+        * 1.1.1 Filter "Previous mapping" column by fill colour: green (#B7E1CD)
+        * 1.1.2 Copy the cell contents into "Mapping to use" and mark as `DONE`
     * 1.2 **Exact matches in Mondo/HP**
         * 1.2.1 Filter "Exact matches" column by fill colour: yellow (#FCE8B2)
         * 1.2.2 Copy the cell contents into "Mapping to use" and mark as `IMPORT`
             * Overwrite any mappings from 1.1, as we prefer more precise mappings even if they must be imported
     * 1.3 **Exact matches in EFO**
-        * 1.1.1 Filter "Exact matches" column by fill colour: green (#B7E1CD)
-        * 1.1.1 Copy the cell contents into "Mapping to use" and mark as `DONE`
+        * 1.3.1 Filter "Exact matches" column by fill colour: green (#B7E1CD)
+        * 1.3.2 Copy the cell contents into "Mapping to use" and mark as `DONE`
             * Overwrite any mappings from 1.1 and 1.2, as these are our most preferred mappings
 2. **Medium-confidence mappings:** These are often good suggested mappings, but must be checked manually.
     * 2.1 Set the "Status" column to only include "Blank" entries
