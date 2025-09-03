@@ -5,7 +5,6 @@ from collections import Counter
 import logging
 
 import matplotlib.pyplot as plt
-from matplotlib import rcParams
 from sankeyflow import Sankey
 
 from cmat import clinvar_xml_io
@@ -14,8 +13,6 @@ from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassifi
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
-
-rcParams['font.size'] = 8
 
 
 class SankeyDiagram(Counter):
@@ -33,10 +30,14 @@ class SankeyDiagram(Counter):
             self[(t_from, t_to)] += 1
 
     def generate_diagram(self):
-        dpi = 200
+        """Generate and save a Sankey diagram directly to file."""
+        dpi = 144
         plt.figure(figsize=(self.width/dpi, self.height/dpi), dpi=dpi)
-        flows = [(key[0], key[1], val) for key, val in self.items()]
-        s = Sankey(flows=flows)
+        flows = [(t_from, t_to, t_count) for (t_from, t_to), t_count in sorted(self.items(), key=lambda x: -x[1])]
+        s = Sankey(flows=flows,
+                   node_pad_y_min=0.04,
+                   node_pad_y_max=0.08,
+                   node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
         s.draw()
         plt.savefig(self.name, bbox_inches='tight')
 
@@ -112,7 +113,7 @@ def main(clinvar_xml, process_items=None):
     # Sankey diagrams for visualisation
     sankey_variation_representation = SankeyDiagram('variant-types.png', 1200, 600)
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
-    sankey_clinical_significance = SankeyDiagram('clinical-significance.png', 1200, 600)
+    sankey_clinical_significance = SankeyDiagram('clinical-significance.png', 1200, 800)
     sankey_star_rating = SankeyDiagram('star-rating.png', 1200, 600)
     sankey_mode_of_inheritance = SankeyDiagram('mode-of-inheritance.png', 1200, 500)
     sankey_allele_origin = SankeyDiagram('allele-origin.png', 1200, 600)
