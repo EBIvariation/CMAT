@@ -4,12 +4,18 @@ import argparse
 from collections import Counter
 import logging
 
+import matplotlib.pyplot as plt
+from matplotlib import rcParams
+from sankeyflow import Sankey
+
 from cmat import clinvar_xml_io
 from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassificationsError
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+rcParams['font.size'] = 8
 
 
 class SankeyDiagram(Counter):
@@ -25,6 +31,14 @@ class SankeyDiagram(Counter):
         diagram: (RCV → MeasureSet) and (MeasureSet → Variant)."""
         for t_from, t_to in zip(transition_chain, transition_chain[1:]):
             self[(t_from, t_to)] += 1
+
+    def generate_diagram(self):
+        dpi = 200
+        plt.figure(figsize=(self.width/dpi, self.height/dpi), dpi=dpi)
+        flows = [(key[0], key[1], val) for key, val in self.items()]
+        s = Sankey(flows=flows)
+        s.draw()
+        plt.savefig(self.name, bbox_inches='tight')
 
     def __str__(self):
         lines = [f'========== SANKEY DIAGRAM: {self.name} ==========',
@@ -251,6 +265,7 @@ def main(clinvar_xml, process_items=None):
                            sankey_star_rating, sankey_mode_of_inheritance, sankey_allele_origin, sankey_inheritance_origin):
         print('\n')
         print(sankey_diagram)
+        sankey_diagram.generate_diagram()
 
     # Output the supplementary tables for the report.
     for supplementary_table in (counter_clin_sig_complex, counter_clin_sig_all, counter_star_rating,
