@@ -5,6 +5,7 @@ from collections import Counter
 import logging
 
 import matplotlib.pyplot as plt
+import numpy as np
 from sankeyflow import Sankey
 
 from cmat import clinvar_xml_io
@@ -13,6 +14,9 @@ from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassifi
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+# Ensure that divide by zero raises an exception rather than a warning
+np.seterr(divide='raise')
 
 
 class SankeyDiagram(Counter):
@@ -34,10 +38,19 @@ class SankeyDiagram(Counter):
         dpi = 144
         plt.figure(figsize=(self.width/dpi, self.height/dpi), dpi=dpi)
         flows = [(t_from, t_to, t_count) for (t_from, t_to), t_count in sorted(self.items(), key=lambda x: -x[1])]
-        s = Sankey(flows=flows,
-                   node_pad_y_min=0.04,
-                   node_pad_y_max=0.08,
-                   node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
+        try:
+            logger.info(f'Generating diagram: {self.name}')
+            s = Sankey(flows=flows,
+                       node_pad_y_min=0.04,
+                       node_pad_y_max=0.08,
+                       node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
+        except FloatingPointError:
+            # Perturb values to avoid divide-by-zero errors. TODO: come up with a better solution to this
+            plt.figure(figsize=(self.width/dpi, (self.height+1)/dpi), dpi=dpi)
+            s = Sankey(flows=flows,
+               node_pad_y_min=0.03,
+               node_pad_y_max=0.08,
+               node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
         s.draw()
         plt.savefig(self.name, bbox_inches='tight')
 
