@@ -45,7 +45,7 @@ workflow {
     checkDuplicates(mergeWithLatestMappings.out.newMappings)
     addMappingsHeader(checkDuplicates.out.duplicatesOk, mergeWithLatestMappings.out.newMappings, getTargetOntology.out.targetOntology)
     if (params.with_feedback) {
-        generateZoomaFeedback(mergeWithLatestMappings.out.newMappings)
+        generateZoomaFeedback(addMappingsHeader.out.finalMappings)
         updateLinks(addMappingsHeader.out.finalMappings, generateZoomaFeedback.out.zoomaFeedback)
     }
 }
@@ -160,7 +160,7 @@ process generateZoomaFeedback {
     """
     echo -e 'STUDY\tBIOENTITY\tPROPERTY_TYPE\tPROPERTY_VALUE\tSEMANTIC_TAG\tANNOTATOR\tANNOTATION_DATE' \
         > eva_clinvar.txt
-    tail -n+2 ${newMappings} \
+    tail -n+3 ${newMappings} \
         | cut -f-2 \
         | sort -t\$'\t' -k1,1 \
         | awk -F\$'\t' -vDATE="\$(date +'%y/%m/%d %H:%M')" '{print "\t\tdisease\t" \$1 "\t" \$2 "\teva\t" DATE}' \
@@ -211,6 +211,7 @@ process addMappingsHeader {
     """
     printf '#generated-date=%(%Y-%m-%d)T\n' > trait_names_to_ontology_mappings.tsv
     printf '#ontology=${targetOntology}\n' >> trait_names_to_ontology_mappings.tsv
+    printf '#clinvar_trait_name\turi\tlabel\n' >> trait_names_to_ontology_mappings.tsv
     cat ${newMappings} >> trait_names_to_ontology_mappings.tsv
     """
 }
