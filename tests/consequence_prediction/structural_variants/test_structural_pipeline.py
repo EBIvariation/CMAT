@@ -36,7 +36,7 @@ def test_successful_run():
 
 def test_successful_run_with_transcripts():
     results = run_pipeline('precise_genomic.xml.gz', include_transcripts=True)
-    assert len(results) == 27
+    assert len(results) == 50
     assert ['NC_000001.11:g.25271785_25329047del', 'ENSG00000187010', 'RHD', 'stop_lost', 'ENST00000454452'] in results
 
 
