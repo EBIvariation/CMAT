@@ -1,2 +1,4 @@
 -r requirements.txt
 jupyter==1.0.0
+matplotlib==3.10.6
+sankeyflow==0.4.1
