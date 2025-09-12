@@ -1,4 +1,5 @@
 #generated-date=2023-07-24
+#clinvar_trait_name	uri	label
 2-aminoadipic 2-oxoadipic aciduria	http://purl.obolibrary.org/obo/MONDO_0008774	2-aminoadipic 2-oxoadipic aciduria
 3-methylcrotonyl-coa carboxylase 1 deficiency	http://www.orpha.net/ORDO/Orphanet_6	3-methylcrotonyl-CoA carboxylase deficiency
 3-methylglutaconic aciduria with deafness, encephalopathy, and leigh-like syndrome	http://www.orpha.net/ORDO/Orphanet_352328	MEGDEL syndrome
@@ -256,7 +257,6 @@ ciliary dyskinesia, primary, 36, x-linked	http://purl.obolibrary.org/obo/MONDO_0
 ciliary dyskinesia, primary, 41	http://purl.obolibrary.org/obo/MONDO_0016575	primary ciliary dyskinesia
 ciliary dyskinesia, primary, 42	http://purl.obolibrary.org/obo/MONDO_0016575	primary ciliary dyskinesia
 classical galactosemia, homozygous duarte-type	http://purl.obolibrary.org/obo/MONDO_0009258	classic galactosemia
-#clinvar_trait_name	uri	label
 cobalamin c disease	http://www.orpha.net/ORDO/Orphanet_26	Methylmalonic acidemia with homocystinuria
 cobalamin c disease	http://www.orpha.net/ORDO/Orphanet_79282	Methylmalonic acidemia with homocystinuria, type cblC
 coffin siris/intellectual disability	http://purl.obolibrary.org/obo/MONDO_0015452	Coffin-Siris syndrome

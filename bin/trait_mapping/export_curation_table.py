@@ -11,6 +11,10 @@ def export_table(input_filepath, done_filepath, comments_filepath):
     # Finished mappings
     done_rows = curation_table[curation_table['Status'] == 'DONE']
     done_rows = done_rows[['ClinVar label', 'URI of selected mapping', 'Label of selected mapping']]
+    # Remove linebreaks
+    done_rows['ClinVar label'] = done_rows['ClinVar label'].str.replace(r'[\n\r]+', '', regex=True)
+    done_rows['URI of selected mapping'] = done_rows['URI of selected mapping'].str.replace(r'[\n\r]+', '', regex=True)
+    done_rows['Label of selected mapping'] = done_rows['Label of selected mapping'].str.replace(r'[\n\r]+', '', regex=True)
     done_rows.to_csv(done_filepath, sep='\t', header=False, index=False)
 
     # Comments column

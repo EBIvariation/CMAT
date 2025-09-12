@@ -156,7 +156,6 @@ process collectAutomatedMappings {
 
     script:
     """
-    echo -e "#clinvar_trait_name\turi\tlabel" > automated_trait_mappings.tsv
     cat automated_traits_*.tsv >> automated_trait_mappings.tsv
     """
 }

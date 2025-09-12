@@ -1,5 +1,6 @@
 #generated-date=2023-07-24
 #ontology=EFO
+#clinvar_trait_name	uri	label
 11p partial monosomy syndrome	http://purl.obolibrary.org/obo/MONDO_0008681	WAGR syndrome
 11q partial monosomy syndrome	http://purl.obolibrary.org/obo/MONDO_0007838	Jacobsen syndrome
 1-2 finger syndactyly	http://purl.obolibrary.org/obo/HP_0006101	Finger syndactyly
@@ -2063,7 +2064,6 @@ clinodactyly of the 3rd toe	http://purl.obolibrary.org/obo/HP_0008115	Clinodacty
 clinodactyly of the 4th toe	http://purl.obolibrary.org/obo/HP_0011918	Clinodactyly of the 4th toe
 clinodactyly of the 5th finger	http://purl.obolibrary.org/obo/HP_0004209	Clinodactyly of the 5th finger
 clinodactyly of the 5th toe	http://purl.obolibrary.org/obo/HP_0001864	Clinodactyly of the 5th toe
-#clinvar_trait_name	uri	label
 clonal hematopoiesis	http://www.ebi.ac.uk/efo/EFO_0010819	clonal hematopoiesis
 clonus	http://purl.obolibrary.org/obo/HP_0002169	Clonus
 clopidogrel response	http://purl.obolibrary.org/obo/GO_1903493	response to clopidogrel
