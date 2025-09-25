@@ -69,7 +69,7 @@ class ClinicalClassification:
             return find_mandatory_unique_element(self.class_xml, './Description').text
         except AssertionError as e:
             raise MultipleClinicalClassificationsError(f'Found multiple descriptions for one ClinicalClassification in '
-                                      f'{self.clinvar_record.accession}')
+                                                       f'{self.clinvar_record.accession}')
 
     @property
     def clinical_significance_list(self):
@@ -82,3 +82,19 @@ class ClinicalClassification:
     @property
     def valid_clinical_significances(self):
         return [cs for cs in self.clinical_significance_list if cs.lower() not in self.INVALID_CLINICAL_SIGNIFICANCES]
+
+    @property
+    def somatic_assertion_type(self):
+        try:
+            return find_mandatory_unique_element(self.class_xml, './Description').attrib.get('ClinicalImpactAssertionType')
+        except AssertionError as e:
+            raise MultipleClinicalClassificationsError(f'Found multiple descriptions for one ClinicalClassification in '
+                                                       f'{self.clinvar_record.accession}')
+
+    @property
+    def somatic_clinical_impact(self):
+        try:
+            return find_mandatory_unique_element(self.class_xml, './Description').attrib.get('ClinicalImpactClinicalSignificance')
+        except AssertionError as e:
+            raise MultipleClinicalClassificationsError(f'Found multiple descriptions for one ClinicalClassification in '
+                                                       f'{self.clinvar_record.accession}')
