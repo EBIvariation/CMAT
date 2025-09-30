@@ -29,7 +29,7 @@ def test_multiple_clinical_classifications_record():
     record = next(iter(ClinVarDataset(input_file)))
 
     assert len(record.clinical_classifications) == 2
-    assert set(cc.type for cc in record.clinical_classifications) == {'GermlineClassification', 'SomaticClinicalImpact'}
+    assert set(cc.type for cc in record.clinical_classifications) == {'germline', 'somatic'}
     with pytest.raises(MultipleClinicalClassificationsError):
         print(record.valid_clinical_significances)
 

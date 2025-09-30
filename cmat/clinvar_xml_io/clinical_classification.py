@@ -29,6 +29,13 @@ class ClinicalClassification:
         'reviewed by expert panel': 3,
         'practice guideline': 4,
     }
+    # Map clinical classification types from XML tags to more readable names
+    type_map = {
+        'GermlineClassification': 'germline',
+        'SomaticClinicalImpact': 'somatic',
+        'OncogenicityClassification': 'oncogenicity',
+        'NoClassification': 'none'
+    }
 
     # Some records have been flagged by ClinVar and should not be used.
     INVALID_CLINICAL_SIGNIFICANCES = {'no classifications from unflagged records'}
@@ -37,8 +44,7 @@ class ClinicalClassification:
         self.class_xml = class_xml
         self.clinvar_record = clinvar_record
         self.xsd_version = clinvar_record.xsd_version
-        # Type of clinical classification: germline, somatic, or oncogenicity
-        self.type = class_xml.tag
+        self.type = self.type_map.get(class_xml.tag, class_xml.tag)
 
     @property
     def last_evaluated_date(self):

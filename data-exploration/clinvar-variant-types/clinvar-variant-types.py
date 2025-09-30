@@ -10,6 +10,7 @@ from sankeyflow import Sankey
 
 from cmat import clinvar_xml_io
 from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassificationsError
+from cmat.clinvar_xml_io.xml_parsing import find_elements
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -33,7 +34,7 @@ class SankeyDiagram(Counter):
         for t_from, t_to in zip(transition_chain, transition_chain[1:]):
             self[(t_from, t_to)] += 1
 
-    def generate_diagram(self):
+    def generate_diagram(self, threshold=None):
         """Generate and save a Sankey diagram directly to file."""
         dpi = 144
         plt.figure(figsize=(self.width/dpi, self.height/dpi), dpi=dpi)
@@ -41,7 +42,10 @@ class SankeyDiagram(Counter):
                  for (t_from, t_to), t_count in sorted(self.items(), key=lambda x: -x[1])]
         try:
             logger.info(f'Generating diagram: {self.name}')
-            s = Sankey(flows=flows,
+            nodes = Sankey.infer_nodes(flows)
+            if threshold is not None:
+                nodes, flows = self._apply_threshold(nodes, flows, threshold=threshold)
+            s = Sankey(flows=flows, nodes=nodes,
                        node_pad_y_min=0.04,
                        node_pad_y_max=0.08,
                        node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
@@ -59,13 +63,40 @@ class SankeyDiagram(Counter):
         max_len = 20
         words = label.split()
         lines = []
-        line = ''
+        line = []
         while len(words) > 0:
             while len(line) < max_len and len(words) > 0:
-                line += f' {words.pop(0)}'
-            lines.append(line)
-            line = ''
+                line.append(words.pop(0))
+            lines.append(' '.join(line))
+            line = []
         return '\n'.join(lines)
+
+    def _apply_threshold(self, nodes, flows, threshold):
+        """Recompute nodes and flows by combining nodes at the final level with value less than threshold."""
+        new_node_name = 'Other'
+        new_nodes = nodes[:-1]
+        new_final_level = []
+        new_value = 0
+        # Recompute final level
+        for node, value in nodes[-1]:
+            if value < threshold:
+                new_value += value
+            else:
+                new_final_level.append([node, value])
+        if new_value > 0:
+            new_final_level.append([new_node_name, new_value])
+        else:
+            return nodes, flows
+        new_nodes.append(new_final_level)
+        # Update flows
+        all_endpoints = [node for level in new_nodes for node, _ in level]
+        new_flows = []
+        for start, end, count in flows:
+            if end not in all_endpoints:
+                new_flows.append((start, new_node_name, count))
+            else:
+                new_flows.append((start, end, count))
+        return new_nodes, new_flows
 
     def __str__(self):
         lines = [f'========== SANKEY DIAGRAM: {self.name} ==========',
@@ -135,12 +166,12 @@ def rcv_to_link(rcv_id):
     return f'[{rcv_id}](https://www.ncbi.nlm.nih.gov/clinvar/{rcv_id}/)'
 
 
-def main(clinvar_xml, process_items=None, print_diagram_source=False):
+def main(clinvar_xml, process_items=None):
     # Sankey diagrams for visualisation
     sankey_variation_representation = SankeyDiagram('variant-types.png', 1200, 600)
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
     sankey_trait_xrefs = SankeyDiagram('trait-xrefs.png', 1200, 400)
-    sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1400, 800)
+    sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1600, 800)
     sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 600)
     sankey_mode_of_inheritance = SankeyDiagram('mode-of-inheritance.png', 1200, 500)
     sankey_allele_origin = SankeyDiagram('allele-origin.png', 1200, 600)
@@ -150,9 +181,12 @@ def main(clinvar_xml, process_items=None, print_diagram_source=False):
     counter_trait_xrefs = SupplementaryTableCounter('All trait cross-references', 'Source')
     counter_clin_class_complex = SupplementaryTableCounter('Complex clinical classification levels', 'Clinical classification')
     counter_clin_class_all = SupplementaryTableCounter('All clinical classification levels', 'Clinical classification')
+    table_multiple_clin_class_assertions = SupplementaryTable(
+        'Multiple clinical classification assertions', ['RCV', 'Assertion types'], sort_lambda=lambda x: (x[1], x[0]))
     counter_star_rating = SupplementaryTableCounter(
         'Distribution of records by star rating', 'Star rating', sort_lambda=lambda x: x[0])
     counter_obs_method_type = SupplementaryTableCounter('All observation method types', 'Observation method type')
+    counter_full_obs_method_type = SupplementaryTableCounter('Observation method types', 'Observation method type')
     table_multiple_mode_of_inheritance = SupplementaryTable(
         'Multiple mode of inheritance', ['RCV', 'Modes of inheritance'], sort_lambda=lambda x: (x[1], x[0]))
     counter_multiple_allele_origin = SupplementaryTableCounter('Multiple allele origins', 'Allele origins')
@@ -195,7 +229,7 @@ def main(clinvar_xml, process_items=None, print_diagram_source=False):
             for trait in traits:
                 if len(trait.all_names) > 1:
                     names_category = 'Multiple names per trait'
-                if len(trait.current_efo_aligned_xrefs) > 1:
+                if len(trait.current_efo_aligned_xrefs) > 0:
                     ontology_category = 'Has EFO-aligned xrefs'
                 # Count all xref sources for each trait
                 for db, _, _ in trait.xrefs:
@@ -211,12 +245,6 @@ def main(clinvar_xml, process_items=None, print_diagram_source=False):
             class_type = ', '.join(sorted(clin_class.type for clin_class in clinvar_record.clinical_classifications))
             for clin_class in clinvar_record.clinical_classifications:
                 try:
-                    # New in V2 attributes for somatic classifications
-                    # TODO maybe do this only for somatic
-                    #  (first check with the whole dataset that there's nothing for germline/oncogenic...)
-                    assertion_type = clin_class.somatic_assertion_type or "no assertion type"
-                    clinical_impact = clin_class.somatic_clinical_impact or "no clinical impact"
-
                     clin_class_split = clin_class.clinical_significance_list
                     clin_class_raw = clin_class.clinical_significance_raw
                     # Count all individual clinical classification terms
@@ -225,31 +253,34 @@ def main(clinvar_xml, process_items=None, print_diagram_source=False):
                     # Simple terms included in the diagram
                     if len(clin_class_split) == 1:
                         sankey_clinical_classification.add_transitions(
-                            'Variant', class_cardinality, class_type, assertion_type, clinical_impact, 'Simple',
+                            'Variant', class_cardinality, class_type, 'Simple',
                             clin_class_raw)
                     # Compound terms included in supplementary tables only
                     else:
                         sankey_clinical_classification.add_transitions(
-                            'Variant', class_cardinality, class_type, assertion_type, clinical_impact, 'Complex')
+                            'Variant', class_cardinality, class_type, 'Complex')
                         counter_clin_class_complex.add_count(clin_class_raw)
                 except MultipleClinicalClassificationsError as e:
                     # Multiple descriptions within a single clinical classification
-                    # TODO think about how to deal with these - count or visualise
                     sankey_clinical_classification.add_transitions('Variant', class_cardinality, class_type,
                                                                    'Multiple assertions')
+                    multiple_assertions = ', '.join(elem.text
+                                                    for cc in clinvar_record.clinical_classifications
+                                                    for elem in find_elements(cc.class_xml, './Description'))
+                    table_multiple_clin_class_assertions.add_row([rcv_to_link(rcv_id), multiple_assertions])
 
             # Review status, star rating, and observation method type
             try:
                 review_status = clinvar_record.review_status
                 star_rating = review_status_stars(clinvar_record.score)
-                observation_method_type = ', '.join(sorted(set(clinvar_record.observation_method_types)))
+                observation_method_type = ', '.join(sorted(set(clinvar_record.observation_method_types))) or 'missing'
                 sankey_star_rating.add_transitions('Variant', 'Single classification', star_rating, review_status,
                                                    observation_method_type)
                 counter_star_rating.add_count(star_rating)
                 for obs_method_type in clinvar_record.observation_method_types:
                     counter_obs_method_type.add_count(obs_method_type)
+                counter_full_obs_method_type.add_count(observation_method_type)
             except MultipleClinicalClassificationsError:
-                # TODO think about how to deal with these
                 sankey_star_rating.add_transitions('Variant', 'Multiple classifications')
 
             # Mode of inheritance
@@ -323,16 +354,28 @@ def main(clinvar_xml, process_items=None, print_diagram_source=False):
     # Output the code for Sankey diagrams. Transitions are sorted in decreasing number of counts, so that the most frequent
     # cases are on top.
     for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_trait_xrefs,
-                           sankey_clinical_classification, sankey_star_rating, sankey_mode_of_inheritance,
+                           sankey_clinical_classification, sankey_mode_of_inheritance,
                            sankey_allele_origin, sankey_inheritance_origin):
-        if print_diagram_source:
-            print('\n')
-            print(sankey_diagram)
-        sankey_diagram.generate_diagram()
+        print('\n')
+        print(sankey_diagram)
+        try:
+            sankey_diagram.generate_diagram()
+        except Exception as e:
+            print(e)
+            continue
+
+    # Sankey diagrams requiring thresholding
+    print('\n')
+    print(sankey_star_rating)
+    try:
+        sankey_star_rating.generate_diagram(threshold=1000)
+    except Exception as e:
+        print(e)
 
     # Output the supplementary tables for the report.
     for supplementary_table in (counter_trait_xrefs, counter_clin_class_complex, counter_clin_class_all,
-                                counter_star_rating, counter_obs_method_type, table_multiple_mode_of_inheritance,
+                                table_multiple_clin_class_assertions, counter_star_rating, counter_obs_method_type,
+                                counter_full_obs_method_type, table_multiple_mode_of_inheritance,
                                 counter_multiple_allele_origin, table_inconsistent_moi_ao):
         print('\n')
         print(supplementary_table)
@@ -344,6 +387,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--clinvar-xml', required=True)
     parser.add_argument('--process-items', type=int)
-    parser.add_argument('--print-diagram-source', action='store_true', default=False)
     args = parser.parse_args()
-    main(args.clinvar_xml, args.process_items, args.print_diagram_source)
+    main(args.clinvar_xml, args.process_items)
