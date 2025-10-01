@@ -1,3 +1,16 @@
+## All trait cross-references
+Source|Count
+:--|:--
+MedGen|5199733
+MONDO|2395103
+OMIM|1988569
+Orphanet|1676005
+MeSH|636549
+Human Phenotype Ontology|513248
+EFO|7556
+Gene|4432
+EFO: The Experimental Factor Ontology|448
+
 ## Complex clinical significance levels
 Clinical significance|Count
 :--|:--
@@ -79,6 +92,13 @@ tier i - strong|5
 association not found|5
 tier ii - potential|3
 
+## Multiple clinical classification assertions
+RCV|Assertions
+:--|:--
+[RCV000426735](https://www.ncbi.nlm.nih.gov/clinvar/RCV000426735/)|None/None/Uncertain significance, diagnostic/supports diagnosis/Tier I - Strong, prognostic/poor outcome/Tier I - Strong
+[RCV003883131](https://www.ncbi.nlm.nih.gov/clinvar/RCV003883131/)|diagnostic/supports diagnosis/Tier I - Strong, prognostic/better outcome/Tier I - Strong
+
+
 ## Distribuion of records by star rating
 Star rating|Count
 :--|:--
@@ -87,6 +107,180 @@ Star rating|Count
 ★★☆☆|348899
 ★☆☆☆|4245851
 ☆☆☆☆|319376
+
+## Observation method types
+Observation method type|Count
+:--|:--
+clinical testing|5082906
+not provided|129440
+research|72668
+literature only|65779
+curation|54414
+reference population|19804
+phenotyping only|5115
+case-control|3332
+provider interpretation|2179
+in vitro|1058
+in vivo|388
+
+## Distribution of records by observation method type
+Observation method type|Count
+:--|:--
+clinical testing|4609337
+clinical testing, not provided|107333
+research|51544
+literature only|42612
+clinical testing, curation|25303
+curation|23901
+not provided|20936
+clinical testing, literature only|12609
+clinical testing, research|11728
+missing|6720
+phenotyping only|2846
+case-control|2755
+reference population|2380
+clinical testing, literature only, research|1727
+clinical testing, phenotyping only|1310
+provider interpretation|1274
+literature only, research|1268
+clinical testing, reference population|1147
+clinical testing, curation, literature only|1131
+curation, literature only|990
+clinical testing, curation, research|621
+clinical testing, provider interpretation|610
+clinical testing, curation, literature only, research|534
+clinical testing, literature only, not provided|514
+clinical testing, in vitro|280
+curation, research|279
+in vitro, research|269
+in vivo, research|233
+case-control, clinical testing|202
+clinical testing, not provided, phenotyping only|185
+clinical testing, in vitro, research|159
+clinical testing, not provided, research|123
+curation, literature only, research|101
+literature only, not provided|96
+in vitro|95
+clinical testing, phenotyping only, research|94
+clinical testing, in vivo|88
+not provided, phenotyping only|74
+clinical testing, literature only, phenotyping only|73
+case-control, clinical testing, curation|71
+clinical testing, literature only, provider interpretation|70
+clinical testing, curation, not provided|62
+clinical testing, provider interpretation, research|51
+clinical testing, in vitro, literature only|44
+clinical testing, literature only, phenotyping only, research|43
+clinical testing, reference population, research|41
+literature only, provider interpretation|38
+clinical testing, curation, literature only, phenotyping only, research|34
+clinical testing, literature only, reference population|32
+curation, not provided|31
+case-control, literature only|29
+clinical testing, curation, phenotyping only|26
+curation, in vitro|25
+clinical testing, literature only, provider interpretation, research|24
+case-control, clinical testing, research|24
+not provided, research|23
+case-control, clinical testing, literature only|23
+clinical testing, curation, literature only, phenotyping only|21
+in vivo|21
+clinical testing, curation, reference population|20
+provider interpretation, research|19
+phenotyping only, research|19
+case-control, research|18
+literature only, reference population|17
+case-control, clinical testing, literature only, research|15
+literature only, phenotyping only|13
+clinical testing, in vitro, literature only, research|13
+in vitro, literature only|12
+case-control, in vitro|11
+case-control, clinical testing, curation, research|11
+clinical testing, curation, literature only, not provided, research|11
+in vitro, in vivo, research|10
+in vitro, literature only, research|10
+case-control, clinical testing, curation, literature only, research|10
+clinical testing, curation, phenotyping only, research|10
+clinical testing, in vivo, research|10
+clinical testing, in vitro, in vivo|10
+clinical testing, curation, in vitro|9
+clinical testing, literature only, not provided, research|9
+clinical testing, literature only, reference population, research|9
+reference population, research|8
+curation, provider interpretation, research|8
+clinical testing, curation, provider interpretation|7
+curation, literature only, provider interpretation|6
+clinical testing, curation, reference population, research|6
+clinical testing, curation, literature only, not provided|6
+clinical testing, curation, in vitro, research|6
+case-control, curation|5
+curation, phenotyping only|5
+clinical testing, curation, literature only, provider interpretation|5
+curation, reference population|5
+case-control, clinical testing, in vitro|5
+clinical testing, curation, literature only, provider interpretation, research|4
+clinical testing, phenotyping only, provider interpretation|4
+clinical testing, not provided, provider interpretation|4
+clinical testing, curation, literature only, reference population|4
+case-control, clinical testing, curation, literature only|4
+case-control, clinical testing, in vitro, literature only|4
+clinical testing, in vitro, not provided|4
+curation, provider interpretation|4
+case-control, in vivo|3
+literature only, not provided, research|3
+clinical testing, curation, in vitro, literature only|3
+clinical testing, in vitro, provider interpretation|3
+clinical testing, literature only, not provided, phenotyping only|3
+in vitro, in vivo|2
+clinical testing, curation, literature only, reference population, research|2
+clinical testing, curation, provider interpretation, research|2
+case-control, literature only, research|2
+case-control, clinical testing, literature only, phenotyping only, research|2
+clinical testing, curation, literature only, phenotyping only, provider interpretation, research|2
+clinical testing, in vitro, phenotyping only, research|2
+clinical testing, not provided, provider interpretation, research|2
+clinical testing, in vivo, literature only|2
+case-control, clinical testing, curation, literature only, phenotyping only|2
+clinical testing, literature only, not provided, provider interpretation, research|2
+clinical testing, curation, in vitro, literature only, research|2
+curation, literature only, not provided|1
+in vivo, literature only, research|1
+curation, not provided, research|1
+phenotyping only, reference population, research|1
+case-control, provider interpretation|1
+clinical testing, curation, in vivo|1
+clinical testing, literature only, phenotyping only, provider interpretation, research|1
+phenotyping only, provider interpretation|1
+case-control, clinical testing, reference population|1
+literature only, provider interpretation, research|1
+case-control, clinical testing, literature only, not provided, research|1
+clinical testing, curation, literature only, not provided, phenotyping only, research|1
+clinical testing, curation, phenotyping only, provider interpretation|1
+case-control, clinical testing, not provided|1
+clinical testing, in vivo, literature only, research|1
+case-control, clinical testing, phenotyping only, research|1
+clinical testing, curation, in vitro, phenotyping only, research|1
+not provided, provider interpretation|1
+case-control, clinical testing, literature only, provider interpretation, research|1
+clinical testing, curation, not provided, provider interpretation|1
+clinical testing, literature only, not provided, provider interpretation|1
+in vitro, provider interpretation|1
+clinical testing, not provided, phenotyping only, research|1
+case-control, in vitro, in vivo, research|1
+in vitro, literature only, phenotyping only|1
+in vitro, in vivo, literature only|1
+in vivo, not provided, research|1
+case-control, reference population|1
+curation, in vitro, research|1
+case-control, clinical testing, curation, literature only, phenotyping only, provider interpretation, research|1
+clinical testing, not provided, phenotyping only, provider interpretation|1
+literature only, phenotyping only, research|1
+clinical testing, literature only, phenotyping only, provider interpretation|1
+case-control, not provided|1
+clinical testing, phenotyping only, provider interpretation, research|1
+curation, reference population, research|1
+in vitro, reference population|1
+
 
 ## Multiple mode of inheritance
 RCV|Modes of inheritance

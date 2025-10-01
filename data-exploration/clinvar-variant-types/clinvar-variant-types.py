@@ -173,8 +173,8 @@ def main(clinvar_xml, process_items=None):
     sankey_variation_representation = SankeyDiagram('variant-types.png', 1200, 600)
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
     sankey_trait_xrefs = SankeyDiagram('trait-xrefs.png', 1200, 400)
-    sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1600, 800)
-    sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 600)
+    sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1400, 800)
+    sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 800)
     sankey_mode_of_inheritance = SankeyDiagram('mode-of-inheritance.png', 1200, 500)
     sankey_allele_origin = SankeyDiagram('allele-origin.png', 1200, 600)
     sankey_inheritance_origin = SankeyDiagram('inheritance-origin.png', 1200, 400)
@@ -184,11 +184,11 @@ def main(clinvar_xml, process_items=None):
     counter_clin_class_complex = SupplementaryTableCounter('Complex clinical classification levels', 'Clinical classification')
     counter_clin_class_all = SupplementaryTableCounter('All clinical classification levels', 'Clinical classification')
     table_multiple_clin_class_assertions = SupplementaryTable(
-        'Multiple clinical classification assertions', ['RCV', 'Assertion types'], sort_lambda=lambda x: (x[1], x[0]))
+        'Multiple clinical classification assertions', ['RCV', 'Assertions'], sort_lambda=lambda x: (x[1], x[0]))
     counter_star_rating = SupplementaryTableCounter(
         'Distribution of records by star rating', 'Star rating', sort_lambda=lambda x: x[0])
-    counter_obs_method_type = SupplementaryTableCounter('All observation method types', 'Observation method type')
-    counter_full_obs_method_type = SupplementaryTableCounter('Observation method types', 'Observation method type')
+    counter_obs_method_type = SupplementaryTableCounter('Observation method types', 'Observation method type')
+    counter_full_obs_method_type = SupplementaryTableCounter('Distribution of records by observation method type', 'Observation method type')
     table_multiple_mode_of_inheritance = SupplementaryTable(
         'Multiple mode of inheritance', ['RCV', 'Modes of inheritance'], sort_lambda=lambda x: (x[1], x[0]))
     counter_multiple_allele_origin = SupplementaryTableCounter('Multiple allele origins', 'Allele origins')
@@ -267,7 +267,7 @@ def main(clinvar_xml, process_items=None):
                     # In this case we summarise each assertion and add to the supplementary table
                     sankey_clinical_classification.add_transitions('Variant', class_cardinality, class_type,
                                                                    'Multiple assertions')
-                    multiple_assertions = ', '.join(f'{elem.attrib.get("ClinicalImpactAssertionType")}|{elem.attrib.get("ClinicalImpactClinicalSignificance")}|{elem.text}'
+                    multiple_assertions = ', '.join(f'{elem.attrib.get("ClinicalImpactAssertionType")}/{elem.attrib.get("ClinicalImpactClinicalSignificance")}/{elem.text}'
                                                     for cc in clinvar_record.clinical_classifications
                                                     for elem in find_elements(cc.class_xml, './Description'))
                     table_multiple_clin_class_assertions.add_row([rcv_to_link(rcv_id), multiple_assertions])
