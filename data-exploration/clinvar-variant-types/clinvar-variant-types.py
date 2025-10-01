@@ -37,9 +37,11 @@ class SankeyDiagram(Counter):
     def generate_diagram(self, threshold=None):
         """Generate and save a Sankey diagram directly to file."""
         dpi = 144
+        font_size = 6
         plt.figure(figsize=(self.width/dpi, self.height/dpi), dpi=dpi)
         flows = [(self._format_label(t_from), self._format_label(t_to), t_count)
                  for (t_from, t_to), t_count in sorted(self.items(), key=lambda x: -x[1])]
+        # TODO: figure out how to show extremely thin flows better
         try:
             logger.info(f'Generating diagram: {self.name}')
             nodes = Sankey.infer_nodes(flows)
@@ -48,14 +50,14 @@ class SankeyDiagram(Counter):
             s = Sankey(flows=flows, nodes=nodes,
                        node_pad_y_min=0.04,
                        node_pad_y_max=0.08,
-                       node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
+                       node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=font_size)))
         except FloatingPointError:
             # Perturb values to avoid divide-by-zero errors. TODO: come up with a better solution to this
             plt.figure(figsize=(self.width/dpi, (self.height+1)/dpi), dpi=dpi)
             s = Sankey(flows=flows,
                node_pad_y_min=0.03,
                node_pad_y_max=0.08,
-               node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
+               node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=font_size)))
         s.draw()
         plt.savefig(self.name, bbox_inches='tight')
 
@@ -65,7 +67,7 @@ class SankeyDiagram(Counter):
         lines = []
         line = []
         while len(words) > 0:
-            while len(line) < max_len and len(words) > 0:
+            while len(' '.join(line)) < max_len and len(words) > 0:
                 line.append(words.pop(0))
             lines.append(' '.join(line))
             line = []
@@ -262,9 +264,10 @@ def main(clinvar_xml, process_items=None):
                         counter_clin_class_complex.add_count(clin_class_raw)
                 except MultipleClinicalClassificationsError as e:
                     # Multiple descriptions within a single clinical classification
+                    # In this case we summarise each assertion and add to the supplementary table
                     sankey_clinical_classification.add_transitions('Variant', class_cardinality, class_type,
                                                                    'Multiple assertions')
-                    multiple_assertions = ', '.join(elem.text
+                    multiple_assertions = ', '.join(f'{elem.attrib.get("ClinicalImpactAssertionType")}|{elem.attrib.get("ClinicalImpactClinicalSignificance")}|{elem.text}'
                                                     for cc in clinvar_record.clinical_classifications
                                                     for elem in find_elements(cc.class_xml, './Description'))
                     table_multiple_clin_class_assertions.add_row([rcv_to_link(rcv_id), multiple_assertions])
