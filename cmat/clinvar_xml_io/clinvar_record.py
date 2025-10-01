@@ -155,5 +155,5 @@ class ClinVarRecord:
         return self.clinical_classifications[0].valid_clinical_significances
 
     @property
-    def observation_method_types(self):
+    def collection_method_types(self):
         return [elem.text for elem in find_elements(self.record_xml, './ObservedIn/Method/MethodType')]

@@ -78,4 +78,4 @@ class TestClinvarRecord:
         assert self.test_clinvar_record.traits[0].current_efo_aligned_xrefs == [('MONDO', 'MONDO:0012990', 'current')]
 
     def test_observation_method_types(self):
-        assert self.test_clinvar_record.observation_method_types == ['literature only', 'clinical testing', 'clinical testing', 'research']
+        assert self.test_clinvar_record.collection_method_types == ['literature only', 'clinical testing', 'clinical testing', 'research']

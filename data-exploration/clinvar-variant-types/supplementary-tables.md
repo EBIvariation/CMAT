@@ -108,8 +108,8 @@ Star rating|Count
 ★☆☆☆|4245851
 ☆☆☆☆|319376
 
-## Observation method types
-Observation method type|Count
+## Collection method types
+Collection method type|Count
 :--|:--
 clinical testing|5082906
 not provided|129440
@@ -123,8 +123,8 @@ provider interpretation|2179
 in vitro|1058
 in vivo|388
 
-## Distribution of records by observation method type
-Observation method type|Count
+## Distribution of records by collection method type
+collection method type|Count
 :--|:--
 clinical testing|4609337
 clinical testing, not provided|107333

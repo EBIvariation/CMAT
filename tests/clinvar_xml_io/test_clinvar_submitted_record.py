@@ -33,7 +33,7 @@ def test_clinvar_submitted_record(submitted_record):
     assert submitted_record.accession == 'SCV000022285'
     assert submitted_record.valid_allele_origins == {'germline'}
     assert submitted_record.evidence_support_pubmed_refs == [15258582, 15322982]
-    assert submitted_record.observation_method_types == ['literature only']
+    assert submitted_record.collection_method_types == ['literature only']
 
     assert submitted_record.created_date == '2013-04-04'  # submission first publicly available
     assert submitted_record.submission_date == '2015-07-02'  # submission last revised

@@ -187,8 +187,8 @@ def main(clinvar_xml, process_items=None):
         'Multiple clinical classification assertions', ['RCV', 'Assertions'], sort_lambda=lambda x: (x[1], x[0]))
     counter_star_rating = SupplementaryTableCounter(
         'Distribution of records by star rating', 'Star rating', sort_lambda=lambda x: x[0])
-    counter_obs_method_type = SupplementaryTableCounter('Observation method types', 'Observation method type')
-    counter_full_obs_method_type = SupplementaryTableCounter('Distribution of records by observation method type', 'Observation method type')
+    counter_coll_method_type = SupplementaryTableCounter('Collection method types', 'Collection method type')
+    counter_full_coll_method_type = SupplementaryTableCounter('Distribution of records by collection method type', 'Collection method type')
     table_multiple_mode_of_inheritance = SupplementaryTable(
         'Multiple mode of inheritance', ['RCV', 'Modes of inheritance'], sort_lambda=lambda x: (x[1], x[0]))
     counter_multiple_allele_origin = SupplementaryTableCounter('Multiple allele origins', 'Allele origins')
@@ -272,17 +272,17 @@ def main(clinvar_xml, process_items=None):
                                                     for elem in find_elements(cc.class_xml, './Description'))
                     table_multiple_clin_class_assertions.add_row([rcv_to_link(rcv_id), multiple_assertions])
 
-            # Review status, star rating, and observation method type
+            # Review status, star rating, and collection method type
             try:
                 review_status = clinvar_record.review_status
                 star_rating = review_status_stars(clinvar_record.score)
-                observation_method_type = ', '.join(sorted(set(clinvar_record.observation_method_types))) or 'missing'
+                collection_method_type = ', '.join(sorted(set(clinvar_record.collection_method_types))) or 'missing'
                 sankey_star_rating.add_transitions('Variant', 'Single classification', star_rating, review_status,
-                                                   observation_method_type)
+                                                   collection_method_type)
                 counter_star_rating.add_count(star_rating)
-                for obs_method_type in clinvar_record.observation_method_types:
-                    counter_obs_method_type.add_count(obs_method_type)
-                counter_full_obs_method_type.add_count(observation_method_type)
+                for coll_method_type in clinvar_record.collection_method_types:
+                    counter_coll_method_type.add_count(coll_method_type)
+                counter_full_coll_method_type.add_count(collection_method_type)
             except MultipleClinicalClassificationsError:
                 sankey_star_rating.add_transitions('Variant', 'Multiple classifications')
 
@@ -377,8 +377,8 @@ def main(clinvar_xml, process_items=None):
 
     # Output the supplementary tables for the report.
     for supplementary_table in (counter_trait_xrefs, counter_clin_class_complex, counter_clin_class_all,
-                                table_multiple_clin_class_assertions, counter_star_rating, counter_obs_method_type,
-                                counter_full_obs_method_type, table_multiple_mode_of_inheritance,
+                                table_multiple_clin_class_assertions, counter_star_rating, counter_coll_method_type,
+                                counter_full_coll_method_type, table_multiple_mode_of_inheritance,
                                 counter_multiple_allele_origin, table_inconsistent_moi_ao):
         print('\n')
         print(supplementary_table)
