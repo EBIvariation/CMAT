@@ -92,13 +92,6 @@ tier i - strong|5
 association not found|5
 tier ii - potential|3
 
-## Multiple clinical classification assertions
-RCV|Assertions
-:--|:--
-[RCV000426735](https://www.ncbi.nlm.nih.gov/clinvar/RCV000426735/)|None/None/Uncertain significance, diagnostic/supports diagnosis/Tier I - Strong, prognostic/poor outcome/Tier I - Strong
-[RCV003883131](https://www.ncbi.nlm.nih.gov/clinvar/RCV003883131/)|diagnostic/supports diagnosis/Tier I - Strong, prognostic/better outcome/Tier I - Strong
-
-
 ## Distribuion of records by star rating
 Star rating|Count
 :--|:--

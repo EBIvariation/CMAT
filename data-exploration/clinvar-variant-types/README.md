@@ -25,10 +25,7 @@ In addition, the source code for diagrams and tables will be printed to STDOUT. 
 **RCV** is the top level of ClinVar data organisation. It is a record which associates one or more traits (usually diseases) with exactly one _VCV record,_ which can be one of two types:
 * **MeasureSet** contains one or more _Measures._ (Each Measure is essentially an individual, isolated variant.) The MeasureSet can be one of four types:
   - **Variant.** This means that the measure “set” has the size of 1 and contains just a single isolated variant. This variant can be one of the subtypes illustrated on the diagram.
-  - Three other complex types, which were not investigated further in this analysis. They may contain multiple Measures (variants), which must all be interpreted together:
-    + **Haplotype.** A collection of variants phased on the same chromosome copy and usually inherited together.
-    + **Phase unknown**
-    + **Distinct chromosomes**
+  - Several other complex types, which were not investigated further in this analysis. They may contain multiple Measures (variants), which must all be interpreted together.
 * **GenotypeSet** represents the cases when the variants which are interpreted together are located on different chromosomal copies (paternal/maternal), that is, when they include _trans_ phasing. The GenotypeSet can be one of two types, which were not investigated further in this analysis:
   - **CompoundHeterozygote.** Presumably this should include exactly two variants which are _trans_ phased and interpreted together.
   - **Diplotype.** Similar, but at least one of the _trans_ phased alleles includes a haplotype. An example of this would be three variants located on one copy of the gene, and one variant in the second one, all interpreted together.
@@ -51,25 +48,69 @@ The diagram above demonstrates all these relationships. For a trait set with mul
 * “One name per trait” = _every_ trait in a trait set has at most one name;
 * “Multiple names per trait” = at least one trait in a trait set has multiple names.
 
+![](diagrams/trait-xrefs.png)
 
+Each trait also has one or multiple cross-references associated with it.
+These are identifiers from ontologies like MONDO or databases like MedGen.
 
-## Clinical significance
+Of these we are especially interested in those that are "EFO-aligned", i.e. from EFO, MONDO, HP, and Orphanet.
+The above diagram shows which records have such cross-references. For records with multiple traits:
+* "No EFO-aligned xrefs" = no trait in the trait set has any EFO-aligned cross-references;
+* "Has EFO-aligned xrefs" = at least one trait in the trait set has at least one EFO-aligned cross-reference.
 
-![](diagrams/clinical-significance.png)
+Supplementary table: [**All trait cross-references**](supplementary-tables.md#all-trait-cross-references), which counts
+the total number of cross-references from each source across all of ClinVar.
 
-Clinical significance can be either “Simple” (only one level present per Variant record) or “Complex” (multiple levels are present, separated by slashes and/or commas).
+## Clinical classification
+
+![](diagrams/clinical-classification.png)
+
+Clinical classification (formerly known as "clinical significance") can be of three types:
+* Germline
+* Somatic for clinical impact, such as prognosis or therapeutic response (called just "somatic")
+* Somatic for oncogenicity (called just "oncogenicity")
+
+Records can have one or more clinical classifications, but classifications of the same type are aggregated across submissions.
+
+Each clinical classification description can be either “Simple” (only one level described) or “Complex” (multiple levels are present, separated by slashes and/or commas).
+
+![](diagrams/somatic-classification.png)
+
+Somatic classifications for clinical impact can in turn contain multiple assertions, relating to different types
+of impacts and each with their own clinical significance level.
+These are described in the above diagram, which includes only somatic classifications for simplicity as this granularity
+is not present for other types of clinical classifications.
+
+For more about the terminology and aggregation process used for clinical classifications, see [ClinVar's documentation](https://www.ncbi.nlm.nih.gov/clinvar/docs/clinsig/).
 
 Supplementary tables:
 * [**Complex clinical significance levels**](supplementary-tables.md#complex-clinical-significance-levels). This is simply the part of the distribution which is not shown on the diagram above for readability.
-* [**All clinical significance levels.**](supplementary-tables.md#all-clinical-significance-levels) This is the cumulative count for both simple and complex cases. For complex cases, the levels are split and counted individually. Hence, the total in this table will be higher than the total number of Variant records.
+* [**All clinical significance levels**](supplementary-tables.md#all-clinical-significance-levels). This is the cumulative count for both simple and complex cases. For complex cases, the levels are split and counted individually. Hence, the total in this table will be higher than the total number of Variant records.
 
 
 
 ## Star rating and review status
 
+![](diagrams/star-rating.png)
+
 These fields reflect the strength of evidence supporting the assertion of variant/disease association contained in the ClinVar record.
 
-![](diagrams/star-rating.png)
+Star rating and review status are aggregated by ClinVar across submissions for each clinical classification.
+For simplicity, the diagram focuses on the majority of records which have a single clinical classification.
+The correspondence between star rating and review status is defined by ClinVar [here](https://www.ncbi.nlm.nih.gov/clinvar/docs/review_status/#review-status-on-aggregate-recor).
+
+The far right side of the diagram shows collection method types, which describes how the data used to make the 
+classification was collected.
+These are (mostly) described by ClinVar [here](https://www.ncbi.nlm.nih.gov/clinvar/docs/spreadsheet/#collection).
+
+Collection method type is not aggregated by ClinVar, so the diagram shows a comma-separated list of all method types
+associated with a record, deduplicated and sorted alphabetically.
+For readability, only groups with at least 1000 records are included, with the rest being categorised under "Other".
+
+Supplementary tables:
+* [**Collection method types**](supplementary-tables.md#collection-method-types). This simply counts all collection method types across the entire dataset.
+* [**Distribution of records by collection method type**](supplementary-tables.md#distribution-of-records-by-collection-method-type).
+  This shows the same information as in the rightmost part of the diagram but without thresholding at 1000, i.e. all groupings within "Other" are listed.
 
 
 
