@@ -272,15 +272,17 @@ def main(clinvar_xml, process_items=None):
                 for clin_class in clinvar_record.clinical_classifications:
                     if clin_class.type == 'somatic':
                         try:
+                            assertion_type = clin_class.assertion_type or 'no assertion type'
+                            clinical_impact = clin_class.somatic_clinical_impact or 'no clinical impact'
                             sankey_somatic_classification.add_transitions(
-                                'Somatic', 'Single assertion', clin_class.somatic_assertion_type,
-                                clin_class.somatic_clinical_impact, clin_class.clinical_significance_raw)
+                                'Somatic', 'Single assertion', assertion_type,
+                                clinical_impact, clin_class.clinical_significance_raw)
                         except MultipleClinicalClassificationsError as e:
                             # Not supported by the main parsers yet
                             for elem in find_elements(clin_class.class_xml, './Description'):
                                 sankey_somatic_classification.add_transitions(
-                                    'Somatic', 'Multiple assertions', elem.attrib.get('ClinicalImpactAssertionType'),
-                                    elem.attrib.get('ClinicalImpactClinicalSignificance'), elem.text
+                                    'Somatic', 'Multiple assertions', elem.attrib.get('ClinicalImpactAssertionType', 'no assertion type'),
+                                    elem.attrib.get('ClinicalImpactClinicalSignificance', 'no clinical impact'), elem.text
                                 )
 
             # Review status, star rating, and collection method type
