@@ -174,6 +174,7 @@ def main(clinvar_xml, process_items=None):
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
     sankey_trait_xrefs = SankeyDiagram('trait-xrefs.png', 1200, 400)
     sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1400, 800)
+    sankey_somatic_classification = SankeyDiagram('somatic-classification.png', 1200, 400)
     sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 800)
     sankey_mode_of_inheritance = SankeyDiagram('mode-of-inheritance.png', 1200, 500)
     sankey_allele_origin = SankeyDiagram('allele-origin.png', 1200, 600)
@@ -183,8 +184,6 @@ def main(clinvar_xml, process_items=None):
     counter_trait_xrefs = SupplementaryTableCounter('All trait cross-references', 'Source')
     counter_clin_class_complex = SupplementaryTableCounter('Complex clinical classification levels', 'Clinical classification')
     counter_clin_class_all = SupplementaryTableCounter('All clinical classification levels', 'Clinical classification')
-    table_multiple_clin_class_assertions = SupplementaryTable(
-        'Multiple clinical classification assertions', ['RCV', 'Assertions'], sort_lambda=lambda x: (x[1], x[0]))
     counter_star_rating = SupplementaryTableCounter(
         'Distribution of records by star rating', 'Star rating', sort_lambda=lambda x: x[0])
     counter_coll_method_type = SupplementaryTableCounter('Collection method types', 'Collection method type')
@@ -244,7 +243,8 @@ def main(clinvar_xml, process_items=None):
             if len(clinvar_record.clinical_classifications) > 1:
                 class_cardinality = 'Multiple classifications'
             # Somatic, germline, oncogenic, or combinations thereof
-            class_type = ', '.join(sorted(clin_class.type for clin_class in clinvar_record.clinical_classifications))
+            clin_class_types = list(sorted(clin_class.type for clin_class in clinvar_record.clinical_classifications))
+            clin_class_string = ', '.join(clin_class_types)
             for clin_class in clinvar_record.clinical_classifications:
                 try:
                     clin_class_split = clin_class.clinical_significance_list
@@ -255,22 +255,33 @@ def main(clinvar_xml, process_items=None):
                     # Simple terms included in the diagram
                     if len(clin_class_split) == 1:
                         sankey_clinical_classification.add_transitions(
-                            'Variant', class_cardinality, class_type, 'Simple',
+                            'Variant', class_cardinality, clin_class_string, 'Simple',
                             clin_class_raw)
                     # Compound terms included in supplementary tables only
                     else:
                         sankey_clinical_classification.add_transitions(
-                            'Variant', class_cardinality, class_type, 'Complex')
+                            'Variant', class_cardinality, clin_class_string, 'Complex')
                         counter_clin_class_complex.add_count(clin_class_raw)
                 except MultipleClinicalClassificationsError as e:
-                    # Multiple descriptions within a single clinical classification
-                    # In this case we summarise each assertion and add to the supplementary table
-                    sankey_clinical_classification.add_transitions('Variant', class_cardinality, class_type,
-                                                                   'Multiple assertions')
-                    multiple_assertions = ', '.join(f'{elem.attrib.get("ClinicalImpactAssertionType")}/{elem.attrib.get("ClinicalImpactClinicalSignificance")}/{elem.text}'
-                                                    for cc in clinvar_record.clinical_classifications
-                                                    for elem in find_elements(cc.class_xml, './Description'))
-                    table_multiple_clin_class_assertions.add_row([rcv_to_link(rcv_id), multiple_assertions])
+                    # Multiple descriptions within a single clinical classification - only occurs for somatic
+                    # classifications, which are handled in the next diagram.
+                    continue
+
+            # Focus on somatic classifications
+            if 'somatic' in clin_class_types:
+                for clin_class in clinvar_record.clinical_classifications:
+                    if clin_class.type == 'somatic':
+                        try:
+                            sankey_somatic_classification.add_transitions(
+                                'Somatic', 'Single assertion', clin_class.somatic_assertion_type,
+                                clin_class.somatic_clinical_impact, clin_class.clinical_significance_raw)
+                        except MultipleClinicalClassificationsError as e:
+                            # Not supported by the main parsers yet
+                            for elem in find_elements(clin_class.class_xml, './Description'):
+                                sankey_somatic_classification.add_transitions(
+                                    'Somatic', 'Multiple assertions', elem.attrib.get('ClinicalImpactAssertionType'),
+                                    elem.attrib.get('ClinicalImpactClinicalSignificance'), elem.text
+                                )
 
             # Review status, star rating, and collection method type
             try:
@@ -357,7 +368,7 @@ def main(clinvar_xml, process_items=None):
     # Output the code for Sankey diagrams. Transitions are sorted in decreasing number of counts, so that the most frequent
     # cases are on top.
     for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_trait_xrefs,
-                           sankey_clinical_classification, sankey_mode_of_inheritance,
+                           sankey_clinical_classification, sankey_somatic_classification, sankey_mode_of_inheritance,
                            sankey_allele_origin, sankey_inheritance_origin):
         print('\n')
         print(sankey_diagram)
@@ -377,9 +388,9 @@ def main(clinvar_xml, process_items=None):
 
     # Output the supplementary tables for the report.
     for supplementary_table in (counter_trait_xrefs, counter_clin_class_complex, counter_clin_class_all,
-                                table_multiple_clin_class_assertions, counter_star_rating, counter_coll_method_type,
-                                counter_full_coll_method_type, table_multiple_mode_of_inheritance,
-                                counter_multiple_allele_origin, table_inconsistent_moi_ao):
+                                counter_star_rating, counter_coll_method_type, counter_full_coll_method_type,
+                                table_multiple_mode_of_inheritance, counter_multiple_allele_origin,
+                                table_inconsistent_moi_ao):
         print('\n')
         print(supplementary_table)
 
