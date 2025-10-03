@@ -18,4 +18,4 @@ nextflow run ${CODE_ROOT}/pipelines/generate_curation_spreadsheet.nf \
 
 ## Create a Google spreadsheet for curation
 
-Duplicate a [template](https://docs.google.com/spreadsheets/d/1GWAQAZjOpzsIkdCu0CSRDoehZEUB3VjZYYiHWp9Tn7Q/edit?usp=sharing). Paste the contents of `${CURATION_RELEASE_ROOT}/google_sheets_table.tsv` file into it, starting with column H “ClinVar label”. Example of a table fully populated with data can be found [here](https://docs.google.com/spreadsheets/d/1HQ08UQTpS-0sE9MyzdUPO7EihMxDb2e8N14s1BknjVo/edit?usp=sharing).
+Duplicate a [template](https://docs.google.com/spreadsheets/d/17sGSJafD4LSOykOS1O_oyX7FX52bTAuzfpI6sR8S4AM/edit?usp=sharing). Paste the contents of `${CURATION_RELEASE_ROOT}/google_sheets_table.tsv` file into it, starting with column H “ClinVar label”. Example of a table fully populated with data can be found [here](https://docs.google.com/spreadsheets/d/1HQ08UQTpS-0sE9MyzdUPO7EihMxDb2e8N14s1BknjVo/edit?usp=sharing).
