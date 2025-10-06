@@ -172,7 +172,7 @@ def main(clinvar_xml, process_items=None):
     # Sankey diagrams for visualisation
     sankey_variation_representation = SankeyDiagram('variant-types.png', 1200, 600)
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
-    sankey_trait_quality = SankeyDiagram('trait-combined.png', 1500, 400)
+    sankey_trait_quality = SankeyDiagram('trait-quality.png', 1500, 400)
     sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1400, 800)
     sankey_somatic_classification = SankeyDiagram('somatic-classification.png', 1200, 400)
     sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 800)
@@ -227,7 +227,7 @@ def main(clinvar_xml, process_items=None):
                 traits_category = 'Multiple traits'
             names_category = 'One name per trait'
             ontology_category = 'No xrefs'
-            trait_quality_category = 'Invalid trait name' if not clinvar_record.traits_with_valid_names else 'Regular trait'
+            trait_quality_category = 'No valid trait name' if not clinvar_record.traits_with_valid_names else 'Regular trait'
             for trait in traits:
                 if len(trait.all_names) > 1:
                     names_category = 'Multiple names per trait'
@@ -240,7 +240,11 @@ def main(clinvar_xml, process_items=None):
                 # Count all xref sources for each trait
                 for db, _, _ in trait.xrefs:
                     counter_trait_xrefs.add_count(db)
-            if all('related disorder' in name for trait in traits for name in trait.all_valid_names):
+            if clinvar_record.traits_with_valid_names and all(
+                'related disorder' in name
+                for trait in clinvar_record.traits_with_valid_names
+                for name in trait.all_valid_names
+            ):
                 trait_quality_category = 'All gene related disorder'
 
             sankey_trait_representation.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, names_category)
