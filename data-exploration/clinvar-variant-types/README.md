@@ -48,9 +48,19 @@ The diagram above demonstrates all these relationships. For a trait set with mul
 * “One name per trait” = _every_ trait in a trait set has at most one name;
 * “Multiple names per trait” = at least one trait in a trait set has multiple names.
 
-![](diagrams/trait-xrefs.png)
+![](diagrams/trait-quality.png)
 
-Each trait also has one or multiple cross-references associated with it.
+The traits are described with varying levels of informativeness, which is shown in the above diagram.
+
+Some trait names we consider invalid as they do not describe anything meaningful (e.g. "not provided" or "disease").
+Others are meaningful but less informative than specific disease terms, e.g. "CLCN4-related disorder" or other 
+gene-related disorder terms. The diagram uses the following categories:
+* "No valid trait names" = no trait in the trait set has any valid names
+* "Some gene related disorder" = some (but not all) trait names within the trait set are gene-related disorder terms
+* "All gene related disorder" = all valid trait names within the trait set are gene-related disorder terms
+* "Regular trait" = all other traits
+
+Finally, each trait also has one or multiple cross-references associated with it.
 These are identifiers from ontologies like MONDO or databases like MedGen.
 
 Of these we are especially interested in those that are "EFO-aligned", i.e. from EFO, MONDO, HP, and Orphanet.
