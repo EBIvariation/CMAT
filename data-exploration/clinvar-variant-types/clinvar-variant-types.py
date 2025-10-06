@@ -172,8 +172,7 @@ def main(clinvar_xml, process_items=None):
     # Sankey diagrams for visualisation
     sankey_variation_representation = SankeyDiagram('variant-types.png', 1200, 600)
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
-    sankey_trait_xrefs = SankeyDiagram('trait-xrefs.png', 1200, 400)
-    sankey_trait_quality = SankeyDiagram('trait-quality.png', 1200, 400)
+    sankey_trait_quality = SankeyDiagram('trait-combined.png', 1500, 400)
     sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1400, 800)
     sankey_somatic_classification = SankeyDiagram('somatic-classification.png', 1200, 400)
     sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 800)
@@ -227,24 +226,26 @@ def main(clinvar_xml, process_items=None):
             else:
                 traits_category = 'Multiple traits'
             names_category = 'One name per trait'
-            ontology_category = 'No EFO-aligned xrefs'
+            ontology_category = 'No xrefs'
             trait_quality_category = 'Invalid trait name' if not clinvar_record.traits_with_valid_names else 'Regular trait'
             for trait in traits:
                 if len(trait.all_names) > 1:
                     names_category = 'Multiple names per trait'
-                if any('related disorder' in name for name in trait.preferred_or_other_valid_name):
+                if any('related disorder' in name for name in trait.all_valid_names):
                     trait_quality_category = 'Some gene related disorder'
+                if trait.xrefs and ontology_category == 'No xrefs':
+                    ontology_category = 'No EFO-aligned xrefs'
                 if len(trait.current_efo_aligned_xrefs) > 0:
                     ontology_category = 'Has EFO-aligned xrefs'
                 # Count all xref sources for each trait
                 for db, _, _ in trait.xrefs:
                     counter_trait_xrefs.add_count(db)
-            if all(['related disorder' in name for trait in traits for name in trait.preferred_or_other_valid_name]):
+            if all('related disorder' in name for trait in traits for name in trait.all_valid_names):
                 trait_quality_category = 'All gene related disorder'
 
             sankey_trait_representation.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, names_category)
-            sankey_trait_xrefs.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, ontology_category)
-            sankey_trait_quality.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, names_category, trait_quality_category)
+            sankey_trait_quality.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, names_category, trait_quality_category, ontology_category)
+
             # Clinical classification
             class_cardinality = 'Single classification'
             if len(clinvar_record.clinical_classifications) > 1:
@@ -376,8 +377,8 @@ def main(clinvar_xml, process_items=None):
 
     # Output the code for Sankey diagrams. Transitions are sorted in decreasing number of counts, so that the most frequent
     # cases are on top.
-    for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_trait_xrefs,
-                           sankey_trait_quality, sankey_clinical_classification, sankey_somatic_classification,
+    for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_trait_quality,
+                           sankey_clinical_classification, sankey_somatic_classification,
                            sankey_mode_of_inheritance, sankey_allele_origin, sankey_inheritance_origin):
         print('\n')
         print(sankey_diagram)
