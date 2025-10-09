@@ -29,7 +29,7 @@ def test_multiple_clinical_classifications_record():
     record = next(iter(ClinVarDataset(input_file)))
 
     assert len(record.clinical_classifications) == 2
-    assert set(cc.type for cc in record.clinical_classifications) == {'GermlineClassification', 'SomaticClinicalImpact'}
+    assert set(cc.type for cc in record.clinical_classifications) == {'germline', 'somatic'}
     with pytest.raises(MultipleClinicalClassificationsError):
         print(record.valid_clinical_significances)
 
@@ -76,3 +76,6 @@ class TestClinvarRecord:
 
     def test_trait_efo_ids(self):
         assert self.test_clinvar_record.traits[0].current_efo_aligned_xrefs == [('MONDO', 'MONDO:0012990', 'current')]
+
+    def test_observation_method_types(self):
+        assert self.test_clinvar_record.collection_method_types == ['literature only', 'clinical testing', 'clinical testing', 'research']

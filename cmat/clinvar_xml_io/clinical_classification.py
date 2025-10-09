@@ -29,6 +29,13 @@ class ClinicalClassification:
         'reviewed by expert panel': 3,
         'practice guideline': 4,
     }
+    # Map clinical classification types from XML tags to more readable names
+    type_map = {
+        'GermlineClassification': 'germline',
+        'SomaticClinicalImpact': 'somatic',
+        'OncogenicityClassification': 'oncogenicity',
+        'NoClassification': 'none'
+    }
 
     # Some records have been flagged by ClinVar and should not be used.
     INVALID_CLINICAL_SIGNIFICANCES = {'no classifications from unflagged records'}
@@ -37,8 +44,7 @@ class ClinicalClassification:
         self.class_xml = class_xml
         self.clinvar_record = clinvar_record
         self.xsd_version = clinvar_record.xsd_version
-        # Type of clinical classification: germline, somatic, or oncogenicity
-        self.type = class_xml.tag
+        self.type = self.type_map.get(class_xml.tag, class_xml.tag)
 
     @property
     def last_evaluated_date(self):
@@ -69,7 +75,7 @@ class ClinicalClassification:
             return find_mandatory_unique_element(self.class_xml, './Description').text
         except AssertionError as e:
             raise MultipleClinicalClassificationsError(f'Found multiple descriptions for one ClinicalClassification in '
-                                      f'{self.clinvar_record.accession}')
+                                                       f'{self.clinvar_record.accession}')
 
     @property
     def clinical_significance_list(self):
@@ -82,3 +88,19 @@ class ClinicalClassification:
     @property
     def valid_clinical_significances(self):
         return [cs for cs in self.clinical_significance_list if cs.lower() not in self.INVALID_CLINICAL_SIGNIFICANCES]
+
+    @property
+    def somatic_assertion_type(self):
+        try:
+            return find_mandatory_unique_element(self.class_xml, './Description').attrib.get('ClinicalImpactAssertionType')
+        except AssertionError as e:
+            raise MultipleClinicalClassificationsError(f'Found multiple descriptions for one ClinicalClassification in '
+                                                       f'{self.clinvar_record.accession}')
+
+    @property
+    def somatic_clinical_impact(self):
+        try:
+            return find_mandatory_unique_element(self.class_xml, './Description').attrib.get('ClinicalImpactClinicalSignificance')
+        except AssertionError as e:
+            raise MultipleClinicalClassificationsError(f'Found multiple descriptions for one ClinicalClassification in '
+                                                       f'{self.clinvar_record.accession}')

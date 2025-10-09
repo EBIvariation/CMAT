@@ -10,6 +10,7 @@ from sankeyflow import Sankey
 
 from cmat import clinvar_xml_io
 from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassificationsError
+from cmat.clinvar_xml_io.xml_parsing import find_elements
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
@@ -33,26 +34,71 @@ class SankeyDiagram(Counter):
         for t_from, t_to in zip(transition_chain, transition_chain[1:]):
             self[(t_from, t_to)] += 1
 
-    def generate_diagram(self):
+    def generate_diagram(self, threshold=None):
         """Generate and save a Sankey diagram directly to file."""
         dpi = 144
+        font_size = 6
         plt.figure(figsize=(self.width/dpi, self.height/dpi), dpi=dpi)
-        flows = [(t_from, t_to, t_count) for (t_from, t_to), t_count in sorted(self.items(), key=lambda x: -x[1])]
+        flows = [(self._format_label(t_from), self._format_label(t_to), t_count)
+                 for (t_from, t_to), t_count in sorted(self.items(), key=lambda x: -x[1])]
+        # TODO: figure out how to show extremely thin flows better
         try:
             logger.info(f'Generating diagram: {self.name}')
-            s = Sankey(flows=flows,
+            nodes = Sankey.infer_nodes(flows)
+            if threshold is not None:
+                nodes, flows = self._apply_threshold(nodes, flows, threshold=threshold)
+            s = Sankey(flows=flows, nodes=nodes,
                        node_pad_y_min=0.04,
                        node_pad_y_max=0.08,
-                       node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
+                       node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=font_size)))
         except FloatingPointError:
             # Perturb values to avoid divide-by-zero errors. TODO: come up with a better solution to this
             plt.figure(figsize=(self.width/dpi, (self.height+1)/dpi), dpi=dpi)
             s = Sankey(flows=flows,
                node_pad_y_min=0.03,
                node_pad_y_max=0.08,
-               node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=8)))
+               node_opts=dict(label_format='{label}: {value}', label_opts=dict(fontsize=font_size)))
         s.draw()
         plt.savefig(self.name, bbox_inches='tight')
+
+    def _format_label(self, label):
+        max_len = 20
+        words = label.split()
+        lines = []
+        line = []
+        while len(words) > 0:
+            while len(' '.join(line)) < max_len and len(words) > 0:
+                line.append(words.pop(0))
+            lines.append(' '.join(line))
+            line = []
+        return '\n'.join(lines)
+
+    def _apply_threshold(self, nodes, flows, threshold):
+        """Recompute nodes and flows by combining nodes at the final level with value less than threshold."""
+        new_node_name = 'Other'
+        new_nodes = nodes[:-1]
+        new_final_level = []
+        new_value = 0
+        # Recompute final level
+        for node, value in nodes[-1]:
+            if value < threshold:
+                new_value += value
+            else:
+                new_final_level.append([node, value])
+        if new_value > 0:
+            new_final_level.append([new_node_name, new_value])
+        else:
+            return nodes, flows
+        new_nodes.append(new_final_level)
+        # Update flows
+        all_endpoints = [node for level in new_nodes for node, _ in level]
+        new_flows = []
+        for start, end, count in flows:
+            if end not in all_endpoints:
+                new_flows.append((start, new_node_name, count))
+            else:
+                new_flows.append((start, end, count))
+        return new_nodes, new_flows
 
     def __str__(self):
         lines = [f'========== SANKEY DIAGRAM: {self.name} ==========',
@@ -126,17 +172,22 @@ def main(clinvar_xml, process_items=None):
     # Sankey diagrams for visualisation
     sankey_variation_representation = SankeyDiagram('variant-types.png', 1200, 600)
     sankey_trait_representation = SankeyDiagram('traits.png', 1200, 400)
-    sankey_clinical_significance = SankeyDiagram('clinical-significance.png', 1200, 800)
-    sankey_star_rating = SankeyDiagram('star-rating.png', 1200, 600)
+    sankey_trait_quality = SankeyDiagram('trait-quality.png', 1500, 400)
+    sankey_clinical_classification = SankeyDiagram('clinical-classification.png', 1400, 800)
+    sankey_somatic_classification = SankeyDiagram('somatic-classification.png', 1200, 400)
+    sankey_star_rating = SankeyDiagram('star-rating.png', 1400, 800)
     sankey_mode_of_inheritance = SankeyDiagram('mode-of-inheritance.png', 1200, 500)
     sankey_allele_origin = SankeyDiagram('allele-origin.png', 1200, 600)
     sankey_inheritance_origin = SankeyDiagram('inheritance-origin.png', 1200, 400)
 
     # Supplementary tables and counters for the report
-    counter_clin_sig_complex = SupplementaryTableCounter('Complex clinical significance levels', 'Clinical significance')
-    counter_clin_sig_all = SupplementaryTableCounter('All clinical significance levels', 'Clinical significance')
+    counter_trait_xrefs = SupplementaryTableCounter('All trait cross-references', 'Source')
+    counter_clin_class_complex = SupplementaryTableCounter('Complex clinical classification levels', 'Clinical classification')
+    counter_clin_class_all = SupplementaryTableCounter('All clinical classification levels', 'Clinical classification')
     counter_star_rating = SupplementaryTableCounter(
         'Distribution of records by star rating', 'Star rating', sort_lambda=lambda x: x[0])
+    counter_coll_method_type = SupplementaryTableCounter('Collection method types', 'Collection method type')
+    counter_full_coll_method_type = SupplementaryTableCounter('Distribution of records by collection method type', 'Collection method type')
     table_multiple_mode_of_inheritance = SupplementaryTable(
         'Multiple mode of inheritance', ['RCV', 'Modes of inheritance'], sort_lambda=lambda x: (x[1], x[0]))
     counter_multiple_allele_origin = SupplementaryTableCounter('Multiple allele origins', 'Allele origins')
@@ -157,105 +208,160 @@ def main(clinvar_xml, process_items=None):
             measure_set_type = measure_set.attrib['Type']
             sankey_variation_representation.add_transitions('RCV', 'MeasureSet', measure_set_type)
 
-            if measure_set_type == 'Variant':
-                # Most common case, accounting for >99.97% of all ClinVar records. Here, we go into details on various
-                # attribute distributions.
+            # Only go into details for single variants, the most common type
+            if measure_set_type != 'Variant':
+                continue
 
-                # Variation representation
-                measures = measure_set.findall('Measure')
-                assert len(measures) == 1, 'MeasureSet of type Variant must contain exactly one Measure'
-                sankey_variation_representation.add_transitions(measure_set_type, measures[0].attrib['Type'])
+            # Variation representation
+            measures = measure_set.findall('Measure')
+            assert len(measures) == 1, 'MeasureSet of type Variant must contain exactly one Measure'
+            sankey_variation_representation.add_transitions(measure_set_type, measures[0].attrib['Type'])
 
-                # Trait representation
-                traits = clinvar_record.traits
-                if len(traits) == 0:
-                    raise AssertionError('There must always be at least one trait')
-                elif len(traits) == 1:
-                    traits_category = 'One trait'
-                else:
-                    traits_category = 'Multiple traits'
-                names_category = 'One name per trait'
-                for trait in traits:
-                    if len(trait.all_names) > 1:
-                        names_category = 'Multiple names per trait'
-                sankey_trait_representation.add_transitions('Variant', clinvar_record.trait_set_type, traits_category)
-                if traits_category != 'No traits':
-                    sankey_trait_representation.add_transitions(traits_category, names_category)
+            # Trait representation
+            traits = clinvar_record.traits
+            if len(traits) == 0:
+                raise AssertionError('There must always be at least one trait')
+            elif len(traits) == 1:
+                traits_category = 'One trait'
+            else:
+                traits_category = 'Multiple traits'
+            names_category = 'One name per trait'
+            ontology_category = 'No xrefs'
+            trait_quality_category = 'No valid trait name' if not clinvar_record.traits_with_valid_names else 'Regular trait'
+            for trait in traits:
+                if len(trait.all_names) > 1:
+                    names_category = 'Multiple names per trait'
+                if any('related disorder' in name for name in trait.all_valid_names):
+                    trait_quality_category = 'Some gene related disorder'
+                if trait.xrefs and ontology_category == 'No xrefs':
+                    ontology_category = 'No EFO-aligned xrefs'
+                if len(trait.current_efo_aligned_xrefs) > 0:
+                    ontology_category = 'Has EFO-aligned xrefs'
+                # Count all xref sources for each trait
+                for db, _, _ in trait.xrefs:
+                    counter_trait_xrefs.add_count(db)
+            if clinvar_record.traits_with_valid_names and all(
+                'related disorder' in name
+                for trait in clinvar_record.traits_with_valid_names
+                for name in trait.all_valid_names
+            ):
+                trait_quality_category = 'All gene related disorder'
 
-                # Clinical significance
+            sankey_trait_representation.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, names_category)
+            sankey_trait_quality.add_transitions('Variant', clinvar_record.trait_set_type, traits_category, names_category, trait_quality_category, ontology_category)
+
+            # Clinical classification
+            class_cardinality = 'Single classification'
+            if len(clinvar_record.clinical_classifications) > 1:
+                class_cardinality = 'Multiple classifications'
+            # Somatic, germline, oncogenic, or combinations thereof
+            clin_class_types = list(sorted(clin_class.type for clin_class in clinvar_record.clinical_classifications))
+            clin_class_string = ', '.join(clin_class_types)
+            for clin_class in clinvar_record.clinical_classifications:
                 try:
-                    clin_sig_split = clinvar_record.clinical_significance_list
-                    clinical_significance = clinvar_record.clinical_classifications[0].clinical_significance_raw
-                    for clin_sig in clin_sig_split:  # Count all clinical significance levels after splitting
-                        counter_clin_sig_all.add_count(clin_sig)
-                    if len(clin_sig_split) == 1:
-                        sankey_clinical_significance.add_transitions('Variant', 'Single classification', 'Simple', clinical_significance)
+                    clin_class_split = clin_class.clinical_significance_list
+                    clin_class_raw = clin_class.clinical_significance_raw
+                    # Count all individual clinical classification terms
+                    for clin_class_term in clin_class_split:
+                        counter_clin_class_all.add_count(clin_class_term)
+                    # Simple terms included in the diagram
+                    if len(clin_class_split) == 1:
+                        sankey_clinical_classification.add_transitions(
+                            'Variant', class_cardinality, clin_class_string, 'Simple',
+                            clin_class_raw)
+                    # Compound terms included in supplementary tables only
                     else:
-                        sankey_clinical_significance.add_transitions('Variant', 'Single classification', 'Complex')
-                        counter_clin_sig_complex.add_count(clinical_significance)
-                except MultipleClinicalClassificationsError:
-                    sankey_clinical_significance.add_transitions('Variant', 'Multiple classification')
+                        sankey_clinical_classification.add_transitions(
+                            'Variant', class_cardinality, clin_class_string, 'Complex')
+                        counter_clin_class_complex.add_count(clin_class_raw)
+                except MultipleClinicalClassificationsError as e:
+                    # Multiple descriptions within a single clinical classification - only occurs for somatic
+                    # classifications, which are handled in the next diagram.
+                    continue
 
-                # Review status
-                try:
-                    review_status = clinvar_record.review_status
-                    star_rating = review_status_stars(clinvar_record.score)
-                    sankey_star_rating.add_transitions('Variant', 'Single classification', star_rating, review_status)
-                    counter_star_rating.add_count(star_rating)
-                except MultipleClinicalClassificationsError:
-                    sankey_star_rating.add_transitions('Variant', 'Multiple classification')
+            # Focus on somatic classifications
+            if 'somatic' in clin_class_types:
+                for clin_class in clinvar_record.clinical_classifications:
+                    if clin_class.type == 'somatic':
+                        try:
+                            assertion_type = clin_class.somatic_assertion_type or 'no assertion type'
+                            clinical_impact = clin_class.somatic_clinical_impact or 'no clinical impact'
+                            sankey_somatic_classification.add_transitions(
+                                'Somatic [CC]', 'Single assertion', assertion_type,
+                                clinical_impact, clin_class.clinical_significance_raw)
+                        except MultipleClinicalClassificationsError as e:
+                            # Not supported by the main parsers yet
+                            for elem in find_elements(clin_class.class_xml, './Description'):
+                                sankey_somatic_classification.add_transitions(
+                                    'Somatic [CC]', 'Multiple assertions', elem.attrib.get('ClinicalImpactAssertionType', 'no assertion type'),
+                                    elem.attrib.get('ClinicalImpactClinicalSignificance', 'no clinical impact'), elem.text
+                                )
 
-                # Mode of inheritance
-                modes_of_inheritance = clinvar_record.mode_of_inheritance
-                modes_of_inheritance_text = ', '.join(sorted(modes_of_inheritance))
-                if len(modes_of_inheritance) == 0:
-                    mode_of_inheritance_category = 'Missing'
-                elif 'Somatic mutation' in modes_of_inheritance:
-                    if len(modes_of_inheritance) > 1:
-                        mode_of_inheritance_category = 'Germline & somatic'
-                    else:
-                        mode_of_inheritance_category = 'Somatic'
-                else:
-                    mode_of_inheritance_category = 'Germline'
-                sankey_mode_of_inheritance.add_transitions('Variant', mode_of_inheritance_category)
-                if mode_of_inheritance_category == 'Germline':
-                    if len(modes_of_inheritance) == 1:
-                        sankey_mode_of_inheritance.add_transitions('Germline', 'Single', modes_of_inheritance_text)
-                    else:
-                        sankey_mode_of_inheritance.add_transitions('Germline', 'Multiple')
-                # Log multiple ModeOfInheritance cases in a separate table
+            # Review status, star rating, and collection method type
+            try:
+                review_status = clinvar_record.review_status
+                star_rating = review_status_stars(clinvar_record.score)
+                collection_method_type = ', '.join(sorted(set(clinvar_record.collection_method_types))) or 'missing'
+                sankey_star_rating.add_transitions('Variant', 'Single classification', star_rating, review_status,
+                                                   collection_method_type)
+                counter_star_rating.add_count(star_rating)
+                for coll_method_type in clinvar_record.collection_method_types:
+                    counter_coll_method_type.add_count(coll_method_type)
+                counter_full_coll_method_type.add_count(collection_method_type)
+            except MultipleClinicalClassificationsError:
+                sankey_star_rating.add_transitions('Variant', 'Multiple classifications')
+
+            # Mode of inheritance
+            modes_of_inheritance = clinvar_record.mode_of_inheritance
+            modes_of_inheritance_text = ', '.join(sorted(modes_of_inheritance))
+            if len(modes_of_inheritance) == 0:
+                mode_of_inheritance_category = 'Missing'
+            elif 'Somatic mutation' in modes_of_inheritance:
                 if len(modes_of_inheritance) > 1:
-                    table_multiple_mode_of_inheritance.add_row([rcv_to_link(rcv_id), modes_of_inheritance_text])
-
-                # Allele origins
-                allele_origins = clinvar_record.allele_origins
-                allele_origin_text = ', '.join(sorted(allele_origins))
-                if len(allele_origins) == 0:
-                    allele_origin_category = 'Missing'
-                elif 'somatic' in allele_origins:
-                    if len(allele_origins) > 1:
-                        allele_origin_category = 'Germline & somatic'
-                    else:
-                        allele_origin_category = 'Somatic'
+                    mode_of_inheritance_category = 'Germline & somatic'
                 else:
-                    allele_origin_category = 'Germline'
-                sankey_allele_origin.add_transitions('Variant', allele_origin_category)
-                if allele_origin_category == 'Germline':
-                    if len(allele_origins) == 1:
-                        sankey_allele_origin.add_transitions(allele_origin_category, 'Single', allele_origin_text)
-                    else:
-                        sankey_allele_origin.add_transitions(allele_origin_category, 'Multiple')
-                # Log multiple allele of origin values in a separate table
-                if len(allele_origins) > 1:
-                    counter_multiple_allele_origin.add_count(allele_origin_text)
+                    mode_of_inheritance_category = 'Somatic'
+            else:
+                mode_of_inheritance_category = 'Germline'
+            sankey_mode_of_inheritance.add_transitions('Variant', mode_of_inheritance_category)
+            if mode_of_inheritance_category == 'Germline':
+                if len(modes_of_inheritance) == 1:
+                    sankey_mode_of_inheritance.add_transitions('Germline', 'Single', modes_of_inheritance_text)
+                else:
+                    sankey_mode_of_inheritance.add_transitions('Germline', 'Multiple')
+            # Log multiple ModeOfInheritance cases in a separate table
+            if len(modes_of_inheritance) > 1:
+                table_multiple_mode_of_inheritance.add_row([rcv_to_link(rcv_id), modes_of_inheritance_text])
 
-                # Mode of inheritance and allele origin mapping
-                if mode_of_inheritance_category != 'Missing' and allele_origin_category != 'Missing':
-                    sankey_inheritance_origin.add_transitions(
-                        f'[MoI] {mode_of_inheritance_category}', f'{allele_origin_category} [AO]')
-                    if mode_of_inheritance_category != allele_origin_category:
-                        table_inconsistent_moi_ao.add_row([rcv_to_link(rcv_id), modes_of_inheritance_text,
-                                                           allele_origin_text])
+            # Allele origins
+            allele_origins = clinvar_record.allele_origins
+            allele_origin_text = ', '.join(sorted(allele_origins))
+            if len(allele_origins) == 0:
+                allele_origin_category = 'Missing'
+            elif 'somatic' in allele_origins:
+                if len(allele_origins) > 1:
+                    allele_origin_category = 'Germline & somatic'
+                else:
+                    allele_origin_category = 'Somatic'
+            else:
+                allele_origin_category = 'Germline'
+            sankey_allele_origin.add_transitions('Variant', allele_origin_category)
+            if allele_origin_category == 'Germline':
+                if len(allele_origins) == 1:
+                    sankey_allele_origin.add_transitions(allele_origin_category, 'Single', allele_origin_text)
+                else:
+                    sankey_allele_origin.add_transitions(allele_origin_category, 'Multiple')
+            # Log multiple allele of origin values in a separate table
+            if len(allele_origins) > 1:
+                counter_multiple_allele_origin.add_count(allele_origin_text)
+
+            # Mode of inheritance and allele origin mapping
+            if mode_of_inheritance_category != 'Missing' and allele_origin_category != 'Missing':
+                sankey_inheritance_origin.add_transitions(
+                    f'[MoI] {mode_of_inheritance_category}', f'{allele_origin_category} [AO]')
+                if mode_of_inheritance_category != allele_origin_category:
+                    table_inconsistent_moi_ao.add_row([rcv_to_link(rcv_id), modes_of_inheritance_text,
+                                                       allele_origin_text])
 
         elif len(measure_sets) == 0 and len(genotype_sets) == 1:
             # RCV directly contains one genotype set.
@@ -275,14 +381,28 @@ def main(clinvar_xml, process_items=None):
 
     # Output the code for Sankey diagrams. Transitions are sorted in decreasing number of counts, so that the most frequent
     # cases are on top.
-    for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_clinical_significance,
-                           sankey_star_rating, sankey_mode_of_inheritance, sankey_allele_origin, sankey_inheritance_origin):
+    for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_trait_quality,
+                           sankey_clinical_classification, sankey_somatic_classification,
+                           sankey_mode_of_inheritance, sankey_allele_origin, sankey_inheritance_origin):
         print('\n')
         print(sankey_diagram)
-        sankey_diagram.generate_diagram()
+        try:
+            sankey_diagram.generate_diagram()
+        except Exception as e:
+            print(e)
+            continue
+
+    # Sankey diagrams requiring thresholding
+    print('\n')
+    print(sankey_star_rating)
+    try:
+        sankey_star_rating.generate_diagram(threshold=1000)
+    except Exception as e:
+        print(e)
 
     # Output the supplementary tables for the report.
-    for supplementary_table in (counter_clin_sig_complex, counter_clin_sig_all, counter_star_rating,
+    for supplementary_table in (counter_trait_xrefs, counter_clin_class_complex, counter_clin_class_all,
+                                counter_star_rating, counter_coll_method_type, counter_full_coll_method_type,
                                 table_multiple_mode_of_inheritance, counter_multiple_allele_origin,
                                 table_inconsistent_moi_ao):
         print('\n')
