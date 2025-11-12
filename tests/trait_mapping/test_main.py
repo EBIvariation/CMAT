@@ -97,17 +97,17 @@ class TestProcessTrait:
     def test_zooma_high_confidence(self):
         # Finds nothing exact via OLS, so goes through Zooma as well and finds a high-confidence result
         trait = Trait('11p partial monosomy syndrome', None, None)
-        processed_trai = self.run_process_trait(trait)
-        assert len(processed_trai.ols_result_list) == 6
-        assert len(processed_trai.zooma_result_list) == 1
-        assert processed_trai.is_finished
+        processed_trait = self.run_process_trait(trait)
+        assert len(processed_trait.ols_result_list) == 6
+        assert len(processed_trait.zooma_result_list) == 2
+        assert processed_trait.is_finished
 
     def test_not_finished(self):
         # No sufficiently good mappings in OLS or Zooma
         trait = Trait('aicardi-goutieres syndrome 99', None, None)
         processed_trait = self.run_process_trait(trait)
         assert len(processed_trait.ols_result_list) == 0
-        assert len(processed_trait.zooma_result_list) == 15
+        assert len(processed_trait.zooma_result_list) == 19
         assert not processed_trait.is_finished
 
     def test_ols_exact_ascii_match(self):
