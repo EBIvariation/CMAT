@@ -1,21 +1,17 @@
 #!/usr/bin/env python3
 
 import argparse
-import logging
 import os
 from datetime import datetime
 
 from google.cloud import storage
 
 
-logger = logging.getLogger(__package__)
-
-
 def upload_evidence_to_gcloud_bucket(source_file_name, destination_folder):
     """Uploads source_file_name to destination_folder in the Google Cloud Storage bucket.
     File will be renamed to cttv012-[yyyy]-[mm]-[dd].json.gz"""
     if 'OT_BUCKET_NAME' not in os.environ or 'OT_CREDS_FILE' not in os.environ:
-        logger.error('Environment variables OT_BUCKET_NAME and OT_CREDS_FILE must be set')
+        print('Environment variables OT_BUCKET_NAME and OT_CREDS_FILE must be set')
         return
     bucket_name = os.environ['OT_BUCKET_NAME']
     creds_json_file = os.environ['OT_CREDS_FILE']
@@ -28,8 +24,7 @@ def upload_evidence_to_gcloud_bucket(source_file_name, destination_folder):
     blob = bucket.blob(destination_blob_name)
 
     blob.upload_from_filename(source_file_name)
-
-    logger.info(f'File {source_file_name} uploaded to gs://{bucket_name}/{destination_blob_name}.')
+    print(f'File {source_file_name} uploaded to gs://{bucket_name}/{destination_blob_name}.')
 
 
 if __name__ == '__main__':

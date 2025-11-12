@@ -59,14 +59,18 @@ After the evidence strings have been generated, summary metrics need to be updat
 There are also a few version numbers to record. For EFO version, compare the release date [here](https://github.com/EBISPOT/efo/releases) with manual curation date. For Ensembl version, do the same with the release date [here](https://www.ensembl.org/index.html) and the evidence string generation date.
 
 ### Submit evidence strings
-The evidence string file (`evidence_strings.json`) must be uploaded to the [Open Targets Google Cloud Storage](https://console.cloud.google.com/storage/browser/otar012-eva/) and be named in the format `cttv012-[yyyy]-[mm]-[dd].json.gz` (e.g. `cttv012-2020-10-21.json.gz`).
+The evidence string file (`evidence_strings.json`) must be uploaded to the [Open Targets Google Cloud Storage](https://console.cloud.google.com/storage/browser/otar012-eva/).
+To do this, run the following:
+```shell
+${CODE_ROOT}/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json --destination-folder disease-target-evidence
+```
 
 Once the upload is complete, send an email to Open Targets (data [at] opentargets.org) containing the following information from the [metrics spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/):
 * The number of submitted evidence strings
 * The ClinVar release date
 * The Ensembl release
 * The EFO version used for mapping
-* The `eva-opentargets` pipeline version
+* The `CMAT` pipeline version
 * The Open Targets JSON schema version
 
 ### Submit feedback to ZOOMA
@@ -76,7 +80,7 @@ The idea with [ZOOMA](http://www.ebi.ac.uk/spot/zooma/) is that we not only use 
 
 The files are uploaded to the FTP, where ZOOMA will pick it up. At this stage, you only need to upload the **clinvar_xrefs** dataset (the *eva_clinvar* dataset is updated in the process of the manual curation).
 
-To make changes to the FTP, you will need to log in to the cluster using your **personal account** and then you will need to have set up the common environment like in step 1.
+To make changes to the FTP, you will need to log in to a datamover node.
 ```bash
 # Create the folder, copy the file to FTP, and update the “latest” folder
 FTP_PATH=${FTP_PATH_BASE}/`date +%Y/%m/%d`
