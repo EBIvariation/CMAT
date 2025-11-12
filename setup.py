@@ -43,5 +43,6 @@ setup(name='cmat',
       tests_require=get_requires(),
       setup_requires=get_requires(),
       test_suite='tests',
-      classifiers=classifiers
+      classifiers=classifiers,
+      scripts=[os.path.join(os.path.dirname(__file__), 'bin', 'upload_to_gcloud.py')]
       )
