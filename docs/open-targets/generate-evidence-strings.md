@@ -59,10 +59,11 @@ After the evidence strings have been generated, summary metrics need to be updat
 There are also a few version numbers to record. For EFO version, compare the release date [here](https://github.com/EBISPOT/efo/releases) with manual curation date. For Ensembl version, do the same with the release date [here](https://www.ensembl.org/index.html) and the evidence string generation date.
 
 ### Submit evidence strings
-The evidence string file (`evidence_strings.json`) must be uploaded to the [Open Targets Google Cloud Storage](https://console.cloud.google.com/storage/browser/otar012-eva/).
+The evidence string file (`evidence_strings.json`) must be compressed and uploaded to the [Open Targets Google Cloud Storage](https://console.cloud.google.com/storage/browser/otar012-eva/).
 To do this, run the following:
 ```shell
-${CODE_ROOT}/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json --destination-folder disease-target-evidence
+gzip evidence_strings/evidence_strings.json
+${CODE_ROOT}/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json.gz --destination-folder disease-target-evidence
 ```
 
 Once the upload is complete, send an email to Open Targets (data [at] opentargets.org) containing the following information from the [metrics spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/):
