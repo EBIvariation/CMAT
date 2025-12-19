@@ -91,7 +91,7 @@ class TestProcessTrait:
         # Only goes through OLS as it finds an exact match in EFO
         trait = Trait('chédiak-higashi syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.ols_result_list) == 3
+        assert len(processed_trait.ols_result_list) == 8
         assert processed_trait.is_finished
 
     def test_zooma_high_confidence(self):
