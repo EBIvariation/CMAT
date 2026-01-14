@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl=2
 
-include { getTargetOntology } from './utils.nf'
+include { getTargetOntology; downloadJsonSchema } from './utils.nf'
 
 
 def helpMessage() {
@@ -13,6 +13,7 @@ def helpMessage() {
         --curation_root     Directory for current batch
         --input_csv         Input csv file
         --mappings          Current mappings file (optional, will use a default path if omitted)
+        --schema            Open Targets JSON schema version (optional, will check term IDs match schema if included)
         --with_feedback     Whether to generate EFO/Zooma feedback and final symlinking (default false)
     """
 }
@@ -21,6 +22,7 @@ params.help = null
 params.curation_root = null
 params.input_csv = null
 params.mappings = "\${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv"
+params.schema = null
 params.with_feedback = false
 
 if (params.help) {
@@ -37,13 +39,24 @@ codeRoot = "${projectDir}/.."
  * Main workflow.
  */
 workflow {
+    // Generate latest mappings
     exportTable()
     combineManualAndAutomated(exportTable.out.finishedMappings)
     getTargetOntology(params.mappings)
     stripMappingsHeader()
     mergeWithLatestMappings(combineManualAndAutomated.out.newMappings, stripMappingsHeader.out.previousMappings)
-    checkDuplicates(mergeWithLatestMappings.out.newMappings)
-    addMappingsHeader(checkDuplicates.out.duplicatesOk, mergeWithLatestMappings.out.newMappings, getTargetOntology.out.targetOntology)
+
+    // Perform checks on latest mappings
+    if (params.schema != null) {
+        schema_file = downloadJsonSchema(params.schema)
+    } else {
+        schema_file = file("empty")
+    }
+    checkMappings(mergeWithLatestMappings.out.newMappings, schema_file, getTargetOntology.out.targetOntology)
+    checkDuplicates(checkMappings.out.updatedMappings)
+
+    // Finalise latest mappings file
+    addMappingsHeader(checkDuplicates.out.duplicatesOk, checkMappings.out.updatedMappings, getTargetOntology.out.targetOntology)
     if (params.with_feedback) {
         generateZoomaFeedback(addMappingsHeader.out.finalMappings)
         updateLinks(addMappingsHeader.out.finalMappings, generateZoomaFeedback.out.zoomaFeedback)
@@ -165,6 +178,38 @@ process generateZoomaFeedback {
         | sort -t\$'\t' -k1,1 \
         | awk -F\$'\t' -vDATE="\$(date +'%y/%m/%d %H:%M')" '{print "\t\tdisease\t" \$1 "\t" \$2 "\teva\t" DATE}' \
     >> eva_clinvar.txt
+    """
+}
+
+/*
+ * Check latest mappings for obsolete terms and (optionally) conformity against latest OT schema.
+ */
+process checkMappings {
+    label 'short_time'
+    label 'small_mem'
+    publishDir "${curationRoot}",
+        overwrite: true,
+        mode: "copy",
+        pattern: "*.tsv"
+
+    input:
+    path mappingsFile
+    path schemaFile
+    val targetOntology
+
+    output:
+    path "${filename}_updated.tsv", emit: updatedMappings
+    path "${filename}_obsolete.tsv", emit: obsoleteMappings
+    path "${filename}_nonmatching.tsv", emit: nonmatchingMappings
+
+    script:
+    def schema_flag = schemaFile != file("empty")? "--ot-schema ${schemaFile}" : ""
+    def filename = mappingsFile.take(mappingsFile.indexOf(".tsv"))
+    """
+    \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/check_latest_mappings.py \
+        --mappings-file ${mappingsFile} \
+        --target-ontology ${targetOntology} \
+        ${schema_flag}
     """
 }
 

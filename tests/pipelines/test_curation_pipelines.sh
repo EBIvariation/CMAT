@@ -13,6 +13,8 @@ BATCH_ROOT=${BATCH_ROOT_BASE}/test_batch
 mkdir -p ${BATCH_ROOT}
 cd ${BATCH_ROOT}
 
+OT_SCHEMA_VERSION=$(cat "${CODE_ROOT}/OT_SCHEMA_VERSION")
+
 nextflow run ${CODE_ROOT}/pipelines/generate_curation_spreadsheet.nf \
   --curation_root ${BATCH_ROOT} \
   --clinvar ${BATCH_ROOT_BASE}/input.xml.gz \
@@ -25,6 +27,7 @@ diff ${BATCH_ROOT}/google_sheets_table.tsv ${BATCH_ROOT_BASE}/expected/google_sh
 nextflow run ${CODE_ROOT}/pipelines/export_curation_spreadsheet.nf \
   --curation_root ${BATCH_ROOT} \
   --input_csv ${BATCH_ROOT_BASE}/finished_curation_spreadsheet.csv \
+  --schema ${OT_SCHEMA_VERSION} \
   -resume
 
 diff ${BATCH_ROOT}/curator_comments.tsv ${BATCH_ROOT_BASE}/expected/curator_comments.tsv

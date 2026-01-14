@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl=2
 
-include { getTargetOntology } from './utils.nf'
+include { getTargetOntology; downloadClinvar } from './utils.nf'
 
 
 def helpMessage() {
@@ -53,22 +53,6 @@ workflow {
     collectAutomatedMappings(processTraits.out.automatedTraits.collect())
     collectCurationTraits(processTraits.out.traitsForCuration.collect())
     createCurationTable(collectCurationTraits.out.curationTraits)
-}
-
-/*
- * Download ClinVar data, using the most recent XML dump.
- */
-process downloadClinvar {
-    label 'small_mem'
-
-    output:
-    path "clinvar.xml.gz", emit: clinvarXml
-
-    script:
-    """
-    wget -O clinvar.xml.gz \
-        https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/RCV_release/ClinVarRCVRelease_00-latest.xml.gz
-    """
 }
 
 /*
