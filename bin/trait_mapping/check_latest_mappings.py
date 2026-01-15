@@ -6,7 +6,6 @@ import json
 import os
 import re
 
-from cmat.clinvar_xml_io.ontology_uri import OntologyUri
 from cmat.trait_mapping.ols import is_current_and_in_ontology
 
 
@@ -31,35 +30,35 @@ def check_mappings(mappings_file, target_ontology, ot_schema_file):
         reader = csv.reader(f, delimiter='\t')
         mappings = list(reader)
     ontology_id_regex = get_ontology_id_regex(ot_schema_file)
-    updated_mappings = []
-    obsolete_mappings = []
-    nonmatching_mappings = []
+    updated_mappings = set()
+    obsolete_mappings = set()
+    nonmatching_mappings = set()
 
     for trait_name, uri, label in mappings:
         if is_current_and_in_ontology(uri, target_ontology):
-            if re.match(ontology_id_regex, OntologyUri.uri_to_curie(uri)):
-                updated_mappings.append((label, uri))
+            if re.match(ontology_id_regex, uri.split('/')[-1]):
+                updated_mappings.add((label, uri))
             else:
-                nonmatching_mappings.append((label, uri))
+                nonmatching_mappings.add((label, uri))
         else:
-            obsolete_mappings.append((label, uri))
+            obsolete_mappings.add((label, uri))
 
     # Output files
     filename = '.'.join(os.path.basename(mappings_file).split('.')[:-1])
     with open(f'{filename}_obsolete.tsv', 'w+') as outfile:
         writer = csv.writer(outfile, delimiter='\t')
         print(f'Removed {len(obsolete_mappings)} obsolete mappings')
-        writer.writerows(sorted(obsolete_mappings))
+        writer.writerows(sorted(list(obsolete_mappings)))
 
     with open(f'{filename}_nonmatching.tsv', 'w+') as outfile:
         writer = csv.writer(outfile, delimiter='\t')
         print(f'Removed {len(nonmatching_mappings)} nonmatching mappings')
-        writer.writerows(sorted(nonmatching_mappings))
+        writer.writerows(sorted(list(nonmatching_mappings)))
 
     with open(f'{filename}_updated.tsv', 'w+') as outfile:
         writer = csv.writer(outfile, delimiter='\t')
         print(f'{len(updated_mappings)} mappings remaining')
-        writer.writerows(sorted(updated_mappings))
+        writer.writerows(sorted(list(updated_mappings)))
 
 
 if __name__ == '__main__':

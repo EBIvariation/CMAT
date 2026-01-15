@@ -198,18 +198,17 @@ process checkMappings {
     val targetOntology
 
     output:
-    path "${filename}_updated.tsv", emit: updatedMappings
-    path "${filename}_obsolete.tsv", emit: obsoleteMappings
-    path "${filename}_nonmatching.tsv", emit: nonmatchingMappings
+    path "${mappingsFile.getBaseName()}_updated.tsv", emit: updatedMappings
+    path "${mappingsFile.getBaseName()}_obsolete.tsv", emit: obsoleteMappings
+    path "${mappingsFile.getBaseName()}_nonmatching.tsv", emit: nonmatchingMappings
 
     script:
-    def schema_flag = schemaFile != file("empty")? "--ot-schema ${schemaFile}" : ""
-    def filename = mappingsFile.take(mappingsFile.indexOf(".tsv"))
+    def schemaFlag = schemaFile != file("empty")? "--ot-schema ${schemaFile}" : ""
     """
     \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/check_latest_mappings.py \
         --mappings-file ${mappingsFile} \
         --target-ontology ${targetOntology} \
-        ${schema_flag}
+        ${schemaFlag}
     """
 }
 
