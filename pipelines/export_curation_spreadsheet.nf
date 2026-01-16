@@ -48,15 +48,16 @@ workflow {
 
     // Perform checks on latest mappings
     if (params.schema != null) {
-        schema_file = downloadJsonSchema(params.schema)
+        downloadJsonSchema(params.schema)
+        checkMappings(mergeWithLatestMappings.out.newMappings, downloadJsonSchema.out.jsonSchema)
+        updatedMappings = checkMappings.out.updatedMappings
     } else {
-        schema_file = file("empty")
+        updatedMappings = mergeWithLatestMappings.out.newMappings
     }
-    checkMappings(mergeWithLatestMappings.out.newMappings, schema_file, getTargetOntology.out.targetOntology)
-    checkDuplicates(checkMappings.out.updatedMappings)
+    checkDuplicates(updatedMappings)
 
     // Finalise latest mappings file
-    addMappingsHeader(checkDuplicates.out.duplicatesOk, checkMappings.out.updatedMappings, getTargetOntology.out.targetOntology)
+    addMappingsHeader(checkDuplicates.out.duplicatesOk, updatedMappings, getTargetOntology.out.targetOntology)
     if (params.with_feedback) {
         generateZoomaFeedback(addMappingsHeader.out.finalMappings)
         updateLinks(addMappingsHeader.out.finalMappings, generateZoomaFeedback.out.zoomaFeedback)
@@ -182,7 +183,7 @@ process generateZoomaFeedback {
 }
 
 /*
- * Check latest mappings for obsolete terms and (optionally) conformity against latest OT schema.
+ * Check latest mappings conformity against latest OT schema.
  */
 process checkMappings {
     label 'short_time'
@@ -190,25 +191,21 @@ process checkMappings {
     publishDir "${curationRoot}",
         overwrite: true,
         mode: "copy",
-        pattern: "*.tsv"
+        pattern: "*_nonmatching.tsv"
 
     input:
     path mappingsFile
     path schemaFile
-    val targetOntology
 
     output:
     path "${mappingsFile.getBaseName()}_updated.tsv", emit: updatedMappings
-    path "${mappingsFile.getBaseName()}_obsolete.tsv", emit: obsoleteMappings
     path "${mappingsFile.getBaseName()}_nonmatching.tsv", emit: nonmatchingMappings
 
     script:
-    def schemaFlag = schemaFile != file("empty")? "--ot-schema ${schemaFile}" : ""
     """
     \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/check_latest_mappings.py \
         --mappings-file ${mappingsFile} \
-        --target-ontology ${targetOntology} \
-        ${schemaFlag}
+        --ot-schema ${schemaFile}
     """
 }
 

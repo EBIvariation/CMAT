@@ -6,8 +6,6 @@ import json
 import os
 import re
 
-from cmat.trait_mapping.ols import is_current_and_in_ontology
-
 
 def get_ontology_id_regex(ot_schema_file):
     if not ot_schema_file:
@@ -17,13 +15,12 @@ def get_ontology_id_regex(ot_schema_file):
         return schema['definitions']['diseaseFromSourceMappedId']['pattern']
 
 
-def check_mappings(mappings_file, target_ontology, ot_schema_file):
+def check_mappings(mappings_file, ot_schema_file):
     """
-    Check mappings for obsolete terms and (optionally) conformity against regex in latest OT schema.
-    Outputs a new mappings file and additional files of the mappings that have been removed.
+    Check mappings for conformity against regex in latest OT schema.
+    Outputs a new mappings file and a file of the mappings that have been removed.
 
     :param mappings_file: path to mappings file (tab-delimited, no header)
-    :param target_ontology: ID of target ontology
     :param ot_schema_file: path to Open Targets JSON schema
     """
     with open(mappings_file, 'r') as f:
@@ -31,25 +28,16 @@ def check_mappings(mappings_file, target_ontology, ot_schema_file):
         mappings = list(reader)
     ontology_id_regex = get_ontology_id_regex(ot_schema_file)
     updated_mappings = set()
-    obsolete_mappings = set()
     nonmatching_mappings = set()
 
     for trait_name, uri, label in mappings:
-        if is_current_and_in_ontology(uri, target_ontology):
-            if re.match(ontology_id_regex, uri.split('/')[-1]):
-                updated_mappings.add((label, uri))
-            else:
-                nonmatching_mappings.add((label, uri))
+        if re.match(ontology_id_regex, uri.split('/')[-1]):
+            updated_mappings.add((label, uri))
         else:
-            obsolete_mappings.add((label, uri))
+            nonmatching_mappings.add((label, uri))
 
     # Output files
     filename = '.'.join(os.path.basename(mappings_file).split('.')[:-1])
-    with open(f'{filename}_obsolete.tsv', 'w+') as outfile:
-        writer = csv.writer(outfile, delimiter='\t')
-        print(f'Removed {len(obsolete_mappings)} obsolete mappings')
-        writer.writerows(sorted(list(obsolete_mappings)))
-
     with open(f'{filename}_nonmatching.tsv', 'w+') as outfile:
         writer = csv.writer(outfile, delimiter='\t')
         print(f'Removed {len(nonmatching_mappings)} nonmatching mappings')
@@ -65,7 +53,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Check latest mappings for obsolete terms and (optionally) conformity'
                                                  ' against latest OT schema')
     parser.add_argument('--mappings-file', required=True, help='File of latest ontology mappings to process')
-    parser.add_argument('--target-ontology', required=False, default='EFO', help='Target ontology')
-    parser.add_argument('--ot-schema', required=False, help='Open Targets schema JSON')
+    parser.add_argument('--ot-schema', required=True, help='Open Targets schema JSON')
     args = parser.parse_args()
-    check_mappings(args.mappings_file, args.target_ontology, args.ot_schema)
+    check_mappings(args.mappings_file, args.ot_schema)

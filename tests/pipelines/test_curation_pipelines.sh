@@ -31,6 +31,7 @@ nextflow run ${CODE_ROOT}/pipelines/export_curation_spreadsheet.nf \
   -resume
 
 diff ${BATCH_ROOT}/curator_comments.tsv ${BATCH_ROOT_BASE}/expected/curator_comments.tsv
+diff ${BATCH_ROOT}/mappings_no_header_nonmatching.tsv ${BATCH_ROOT_BASE}/expected/mappings_no_header_nonmatching.tsv
 diff -I '^#generated-date' ${BATCH_ROOT}/trait_names_to_ontology_mappings.tsv ${BATCH_ROOT_BASE}/expected/trait_names_to_ontology_mappings.tsv
 
 cd ${CWD}
