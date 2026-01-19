@@ -2,6 +2,7 @@
 
 nextflow.enable.dsl=2
 
+include { downloadClinvar; downloadJsonSchema } from './utils.nf'
 
 def helpMessage() {
     log.info"""
@@ -57,7 +58,7 @@ workflow {
 
     if (params.schema != null) {
         // Open Targets evidence string output
-        downloadJsonSchema()
+        downloadJsonSchema(params.schema)
         // Get start/end indices to break XML into chunks
         countClinvarRecords(clinvarXml)
         .map { strN ->
@@ -92,39 +93,6 @@ workflow {
         }
         generateAnnotatedXml(clinvarXml, combineConsequences.out.consequencesCombined, evalGeneMapping, evalXrefMapping, evalLatest)
     }
-}
-
-/*
- * Download ClinVar data, using the most recent XML dump.
- */
-process downloadClinvar {
-    label 'small_mem'
-
-    output:
-    path "clinvar.xml.gz", emit: clinvarXml
-
-    script:
-    """
-    wget -O clinvar.xml.gz \
-        https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/RCV_release/ClinVarRCVRelease_00-latest.xml.gz
-    """
-}
-
-/*
- * Download the Open Targets JSON schema.
- */
-process downloadJsonSchema {
-    label 'short_time'
-    label 'small_mem'
-
-    output:
-    path "opentargets-${params.schema}.json", emit: jsonSchema
-
-    script:
-    """
-    wget -O opentargets-${params.schema}.json \
-        https://raw.githubusercontent.com/opentargets/json_schema/${params.schema}/schemas/disease_target_evidence.json
-    """
 }
 
 /*
