@@ -43,11 +43,12 @@ def validate_evidence_string(ev_string, ot_schema_contents):
 
 def launch_pipeline(clinvar_xml_file, efo_mapping_file, gene_mapping_file, ot_schema_file, dir_out, start, end):
     os.makedirs(dir_out, exist_ok=True)
-    string_to_efo_mappings, _ = load_ontology_mapping(efo_mapping_file)
+    ot_schema_contents = json.loads(open(ot_schema_file).read())
+    string_to_efo_mappings, _, nonmatching_mappings = load_ontology_mapping(efo_mapping_file, ot_schema_contents)
     variant_to_gene_mappings = CT.process_consequence_type_file(gene_mapping_file)
 
     report, exception_raised = clinvar_to_evidence_strings(
-        string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml_file, ot_schema_file,
+        string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml_file, ot_schema_contents, nonmatching_mappings,
         output_evidence_strings=os.path.join(dir_out, EVIDENCE_STRINGS_FILE_NAME), start=start, end=end)
     counts_consistent = report.check_counts()
     report.print_report()
@@ -56,10 +57,10 @@ def launch_pipeline(clinvar_xml_file, efo_mapping_file, gene_mapping_file, ot_sc
         sys.exit(1)
 
 
-def clinvar_to_evidence_strings(string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml, ot_schema,
-                                output_evidence_strings, start=None, end=None):
-    report = Report(trait_mappings=string_to_efo_mappings, consequence_mappings=variant_to_gene_mappings)
-    ot_schema_contents = json.loads(open(ot_schema).read())
+def clinvar_to_evidence_strings(string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml, ot_schema_contents,
+                                nonmatching_efo_mappings, output_evidence_strings, start=None, end=None):
+    report = Report(trait_mappings=string_to_efo_mappings, consequence_mappings=variant_to_gene_mappings,
+                    nonmatching_mappings=nonmatching_efo_mappings)
     output_evidence_strings_file = open(output_evidence_strings, 'wt')
     exception_raised = False
 
@@ -323,11 +324,15 @@ def write_string_list_to_file(string_list, filename):
         out_file.write('\n'.join(string_list))
 
 
-def load_ontology_mapping(trait_mapping_file):
+def load_ontology_mapping(trait_mapping_file, schema=None):
     trait_2_ontology = defaultdict(list)
     target_ontology = 'EFO'
     n_ontology_mappings = 0
     in_header = True
+    ontology_id_regex = '.*'
+    if schema:
+        ontology_id_regex = schema['definitions']['diseaseFromSourceMappedId']['pattern']
+    nonmatching_mappings = []
 
     with open(trait_mapping_file, 'rt') as f:
         for line in f:
@@ -343,10 +348,16 @@ def load_ontology_mapping(trait_mapping_file):
             line_list = line.split('\t')
             assert len(line_list) == 3, f'Incorrect string to ontology mapping format for line {line}'
             clinvar_name, ontology_id, ontology_label = line_list
-            trait_2_ontology[clinvar_name.lower()].append((ontology_id, ontology_label))
-            n_ontology_mappings += 1
+
+            # Only include the mapping if it matches the schema's regex
+            if re.match(ontology_id_regex, ontology_id.split('/')[-1]):
+                trait_2_ontology[clinvar_name.lower()].append((ontology_id, ontology_label))
+                n_ontology_mappings += 1
+            else:
+                nonmatching_mappings.append((clinvar_name, ontology_id, ontology_label))
+
     logger.info('{} ontology mappings loaded for ontology {}'.format(n_ontology_mappings, target_ontology))
-    return trait_2_ontology, target_ontology
+    return trait_2_ontology, target_ontology, nonmatching_mappings
 
 
 def get_terms_from_file(terms_file_path):

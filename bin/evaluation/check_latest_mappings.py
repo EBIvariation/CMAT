@@ -9,7 +9,7 @@ from cmat.output_generation.evaluation.ols_utils import fetch_eval_data
 
 def main(mapping_file, output_file):
     """Load mapping file, map identifiers to synonyms in OLS, and dump results to TSV."""
-    mappings, target_ontology = load_ontology_mapping(mapping_file)
+    mappings, target_ontology, _ = load_ontology_mapping(mapping_file)
     all_uris = [uri for v in mappings.values() for uri, _ in v]
     process_pool = multiprocessing.Pool(processes=24)
     annotated_traits = [

@@ -317,7 +317,7 @@ def generate_annotated_clinvar_xml(clinvar_xml_file, trait_mapping_file, gene_ma
                                    eval_gene_file=None, eval_xref_file=None, eval_latest_file=None):
     """Generate an annotated XML file of ClinVar RCVs based on trait mapping and gene mapping files (as documented in
     clinvar_to_evidence_strings)."""
-    string_to_ontology_mappings, target_ontology = load_ontology_mapping(trait_mapping_file)
+    string_to_ontology_mappings, target_ontology, _ = load_ontology_mapping(trait_mapping_file)
     variant_to_gene_mappings = CT.process_consequence_type_file(gene_mapping_file)
     # Need all files to do an evaluation
     if eval_gene_file and eval_xref_file and eval_latest_file:
