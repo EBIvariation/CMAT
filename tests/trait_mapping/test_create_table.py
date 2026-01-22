@@ -24,11 +24,16 @@ def test_find_replacement_mapping():
     preferred_ontologies = ['mondo', 'hp']
 
     # Current in EFO - no replacement term
-    assert find_replacement_mapping(trait_name, 'http://purl.obolibrary.org/obo/MONDO_0011792', target_ontology, preferred_ontologies) == ''
+    assert find_replacement_mapping(
+        trait_name, 'http://purl.obolibrary.org/obo/MONDO_0011792', target_ontology, preferred_ontologies
+    ) == ''
 
     # Deprecated in EFO with current replacement term
-    assert find_replacement_mapping(trait_name, 'http://www.ebi.ac.uk/efo/EFO_0000665', target_ontology, preferred_ontologies) == 'http://purl.obolibrary.org/obo/MONDO_0037939|porphyria|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
+    assert find_replacement_mapping(
+        trait_name, 'http://www.ebi.ac.uk/efo/EFO_0000665', target_ontology, preferred_ontologies
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0037939|porphyria|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
 
-    # Deprecated in EFO but replacement is also deprecated.
-    # The replacement itself has a replacement in Mondo but not in EFO, so no replacement is found
-    assert find_replacement_mapping(trait_name, 'http://www.orpha.net/ORDO/Orphanet_226316', target_ontology, preferred_ontologies) == ''
+    # Deprecated in EFO but replacement is also deprecated, so use its replacement
+    assert find_replacement_mapping(
+        trait_name, 'http://www.orpha.net/ORDO/Orphanet_226316', target_ontology, preferred_ontologies
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|MONDO_HP_NOT_EFO'
