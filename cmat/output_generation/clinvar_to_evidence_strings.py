@@ -1,3 +1,4 @@
+import csv
 import logging
 import itertools
 import json
@@ -24,7 +25,8 @@ MAX_TARGET_GENES = 3
 
 # Output file names.
 EVIDENCE_STRINGS_FILE_NAME = 'evidence_strings.json'
-EVIDENCE_RECORDS_FILE_NAME = 'evidence_records.tsv'
+INVALID_EVIDENCE_FILE_NAME = 'invalid_evidence.json'
+REMOVED_MAPPINGS_FILE_NAME = 'removed_mappings.tsv'
 
 
 def validate_evidence_string(ev_string, ot_schema_contents):
@@ -47,9 +49,16 @@ def launch_pipeline(clinvar_xml_file, efo_mapping_file, gene_mapping_file, ot_sc
     string_to_efo_mappings, _, nonmatching_mappings = load_ontology_mapping(efo_mapping_file, ot_schema_contents)
     variant_to_gene_mappings = CT.process_consequence_type_file(gene_mapping_file)
 
+    # Output mappings that don't conform to the schema in a separate file
+    with open(os.path.join(dir_out, REMOVED_MAPPINGS_FILE_NAME), 'w+') as outfile:
+        writer = csv.writer(outfile, delimiter='\t')
+        writer.writerows(sorted(list(nonmatching_mappings)))
+
     report, exception_raised = clinvar_to_evidence_strings(
-        string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml_file, ot_schema_contents, nonmatching_mappings,
-        output_evidence_strings=os.path.join(dir_out, EVIDENCE_STRINGS_FILE_NAME), start=start, end=end)
+        string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml_file, ot_schema_contents,
+        len(nonmatching_mappings), output_evidence_strings=os.path.join(dir_out, EVIDENCE_STRINGS_FILE_NAME),
+        invalid_evidence_strings=os.path.join(dir_out, INVALID_EVIDENCE_FILE_NAME),
+        start=start, end=end)
     counts_consistent = report.check_counts()
     report.print_report()
     report.dump_to_file(dir_out)
@@ -58,10 +67,12 @@ def launch_pipeline(clinvar_xml_file, efo_mapping_file, gene_mapping_file, ot_sc
 
 
 def clinvar_to_evidence_strings(string_to_efo_mappings, variant_to_gene_mappings, clinvar_xml, ot_schema_contents,
-                                nonmatching_efo_mappings, output_evidence_strings, start=None, end=None):
+                                n_nonmatching_mappings, output_evidence_strings, invalid_evidence_strings, start=None,
+                                end=None):
     report = Report(trait_mappings=string_to_efo_mappings, consequence_mappings=variant_to_gene_mappings,
-                    nonmatching_mappings=nonmatching_efo_mappings)
+                    n_nonmatching_mappings=n_nonmatching_mappings)
     output_evidence_strings_file = open(output_evidence_strings, 'wt')
+    invalid_evidence_strings_file = open(invalid_evidence_strings, 'wt')
     exception_raised = False
 
     logger.info('Processing ClinVar records')
@@ -160,6 +171,8 @@ def clinvar_to_evidence_strings(string_to_efo_mappings, variant_to_gene_mappings
                     if disease_mapped_efo_id is not None:
                         complete_evidence_strings_generated += 1
                         report.used_trait_mappings.add(disease_mapped_efo_id)
+                else:
+                    invalid_evidence_strings_file.write(json.dumps(evidence_string) + '\n')
 
             if complete_evidence_strings_generated == 1:
                 report.clinvar_done_one_complete_evidence_string += 1
@@ -190,6 +203,7 @@ def clinvar_to_evidence_strings(string_to_efo_mappings, variant_to_gene_mappings
             continue
 
     output_evidence_strings_file.close()
+    invalid_evidence_strings_file.close()
     return report, exception_raised
 
 

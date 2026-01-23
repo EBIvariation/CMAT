@@ -75,6 +75,7 @@ workflow {
                          combineConsequences.out.consequencesCombined,
                          startEndPairs.collect())
         collectEvidenceStrings(generateEvidence.out.evidenceStrings.collect())
+        collectInvalidEvidence(generateEvidence.out.invalidEvidence.collect())
         collectCounts(generateEvidence.out.countsYml.collect())
         checkDuplicates(collectEvidenceStrings.out.evidenceStrings)
         convertXrefs(clinvarXml)
@@ -324,6 +325,12 @@ process generateEvidence {
     clusterOptions "-o ${batchRoot}/logs/evidence_string_generation_${startEnd[0]}.out \
                     -e ${batchRoot}/logs/evidence_string_generation_${startEnd[0]}.err"
 
+    // Removed mappings are the same for each process, so no need to aggregate
+    publishDir "${batchRoot}/logs",
+        overwrite: true,
+        mode: "copy",
+        pattern: "removed_mappings.tsv"
+
     input:
     path clinvarXml
     path jsonSchema
@@ -333,6 +340,8 @@ process generateEvidence {
     output:
     path "evidence_strings.json", emit: evidenceStrings
     path "counts.yml", emit: countsYml
+    path "removed_mappings.tsv", emit: removedMappings
+    path "invalid_evidence.json", emit: invalidEvidence
 
     script:
     """
@@ -368,6 +377,30 @@ process collectEvidenceStrings {
     script:
     """
     cat evidence_strings_*.json >> evidence_strings.json
+    """
+}
+
+/*
+ * Concatenate invalid evidence strings into a single file.
+ */
+process collectInvalidEvidence {
+    label 'short_time'
+    label 'small_mem'
+
+    publishDir "${batchRoot}/evidence_strings",
+        overwrite: true,
+        mode: "copy",
+        pattern: "*.json"
+
+    input:
+    path "invalid_evidence_*.json"
+
+    output:
+    path "invalid_evidence.json", emit: invalidEvidence
+
+    script:
+    """
+    cat invalid_evidence_*.json >> invalid_evidence.json
     """
 }
 
