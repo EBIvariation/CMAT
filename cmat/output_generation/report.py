@@ -17,7 +17,7 @@ COUNTS_FILE_NAME = 'counts.yml'
 class Report:
     """Holds counters and other records for a pipeline run."""
 
-    def __init__(self, trait_mappings=None, consequence_mappings=None):
+    def __init__(self, trait_mappings=None, consequence_mappings=None, n_nonmatching_mappings=0):
         # The main evidence string counter.
         self.evidence_string_count = 0
         # Complete evidence strings are ones with an EFO mapping.
@@ -47,6 +47,8 @@ class Report:
         self.used_trait_mappings = set()
         # All unmapped trait names which prevented evidence string generation and their counts.
         self.unmapped_trait_names = Counter()
+        # Trait-to-ontology mappings dropped due to not matching the schema regex
+        self.nonmatching_trait_mappings = n_nonmatching_mappings
 
         # Variant-to-consequence mapping counts.
         self.total_consequence_mappings = 0
@@ -72,6 +74,9 @@ class Report:
                                                         other.total_consequence_mappings)
             elif var_name == 'used_trait_mappings':
                 result.used_trait_mappings = self.used_trait_mappings | other.used_trait_mappings
+            elif var_name == 'nonmatching_trait_mappings':
+                result.nonmatching_trait_mappings = max(self.nonmatching_trait_mappings,
+                                                        other.nonmatching_trait_mappings)
             else:
                 result.__setattr__(var_name, self.__getattribute__(var_name) + other.__getattribute__(var_name))
         return result
@@ -131,6 +136,8 @@ class Report:
         self.clinvar_done / (self.clinvar_skipped + self.clinvar_done):.1%}
 
             Total number of trait-to-ontology mappings in the database\t{self.total_trait_mappings}
+                The number of distinct trait-to-ontology mappings dropped due to not matching the schema regex\t{
+                self.nonmatching_trait_mappings}
                 The number of distinct trait-to-ontology mappings used in the evidence strings\t{
         len(self.used_trait_mappings)}
             The number of distinct unmapped trait names which prevented complete evidence string generation\t{

@@ -95,7 +95,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Load all previous mappings: ClinVar trait name to ontology URI
-    previous_mappings, target_ontology = load_ontology_mapping(args.previous_mappings)
+    previous_mappings, target_ontology, _ = load_ontology_mapping(args.previous_mappings)
     preferred_ontologies = string_to_preferred_ontologies(args.preferred_ontologies, target_ontology)
 
     # Load previous curator comments: ClinVar trait name to comment string

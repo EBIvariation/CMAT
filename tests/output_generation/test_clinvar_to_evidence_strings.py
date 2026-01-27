@@ -7,11 +7,11 @@ import xml.etree.ElementTree as ElementTree
 from cmat.clinvar_xml_io import ClinVarTrait
 from cmat.output_generation import clinvar_to_evidence_strings
 from cmat.output_generation import consequence_type as CT
-from cmat.output_generation.clinvar_to_evidence_strings import MAX_TARGET_GENES
+from cmat.output_generation.clinvar_to_evidence_strings import MAX_TARGET_GENES, load_ontology_mapping
 
 import config
 
-EFO_MAPPINGS, _ = clinvar_to_evidence_strings.load_ontology_mapping(config.efo_mapping_file)
+EFO_MAPPINGS, _, _ = load_ontology_mapping(config.efo_mapping_file)
 GENE_MAPPINGS = CT.process_consequence_type_file(config.snp_2_gene_file)
 
 
@@ -22,7 +22,7 @@ class TestGetMappingsTest:
         cls.gene_mappings = GENE_MAPPINGS
 
     def test_efo_mapping(self):
-        assert len(self.efo_mappings) == 10
+        assert len(self.efo_mappings) == 11
 
         assert self.efo_mappings['renal-hepatic-pancreatic dysplasia 2'][0] == (
             'http://www.orpha.net/ORDO/Orphanet_294415', 'Renal-hepatic-pancreatic dysplasia')
@@ -35,6 +35,25 @@ class TestGetMappingsTest:
         assert self.efo_mappings['coronary artery disease/myocardial infarction'] == [
             ('http://www.ebi.ac.uk/efo/EFO_0000612', 'myocardial infarction'),
             ('http://www.ebi.ac.uk/efo/EFO_0001645', 'coronary heart disease')]
+
+    def test_efo_mapping_with_schema(self):
+        schema = {
+            "definitions": {
+                "diseaseFromSourceMappedId": {
+                    "type": "string",
+                    "description": "Identifier of the disease in the EFO ontology",
+                    "pattern": "(^NCIT_|^Orphanet_|^GO_|^HP_|^EFO_|^MONDO_|^DOID_|^MP_|^OTAR_|^PATO_|^OBI_|^OBA_|^OGMS_|^GSSO_|^UBERON_)",
+                    "examples": ["EFO_0005537"]
+                }
+            }
+        }
+        mappings, _, nonmatching_mappings = load_ontology_mapping(config.efo_mapping_file, schema)
+        assert len(mappings) == 10
+        assert 'tbc1 domain family member 24' not in mappings
+        assert len(nonmatching_mappings) == 1
+        assert nonmatching_mappings == [
+            ('tbc1 domain family member 24', 'http://purl.obolibrary.org/obo/PR_000016108',
+             'TBC1 domain family member 24')]
 
     def test_consequence_type_dict(self):
         assert len(self.gene_mappings) == 22
