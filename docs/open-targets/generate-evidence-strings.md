@@ -73,7 +73,7 @@ The evidence string file (`evidence_strings.json`) must be compressed and upload
 To do this, run the following:
 ```shell
 gzip evidence_strings/evidence_strings.json
-${PYTHON_BIN} ${CODE_ROOT}/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json.gz --destination-folder disease-target-evidence
+${CODE_ROOT}/env/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json.gz --destination-folder disease-target-evidence
 ```
 
 Once the upload is complete, send an email to Open Targets (data [at] opentargets.org) containing the following information from the [metrics spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/):
