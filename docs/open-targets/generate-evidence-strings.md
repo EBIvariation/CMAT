@@ -53,6 +53,16 @@ Nevertheless, we also report evidence strings in which  ``diseaseFromSourceMappe
 
 ## 2. Manual follow-up actions
 
+### Check removed mappings and invalid evidence
+The pipeline removes mappings that would violate the current JSON schema, and outputs them to `${BATCH_ROOT}/logs/removed_mappings.tsv`.
+Check that this file is empty, or only contains expected mappings (e.g. within the material entity branch of EFO).
+This can be confirmed with the Open Targets data team if needed.
+
+Any invalid evidence strings are dropped and output in `${BATCH_ROOT}/evidence/invalid_evidence.json`.
+Check that this file is empty, or only contains expected evidence given the current state of development (e.g. 
+unsupported clinical significance terms or other unsupported features).
+Anything unusual should be raised with the Open Targets team so it can be addressed as a priority.
+
 ### Update summary metrics
 After the evidence strings have been generated, summary metrics need to be updated in the Google Sheets [table](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/) on the “Raw statistics” sheet.
 
@@ -63,7 +73,7 @@ The evidence string file (`evidence_strings.json`) must be compressed and upload
 To do this, run the following:
 ```shell
 gzip evidence_strings/evidence_strings.json
-${CODE_ROOT}/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json.gz --destination-folder disease-target-evidence
+${CODE_ROOT}/env/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json.gz --destination-folder disease-target-evidence
 ```
 
 Once the upload is complete, send an email to Open Targets (data [at] opentargets.org) containing the following information from the [metrics spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/):
