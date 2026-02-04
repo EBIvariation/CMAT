@@ -118,8 +118,37 @@ to http://www.ebi.ac.uk/efo/EFO_0000612 “Myocardial infarction”.
 To do this, **duplicate** the row containing the disease string, assign different mappings in each of the rows, and mark
 them both with an appropriate status. This will be handled downstream during export and evidence string generation.
 
+The result in the spreadsheet might look like this (some columns omitted for brevity):
+
+| Mapping to use | Status | ClinVar label | Previous mapping | Replacement mapping | Exact matches |
+|-|-|-|-|-|-|
+| `http://www.ebi.ac.uk/efo/EFO_0001645|Coronary artery disease||EFO_CURRENT` | DONE | coronary artery disease/myocardial infarction | | | |
+| `http://www.ebi.ac.uk/efo/EFO_0000612|Myocardial infarction||EFO_CURRENT` | DONE | coronary artery disease/myocardial infarction | | | |
+
 This provision does _not_ apply to cases where the source string contains additional semantic context, such as
 “susceptibility to...” or “resistance to...”, or drug response terms.
+
+If a disease string was previously mapped to multiple ontology terms, it will appear as two nearly identical rows with 
+different values in the "Previous mappings" column. These rows can be kept and curated as usual if the above case
+applies.
+
+However, if the multiple mapping is not appropriate (i.e. the string really does contain only a single trait and was
+multiply mapped due to an error), then you can **delete** any unnecessary row(s) and proceed with curation as usual.
+The export pipeline will handle this modification accordingly.
+
+For example (some columns omitted for brevity):
+
+| Mapping to use | Status | ClinVar label | Previous mapping | Replacement mapping | Exact matches |
+|-|-|-|-|-|-|
+| | | lissencephaly 8 | `http://purl.obolibrary.org/obo/HP_0001339|Lissencephaly|TOKEN_MATCH_LABEL|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992|lissencephaly 8|EXACT_MATCH_LABEL|MONDO_HP_NOT_EFO` |
+| | | lissencephaly 8 | `http://purl.obolibrary.org/obo/MONDO_0018838|lissencephaly spectrum disorders|TOKEN_MATCH_LABEL|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992|lissencephaly 8|EXACT_MATCH_LABEL|MONDO_HP_NOT_EFO` |
+
+Here "lissencephaly 8" refers to a single disease, and has an exact label match in MONDO that we can import. So we
+should delete one of the rows (in this case it doesn't matter which) and use the mapping string from "Exact matches":
+
+| Mapping to use | Status | ClinVar label | Previous mapping | Replacement mapping | Exact matches |
+|-|-|-|-|-|-|
+| `http://purl.obolibrary.org/obo/MONDO_0014992|lissencephaly 8|EXACT_MATCH_LABEL|MONDO_HP_NOT_EFO` | IMPORT | lissencephaly 8 | `http://purl.obolibrary.org/obo/HP_0001339|Lissencephaly|TOKEN_MATCH_LABEL|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992|lissencephaly 8|EXACT_MATCH_LABEL|MONDO_HP_NOT_EFO` |
 
 ### Note on spaces and line breaks
 
