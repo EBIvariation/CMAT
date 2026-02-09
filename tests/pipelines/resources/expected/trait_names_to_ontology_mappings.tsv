@@ -1,4 +1,4 @@
-#generated-date=2026-01-21
+#generated-date=2026-02-09
 #ontology=EFO
 #clinvar_trait_name	uri	label
 2-aminoadipic 2-oxoadipic aciduria	http://purl.obolibrary.org/obo/MONDO_0008774	2-aminoadipic 2-oxoadipic aciduria
@@ -603,6 +603,7 @@ usher syndrome type 1f	http://purl.obolibrary.org/obo/MONDO_0011186	Usher syndro
 usher syndrome type 1f	http://purl.obolibrary.org/obo/MONDO_0019501	Usher syndrome
 usher syndrome type 2a	http://purl.obolibrary.org/obo/MONDO_0010169	Usher syndrome type 2A
 uterine carcinosarcoma	http://www.ebi.ac.uk/efo/EFO_1000613	Uterine Carcinosarcoma
+vasculopathy, retinal, with cerebral leukodystrophy	http://www.orpha.net/ORDO/Orphanet_247691	Retinal vasculopathy and cerebral leukodystrophy
 very long chain acyl-coa dehydrogenase deficiency	http://purl.obolibrary.org/obo/MONDO_0008723	very long chain acyl-CoA dehydrogenase deficiency
 visual impairment	http://purl.obolibrary.org/obo/HP_0000505	Visual impairment
 von hippel-lindau syndrome	http://purl.obolibrary.org/obo/MONDO_0008667	von Hippel-Lindau disease
@@ -2226,6 +2227,7 @@ stargardt disease 4	http://purl.obolibrary.org/obo/MONDO_0019353	Stargardt disea
 stargardt disease, recessive	http://purl.obolibrary.org/obo/MONDO_0019353	Stargardt disease
 steroid-resistant nephrotic syndrome	http://purl.obolibrary.org/obo/MONDO_0019006	familial idiopathic steroid-resistant nephrotic syndrome
 t-cell immunodeficiency, congenital alopecia and nail dystrophy	http://www.orpha.net/ORDO/Orphanet_169095	Alymphoid cystic thymic dysgenesis
+tbc1 domain family member 24	http://purl.obolibrary.org/obo/PR_000016108	TBC1 domain family member 24
 telangiectasia, hereditary hemorrhagic, type 2	http://purl.obolibrary.org/obo/MONDO_0019180	hereditary hemorrhagic telangiectasia
 telangiectasia, hereditary hemorrhagic, type 5	http://purl.obolibrary.org/obo/MONDO_0019180	hereditary hemorrhagic telangiectasia
 thoracic aortic aneurysm and aortic dissection	http://www.orpha.net/ORDO/Orphanet_285014	Rare disease with thoracic aortic aneurysm and aortic dissection
@@ -2264,9 +2266,6 @@ usher syndrome, type 2d	http://www.orpha.net/ORDO/Orphanet_886	Usher syndrome
 usher syndrome, type 3b	http://www.orpha.net/ORDO/Orphanet_886	Usher syndrome
 usher syndrome, type 4	http://purl.obolibrary.org/obo/MONDO_0019501	Usher syndrome
 usher syndrome, type id/f, digenic	http://purl.obolibrary.org/obo/MONDO_0019501	Usher syndrome
-vasculopathy, retinal, with cerebral leukodystrophy	http://www.orpha.net/ORDO/Orphanet_3421	Cerebroretinal vasculopathy
-vasculopathy, retinal, with cerebral leukodystrophy	http://www.orpha.net/ORDO/Orphanet_63261	HERNS syndrome
-vasculopathy, retinal, with cerebral leukodystrophy	http://www.orpha.net/ORDO/Orphanet_71291	Hereditary vascular retinopathy
 velocardiofacial syndrome	http://purl.obolibrary.org/obo/MONDO_0018923	22q11.2 deletion syndrome
 ventral septal defect	http://www.ebi.ac.uk/efo/EFO_1000825	atrial heart septal defect
 ventricular tachycardia, catecholaminergic polymorphic, 6	http://purl.obolibrary.org/obo/MONDO_0017990	catecholaminergic polymorphic ventricular tachycardia
