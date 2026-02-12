@@ -30,6 +30,7 @@ nextflow run ${CODE_ROOT}/pipelines/export_curation_spreadsheet.nf \
 diff ${BATCH_ROOT}/curator_comments.tsv ${BATCH_ROOT_BASE}/expected/curator_comments.tsv
 diff -I '^#generated-date' ${BATCH_ROOT}/trait_names_to_ontology_mappings.tsv ${BATCH_ROOT_BASE}/expected/trait_names_to_ontology_mappings.tsv
 diff ${BATCH_ROOT}/obsolete_mappings.tsv ${BATCH_ROOT_BASE}/expected/obsolete_mappings.tsv
+diff ${BATCH_ROOT}/trait_counts.yml ${BATCH_ROOT_BASE}/expected/trait_counts.yml
 
 cd ${CWD}
 rm -r ${BATCH_ROOT}

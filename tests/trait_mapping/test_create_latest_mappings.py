@@ -27,10 +27,17 @@ def test_create_latest_mappings():
 
     with patch('bin.trait_mapping.create_latest_mappings.is_current_and_in_ontology') as m_is_current:
         m_is_current.side_effect = lambda uri, ont: False if 'obsolete' in uri else True
-        current_mappings, obsolete_mappings = create_latest_mappings(automated_mappings, curated_mappings,
-                                                                     previous_mappings, 'EFO')
+        current_mappings, obsolete_mappings, counts = create_latest_mappings(automated_mappings, curated_mappings,
+                                                                             previous_mappings, 'EFO')
         assert obsolete_mappings == [('A', 'http://www.ebi.ac.uk/efo/EFO_obsolete', 'obsolete')]
         assert current_mappings == [(ch, f'http://www.ebi.ac.uk/efo/EFO_{ch}', ch) for ch in 'ABCDE']
+        assert counts == {
+            'n_previous_unchanged': 2,
+            'n_automated_updated': 1,
+            'n_automated_new': 0,
+            'n_curated_updated': 1,
+            'n_curated_new': 1
+        }
 
 
 def test_create_latest_mappings_multiples():
@@ -49,8 +56,8 @@ def test_create_latest_mappings_multiples():
 
     with patch('bin.trait_mapping.create_latest_mappings.is_current_and_in_ontology') as m_is_current:
         m_is_current.return_value = True
-        current_mappings, obsolete_mappings = create_latest_mappings(automated_mappings, curated_mappings,
-                                                                     previous_mappings, 'EFO')
+        current_mappings, obsolete_mappings, counts = create_latest_mappings(automated_mappings, curated_mappings,
+                                                                             previous_mappings, 'EFO')
         assert obsolete_mappings == []
         assert current_mappings == [
             ('A', 'http://www.ebi.ac.uk/efo/EFO_A3', 'A3'),
@@ -58,3 +65,10 @@ def test_create_latest_mappings_multiples():
             ('B', 'http://www.ebi.ac.uk/efo/EFO_B3', 'B3'),
             ('C', 'http://www.ebi.ac.uk/efo/EFO_C1', 'C1')
         ]
+        assert counts == {
+            'n_previous_unchanged': 1,
+            'n_automated_updated': 0,
+            'n_automated_new': 0,
+            'n_curated_updated': 2,
+            'n_curated_new': 0
+        }

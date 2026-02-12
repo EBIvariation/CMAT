@@ -83,7 +83,7 @@ process createLatestMappings {
     publishDir "${curationRoot}",
         overwrite: true,
         mode: "copy",
-        pattern: "*.tsv"
+        pattern: "*.{tsv,yml}"
 
     input:
     val automatedMappings
@@ -93,6 +93,7 @@ process createLatestMappings {
     output:
     path "trait_names_to_ontology_mappings.tsv", emit: finalMappings
     path "obsolete_mappings.tsv", emit: obsoleteMappings
+    path "trait_counts.yml", emit: counts
 
     script:
     """
