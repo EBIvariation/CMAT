@@ -80,7 +80,7 @@ class TestProcessTrait:
     ols_query_fields = 'label,synonym'
     ols_field_list = 'iri,label,ontology_name,synonym'
     target_ontology = 'EFO'
-    preferred_ontologies = 'mondo,hp'
+    preferred_ontologies = ['mondo', 'hp']
 
     def run_process_trait(self, trait):
         return process_trait(trait, self.zooma_filters, self.zooma_host, self.oxo_targets, self.oxo_distance,
@@ -117,6 +117,19 @@ class TestProcessTrait:
         assert len(processed_trait.ols_result_list) == 11
         assert processed_trait.is_finished
         assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://www.ebi.ac.uk/efo/EFO_1001093'}
+
+    def test_multiple_mappings(self):
+        # Case 1: multiple mappings from OLS
+        trait = Trait('albinism', None, None)
+        processed_trait = self.run_process_trait(trait)
+        assert processed_trait.is_finished
+        assert len(processed_trait.finished_mapping_set) == 2
+
+        # Case 2: multiple mappings from ZOOMA
+        trait = Trait('6-pyruvoyl-tetrahydrobiopterin synthase deficiency', None, None)
+        processed_trait = self.run_process_trait(trait)
+        assert processed_trait.is_finished
+        assert len(processed_trait.finished_mapping_set) == 3
 
 
 @pytest.mark.integration
