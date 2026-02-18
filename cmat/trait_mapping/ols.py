@@ -185,6 +185,7 @@ def get_uri_from_exact_match(text, ontology='EFO'):
 
 
 class MatchType(Enum):
+    ZOOMA_OR_OXO = -1
     EXACT_MATCH_LABEL = 0
     EXACT_MATCH_SYNONYM = 1
     CONTAINED_MATCH_LABEL = 2

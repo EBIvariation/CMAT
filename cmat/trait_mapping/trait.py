@@ -71,30 +71,3 @@ class Trait:
             if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
                 ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
                 self.finished_mapping_set.add(ontology_entry)
-
-    def process_zooma_results(self):
-        """
-        Check whether any Zooma mappings can be output as a finished ontology mapping.
-        Put any finished mappings in finished_mapping_set
-        """
-        for zooma_result in self.zooma_result_list:
-            for mapping in zooma_result.mapping_list:
-                # Accept current mappings in the target ontology with either high-confidence or exact string matches
-                if mapping.in_ontology and mapping.is_current and (zooma_result.confidence.lower() == "high"
-                                                                   or zooma_result.zooma_label.lower() == self.name.lower()):
-                    ontology_entry = OntologyEntry(mapping.uri, mapping.ontology_label)
-                    self.finished_mapping_set.add(ontology_entry)
-
-    def process_oxo_mappings(self):
-        """
-        Check whether any OxO mappings can be output as a finished ontology mapping.
-        Put any finished mappings in finished_mapping_set
-        """
-        for result in self.oxo_result_list:
-            for mapping in result.mapping_list:
-                if mapping.in_ontology and mapping.is_current and mapping.distance == 1:
-                    uri = str(mapping.uri)
-                    ontology_label = mapping.ontology_label
-                    ontology_entry = OntologyEntry(uri, ontology_label)
-                    logger.debug('Found an OxO finished mapping: {}'.format(uri))
-                    self.finished_mapping_set.add(ontology_entry)

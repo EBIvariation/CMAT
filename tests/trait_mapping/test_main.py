@@ -42,7 +42,6 @@ def run_pipeline(resource_name):
         output_mappings_filepath=mappings_file.name,
         output_curation_filepath=curation_file.name,
         filters=filters,
-        zooma_host='https://www.ebi.ac.uk',
         oxo_target_list=['Orphanet', 'efo', 'hp', 'mondo'],
         oxo_distance=3,
         ols_query_fields='label,synonym',
@@ -74,7 +73,6 @@ class TestProcessTrait:
     zooma_filters = {'ontologies': 'efo,ordo,hp,mondo',
                      'required': 'cttv,eva-clinvar,clinvar-xrefs,gwas',
                      'preferred': 'eva-clinvar,cttv,gwas,clinvar-xrefs'}
-    zooma_host = 'https://www.ebi.ac.uk'
     oxo_targets = ['Orphanet', 'efo', 'hp', 'mondo']
     oxo_distance = 3
     ols_query_fields = 'label,synonym'
@@ -83,7 +81,7 @@ class TestProcessTrait:
     preferred_ontologies = ['mondo', 'hp']
 
     def run_process_trait(self, trait):
-        return process_trait(trait, self.zooma_filters, self.zooma_host, self.oxo_targets, self.oxo_distance,
+        return process_trait(trait, self.zooma_filters, self.oxo_targets, self.oxo_distance,
                              self.ols_query_fields, self.ols_field_list, self.target_ontology,
                              self.preferred_ontologies)
 
@@ -140,7 +138,6 @@ def test_process_trait_zooma_exact_match():
     zooma_filters = {'ontologies': 'efo,ordo,hp,mondo',
                      'required': 'cttv,eva-clinvar,clinvar-xrefs,gwas',
                      'preferred': 'eva-clinvar,cttv,gwas,clinvar-xrefs'}
-    zooma_host = 'https://www.ebi.ac.uk'
     # Don't use OxO
     oxo_targets = []
     oxo_distance = 0
@@ -149,12 +146,12 @@ def test_process_trait_zooma_exact_match():
     ols_field_list = None
 
     # This should be marked as finished, as it's an exact string match with a term contained in the target ontology
-    efo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, zooma_host, oxo_targets, oxo_distance,
+    efo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, oxo_targets, oxo_distance,
                               ols_query_fields, ols_field_list, target_ontology='efo', preferred_ontologies='')
     assert efo_trait.is_finished
 
     # This should not be marked as finished, even though Zooma finds an exact match in one of its ontologies, it's not
     # the requested target ontology and thus still needs to be curated
-    hpo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, zooma_host, oxo_targets, oxo_distance,
+    hpo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, oxo_targets, oxo_distance,
                               ols_query_fields, ols_field_list, target_ontology='hp', preferred_ontologies='')
     assert not hpo_trait.is_finished

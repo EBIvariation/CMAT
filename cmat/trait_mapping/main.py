@@ -6,6 +6,7 @@ from collections import Counter
 from unidecode import unidecode
 
 from cmat.clinvar_xml_io import ClinVarTrait
+from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping
 from cmat.trait_mapping.ols import get_ols_search_results
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
@@ -33,7 +34,7 @@ def get_uris_for_oxo(zooma_result_list: list) -> set:
     return uri_set
 
 
-def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list: list, oxo_distance: int,
+def process_trait(trait: Trait, latest_mappings: dict, filters: dict, oxo_target_list: list, oxo_distance: int,
                   ols_query_fields: str, ols_field_list: str,
                   target_ontology: str, preferred_ontologies: list) -> Trait:
     """
@@ -42,8 +43,8 @@ def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list:
     with any high confidence mappings not in EFO.
 
     :param trait: The trait to be processed.
+    :param latest_mappings: Latest trait mappings.
     :param filters: A dictionary of filters to use for querying Zooma.
-    :param zooma_host: A string with the hostname to use for querying Zooma
     :param oxo_target_list: A list of strings, each being an OxO ID for an ontology. Used to specify
                             which ontologies should be queried using OxO.
     :param oxo_distance: int specifying the maximum number of steps to use to query OxO. i.e. OxO's
@@ -72,15 +73,17 @@ def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list:
         if trait.is_finished:
             return trait
 
-    trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, zooma_host, target_ontology)
-    trait.process_zooma_results()
-    if (trait.is_finished
-            or len(trait.zooma_result_list) == 0
+    # TODO query latest mappings
+
+    trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, target_ontology)
+    # Use the previous criteria for returning a trait, minus the check for is_finished
+    if (len(trait.zooma_result_list) == 0
             or any([entry.is_current
                     for mapping in trait.zooma_result_list
                     for entry in mapping.mapping_list])):
         return trait
 
+    logger.info(f'Querying OxO for trait {trait.name}')
     uris_for_oxo_set = get_uris_for_oxo(trait.zooma_result_list)
     oxo_input_id_list = uris_to_oxo_format(uris_for_oxo_set)
     if len(oxo_input_id_list) == 0:
@@ -88,7 +91,6 @@ def process_trait(trait: Trait, filters: dict, zooma_host: str, oxo_target_list:
     trait.oxo_result_list = get_oxo_results(oxo_input_id_list, oxo_target_list, oxo_distance)
     if not trait.oxo_result_list:
         logger.debug('No OxO mapping for trait {}'.format(trait.name))
-    trait.process_oxo_mappings()
 
     return trait
 
@@ -128,10 +130,11 @@ def parse_traits(input_filepath, output_traits_filepath, output_for_platform=Non
         output_traits_to_csv(trait_list, output_for_platform, True)
 
 
-def process_traits(traits_filepath, output_mappings_filepath, output_curation_filepath, filters, zooma_host,
+def process_traits(traits_filepath, latest_mappings_file, output_mappings_filepath, output_curation_filepath, filters,
                    oxo_target_list, oxo_distance, ols_query_fields, ols_field_list, target_ontology, preferred_ontologies):
     trait_list = read_traits_from_csv(traits_filepath)
     logger.info(f'Read {len(trait_list)} traits from file')
+    latest_mappings = load_ontology_mapping(latest_mappings_file)
     with open(output_mappings_filepath, "w", newline='') as mapping_file, \
             open(output_curation_filepath, "wt") as curation_file:
         mapping_writer = csv.writer(mapping_file, delimiter="\t")
@@ -142,7 +145,7 @@ def process_traits(traits_filepath, output_mappings_filepath, output_curation_fi
         processed_trait_list = [
             trait_process_pool.apply(
                 process_trait,
-                args=(trait, filters, zooma_host, oxo_target_list, oxo_distance, ols_query_fields,
+                args=(trait, latest_mappings, filters, oxo_target_list, oxo_distance, ols_query_fields,
                       ols_field_list, target_ontology, preferred_ontologies)
             )
             for trait in trait_list

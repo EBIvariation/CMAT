@@ -26,6 +26,7 @@ class OxOMapping:
         self.distance = distance
         self.query_id = query_id
         self.in_ontology = False
+        self.exact_match = False
         # For non-EFO mappings, `is_current` property does not make sense and is not used
         self.is_current = False
         self.ontology_label = ""
@@ -38,8 +39,8 @@ class OxOMapping:
                 self.is_current == other.is_current, self.ontology_label == other.ontology_label)
 
     def __lt__(self, other):
-        return ((other.distance, self.in_ontology, self.is_current) <
-                (self.distance, other.in_ontology, other.is_current))
+        return ((self.distance, self.exact_match, self.in_ontology, self.is_current) <
+                (other.distance, other.exact_match, other.in_ontology, other.is_current))
 
     def __str__(self):
         return "{}, {}, {}, {}".format(self.label, self.curie, self.distance, self.query_id)
