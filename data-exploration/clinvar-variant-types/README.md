@@ -2,7 +2,7 @@
 
 The script in this directory parses the ClinVar XML data dump and constructs several diagrams and tables which illustrate how variation and disease data are represented. This helps guide the design of the pipeline and its output structure.
 
-The data was last updated on **2025-09-04.** Graphs can be enlarged by clicking on them.
+The data was last updated on **2026-02-20.** Graphs can be enlarged by clicking on them.
 
 
 
