@@ -1,289 +1,295 @@
 ## All trait cross-references
 Source|Count
 :--|:--
-MedGen|5199733
-MONDO|2395103
-OMIM|1988569
-Orphanet|1676005
-MeSH|636549
-Human Phenotype Ontology|513248
-EFO|7556
-Gene|4432
-EFO: The Experimental Factor Ontology|448
+MedGen|6016593
+MONDO|2815276
+OMIM|2229093
+Orphanet|1765472
+Human Phenotype Ontology|820525
+MeSH|802537
+EFO|5353
+Gene|4463
+EFO: The Experimental Factor Ontology|2705
 
 ## Complex clinical significance levels
-Clinical significance|Count
+Clinical classification|Count
 :--|:--
-Benign/Likely benign|42986
-Pathogenic/Likely pathogenic|18928
+Benign/Likely benign|46432
+Pathogenic/Likely pathogenic|20592
+Pathogenic, low penetrance|123
+Likely pathogenic, low penetrance|119
 Benign; other|18
 Uncertain significance/Uncertain risk allele|17
-Pathogenic, low penetrance|15
-Conflicting classifications of pathogenicity; other|15
+Benign/Likely benign; other|16
 Likely benign; other|14
-Benign/Likely benign; other|14
+Conflicting classifications of pathogenicity; other|14
 Pathogenic; risk factor|11
 Pathogenic; other|10
-Likely pathogenic, low penetrance|9
 Likely pathogenic/Likely risk allele|8
 Pathogenic/Pathogenic, low penetrance|8
 Tier IV - Benign/Likely benign|7
-Pathogenic/Likely pathogenic/Pathogenic, low penetrance|5
-Uncertain significance; other|4
-Pathogenic; drug response|4
+Pathogenic/Likely pathogenic/Pathogenic, low penetrance|6
 Uncertain significance; risk factor|4
-Conflicting classifications of pathogenicity; risk factor|4
 Pathogenic/Likely risk allele|4
-Benign; association|2
+Pathogenic; drug response|4
+Uncertain significance; other|3
+Conflicting classifications of pathogenicity; risk factor|3
 Likely risk allele; risk factor|2
-Uncertain significance; association|2
-Likely pathogenic; other|2
-Conflicting classifications of pathogenicity; association; risk factor|2
-Benign/Likely benign; risk factor|2
 Pathogenic; Affects|2
+Uncertain significance; association|2
+Benign/Likely benign; risk factor|2
+Pathogenic/Likely pathogenic; risk factor|2
 Likely benign; risk factor|2
+Conflicting classifications of pathogenicity; association; risk factor|2
 Uncertain significance; Pathogenic/Likely pathogenic|1
-Pathogenic/Likely pathogenic/Likely risk allele|1
 Likely pathogenic; association|1
+Pathogenic/Likely pathogenic/Likely risk allele|1
+Uncertain significance; protective|1
+Pathogenic/Likely pathogenic/Established risk allele/Likely risk allele|1
 Pathogenic/Likely pathogenic; other|1
-Pathogenic/Likely pathogenic/Established risk allele; risk factor|1
 Likely pathogenic; Affects|1
 Benign; risk factor|1
 Likely benign; association|1
-Pathogenic/Likely pathogenic; association|1
-Pathogenic/Likely pathogenic; risk factor|1
-Pathogenic/Established risk allele|1
-Pathogenic/Likely pathogenic/Established risk allele/Likely risk allele|1
+Established risk allele; association|1
+Benign; association|1
+Benign/Likely benign; association|1
+Pathogenic/Likely pathogenic, low penetrance|1
+Pathogenic/Likely pathogenic/Established risk allele; risk factor|1
+Uncertain significance; Affects|1
 Conflicting classifications of pathogenicity; association|1
 Uncertain significance; association; other|1
+Pathogenic/Likely pathogenic; association|1
 Conflicting classifications of pathogenicity; other; risk factor|1
 Likely benign; other; risk factor|1
-Likely pathogenic; risk factor|1
+Likely pathogenic; other|1
 
 ## All clinical significance levels
-Clinical significance|Count
+Clinical classification|Count
 :--|:--
-uncertain significance|2529216
-likely benign|1406269
-benign|434335
-pathogenic|344194
-likely pathogenic|192117
-conflicting classifications of pathogenicity|58546
-not provided|16702
-evidence only|5487
-drug response|2487
+uncertain significance|2902323
+likely benign|1452119
+benign|443971
+evidence only|379808
+pathogenic|356148
+likely pathogenic|203502
+conflicting classifications of pathogenicity|62820
+not provided|17120
+drug response|2493
 other|2301
-no classifications from unflagged records|1535
-risk factor|1036
-likely oncogenic|618
+no classifications from unflagged records|1702
+risk factor|1008
+likely oncogenic|997
+tier i - strong|997
+tier ii - potential|538
 association|508
+oncogenic|395
 likely risk allele|323
-uncertain risk allele|294
-oncogenic|250
-affects|213
+uncertain risk allele|297
+low penetrance|257
+affects|219
 conflicting data from submitters|180
-protective|101
-low penetrance|37
+protective|99
 confers sensitivity|20
-tier iii - unknown|13
-established risk allele|10
+tier iii - unknown|15
+established risk allele|14
 tier iv - benign|7
-tier i - strong|5
 association not found|5
-tier ii - potential|3
+vus-mid|1
 
 ## Distribuion of records by star rating
 Star rating|Count
 :--|:--
 ★★★★|42
-★★★☆|20492
-★★☆☆|348899
-★☆☆☆|4245851
-☆☆☆☆|319376
+★★★☆|22052
+★★☆☆|371663
+★☆☆☆|4675395
+☆☆☆☆|693457
 
 ## Collection method types
 Collection method type|Count
 :--|:--
-clinical testing|5082906
-not provided|129440
-research|72668
-literature only|65779
-curation|54414
-reference population|19804
-phenotyping only|5115
-case-control|3332
-provider interpretation|2179
-in vitro|1058
-in vivo|388
+clinical testing|5553049
+not provided|129568
+research|74517
+literature only|66088
+curation|59420
+reference population|19805
+phenotyping only|6274
+case-control|3380
+provider interpretation|2335
+in vitro|1067
+in vivo|389
 
 ## Distribution of records by collection method type
-collection method type|Count
+Collection method type|Count
 :--|:--
-clinical testing|4609337
-clinical testing, not provided|107333
-research|51544
-literature only|42612
-clinical testing, curation|25303
-curation|23901
-not provided|20936
-clinical testing, literature only|12609
-clinical testing, research|11728
-missing|6720
-phenotyping only|2846
-case-control|2755
-reference population|2380
-clinical testing, literature only, research|1727
-clinical testing, phenotyping only|1310
-provider interpretation|1274
-literature only, research|1268
-clinical testing, reference population|1147
-clinical testing, curation, literature only|1131
-curation, literature only|990
-clinical testing, curation, research|621
-clinical testing, provider interpretation|610
-clinical testing, curation, literature only, research|534
-clinical testing, literature only, not provided|514
-clinical testing, in vitro|280
-curation, research|279
-in vitro, research|269
-in vivo, research|233
-case-control, clinical testing|202
-clinical testing, not provided, phenotyping only|185
-clinical testing, in vitro, research|159
-clinical testing, not provided, research|123
-curation, literature only, research|101
+clinical testing|5052729
+missing|383212
+clinical testing, not provided|107801
+research|52595
+literature only|42423
+curation|27321
+clinical testing, curation|26632
+not provided|20573
+clinical testing, literature only|12936
+clinical testing, research|12215
+phenotyping only|3463
+case-control|2798
+reference population|2324
+clinical testing, literature only, research|1800
+clinical testing, phenotyping only|1708
+provider interpretation|1399
+literature only, research|1247
+clinical testing, reference population|1203
+clinical testing, curation, literature only|1184
+curation, literature only|1022
+clinical testing, curation, research|670
+clinical testing, provider interpretation|632
+clinical testing, curation, literature only, research|551
+clinical testing, literature only, not provided|518
+curation, research|308
+in vitro, research|277
+clinical testing, in vitro|273
+in vivo, research|230
+case-control, clinical testing|205
+clinical testing, not provided, phenotyping only|194
+clinical testing, in vitro, research|163
+clinical testing, not provided, research|127
+curation, literature only, research|105
+clinical testing, phenotyping only, research|105
 literature only, not provided|96
-in vitro|95
-clinical testing, phenotyping only, research|94
-clinical testing, in vivo|88
+in vitro|94
+clinical testing, in vivo|89
+clinical testing, literature only, phenotyping only|83
 not provided, phenotyping only|74
-clinical testing, literature only, phenotyping only|73
-case-control, clinical testing, curation|71
-clinical testing, literature only, provider interpretation|70
+clinical testing, literature only, provider interpretation|71
+case-control, clinical testing, curation|69
 clinical testing, curation, not provided|62
-clinical testing, provider interpretation, research|51
-clinical testing, in vitro, literature only|44
+clinical testing, provider interpretation, research|54
+clinical testing, curation, phenotyping only|44
 clinical testing, literature only, phenotyping only, research|43
-clinical testing, reference population, research|41
+clinical testing, reference population, research|42
 literature only, provider interpretation|38
-clinical testing, curation, literature only, phenotyping only, research|34
+clinical testing, in vitro, literature only|38
+clinical testing, curation, literature only, phenotyping only, research|36
 clinical testing, literature only, reference population|32
 curation, not provided|31
 case-control, literature only|29
-clinical testing, curation, phenotyping only|26
-curation, in vitro|25
+case-control, clinical testing, research|25
 clinical testing, literature only, provider interpretation, research|24
-case-control, clinical testing, research|24
-not provided, research|23
 case-control, clinical testing, literature only|23
-clinical testing, curation, literature only, phenotyping only|21
-in vivo|21
+phenotyping only, research|23
+clinical testing, curation, literature only, phenotyping only|23
+curation, in vitro|21
+not provided, research|21
+case-control, research|21
+in vivo|20
 clinical testing, curation, reference population|20
-provider interpretation, research|19
-phenotyping only, research|19
-case-control, research|18
-literature only, reference population|17
+clinical testing, in vitro, literature only, research|19
+provider interpretation, research|18
+literature only, reference population|16
+literature only, phenotyping only|15
 case-control, clinical testing, literature only, research|15
-literature only, phenotyping only|13
-clinical testing, in vitro, literature only, research|13
+clinical testing, literature only, not provided, research|14
+clinical testing, in vivo, research|13
 in vitro, literature only|12
+clinical testing, curation, phenotyping only, research|12
 case-control, in vitro|11
 case-control, clinical testing, curation, research|11
 clinical testing, curation, literature only, not provided, research|11
 in vitro, in vivo, research|10
 in vitro, literature only, research|10
-case-control, clinical testing, curation, literature only, research|10
-clinical testing, curation, phenotyping only, research|10
-clinical testing, in vivo, research|10
 clinical testing, in vitro, in vivo|10
+case-control, clinical testing, curation, literature only, research|10
 clinical testing, curation, in vitro|9
-clinical testing, literature only, not provided, research|9
 clinical testing, literature only, reference population, research|9
 reference population, research|8
 curation, provider interpretation, research|8
-clinical testing, curation, provider interpretation|7
+clinical testing, curation, provider interpretation|8
+curation, phenotyping only|7
+clinical testing, curation, in vitro, research|7
 curation, literature only, provider interpretation|6
 clinical testing, curation, reference population, research|6
+clinical testing, curation, literature only, provider interpretation|6
 clinical testing, curation, literature only, not provided|6
-clinical testing, curation, in vitro, research|6
 case-control, curation|5
-curation, phenotyping only|5
-clinical testing, curation, literature only, provider interpretation|5
+clinical testing, phenotyping only, provider interpretation|5
 curation, reference population|5
+clinical testing, curation, in vitro, literature only, research|5
 case-control, clinical testing, in vitro|5
-clinical testing, curation, literature only, provider interpretation, research|4
-clinical testing, phenotyping only, provider interpretation|4
-clinical testing, not provided, provider interpretation|4
-clinical testing, curation, literature only, reference population|4
-case-control, clinical testing, curation, literature only|4
+clinical testing, curation, literature only, provider interpretation, research|5
+clinical testing, curation, literature only, reference population|5
+clinical testing, in vitro, provider interpretation|4
+curation, provider interpretation|4
 case-control, clinical testing, in vitro, literature only|4
 clinical testing, in vitro, not provided|4
-curation, provider interpretation|4
+clinical testing, not provided, provider interpretation|4
+case-control, clinical testing, curation, literature only|4
 case-control, in vivo|3
-literature only, not provided, research|3
-clinical testing, curation, in vitro, literature only|3
-clinical testing, in vitro, provider interpretation|3
 clinical testing, literature only, not provided, phenotyping only|3
+clinical testing, in vitro, phenotyping only, research|3
+clinical testing, not provided, phenotyping only, research|3
 in vitro, in vivo|2
-clinical testing, curation, literature only, reference population, research|2
+clinical testing, curation, in vitro, literature only|2
 clinical testing, curation, provider interpretation, research|2
+clinical testing, literature only, phenotyping only, provider interpretation, research|2
 case-control, literature only, research|2
-case-control, clinical testing, literature only, phenotyping only, research|2
-clinical testing, curation, literature only, phenotyping only, provider interpretation, research|2
-clinical testing, in vitro, phenotyping only, research|2
-clinical testing, not provided, provider interpretation, research|2
 clinical testing, in vivo, literature only|2
+clinical testing, curation, literature only, reference population, research|2
+literature only, not provided, research|2
+clinical testing, curation, literature only, phenotyping only, provider interpretation, research|2
+case-control, clinical testing, literature only, phenotyping only, research|2
+clinical testing, not provided, provider interpretation, research|2
 case-control, clinical testing, curation, literature only, phenotyping only|2
 clinical testing, literature only, not provided, provider interpretation, research|2
-clinical testing, curation, in vitro, literature only, research|2
 curation, literature only, not provided|1
 in vivo, literature only, research|1
-curation, not provided, research|1
-phenotyping only, reference population, research|1
 case-control, provider interpretation|1
 clinical testing, curation, in vivo|1
-clinical testing, literature only, phenotyping only, provider interpretation, research|1
-phenotyping only, provider interpretation|1
 case-control, clinical testing, reference population|1
+in vitro, literature only, phenotyping only|1
+in vivo, not provided, research|1
+clinical testing, in vitro, in vivo, research|1
+case-control, reference population|1
 literature only, provider interpretation, research|1
-case-control, clinical testing, literature only, not provided, research|1
+curation, in vitro, research|1
+in vitro, in vivo, literature only|1
+curation, literature only, not provided, research|1
+not provided, provider interpretation|1
+clinical testing, curation, not provided, provider interpretation|1
+case-control, clinical testing, literature only, provider interpretation, research|1
 clinical testing, curation, literature only, not provided, phenotyping only, research|1
 clinical testing, curation, phenotyping only, provider interpretation|1
-case-control, clinical testing, not provided|1
 clinical testing, in vivo, literature only, research|1
-case-control, clinical testing, phenotyping only, research|1
+curation, not provided, research|1
 clinical testing, curation, in vitro, phenotyping only, research|1
-not provided, provider interpretation|1
-case-control, clinical testing, literature only, provider interpretation, research|1
-clinical testing, curation, not provided, provider interpretation|1
-clinical testing, literature only, not provided, provider interpretation|1
-in vitro, provider interpretation|1
-clinical testing, not provided, phenotyping only, research|1
+case-control, clinical testing, phenotyping only, research|1
+phenotyping only, reference population, research|1
 case-control, in vitro, in vivo, research|1
-in vitro, literature only, phenotyping only|1
-in vitro, in vivo, literature only|1
-in vivo, not provided, research|1
-case-control, reference population|1
-curation, in vitro, research|1
+case-control, clinical testing, literature only, not provided, research|1
+case-control, clinical testing, not provided|1
 case-control, clinical testing, curation, literature only, phenotyping only, provider interpretation, research|1
+clinical testing, literature only, not provided, provider interpretation|1
 clinical testing, not provided, phenotyping only, provider interpretation|1
 literature only, phenotyping only, research|1
+clinical testing, curation, not provided, research|1
 clinical testing, literature only, phenotyping only, provider interpretation|1
 case-control, not provided|1
 clinical testing, phenotyping only, provider interpretation, research|1
 curation, reference population, research|1
 in vitro, reference population|1
 
-
 ## Multiple mode of inheritance
 RCV|Modes of inheritance
 :--|:--
+[RCV000001977](https://www.ncbi.nlm.nih.gov/clinvar/RCV000001977/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000002776](https://www.ncbi.nlm.nih.gov/clinvar/RCV000002776/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000003771](https://www.ncbi.nlm.nih.gov/clinvar/RCV000003771/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000005614](https://www.ncbi.nlm.nih.gov/clinvar/RCV000005614/)|Autosomal dominant inheritance, Autosomal recessive inheritance
-[RCV000005618](https://www.ncbi.nlm.nih.gov/clinvar/RCV000005618/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000005623](https://www.ncbi.nlm.nih.gov/clinvar/RCV000005623/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000006701](https://www.ncbi.nlm.nih.gov/clinvar/RCV000006701/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000007221](https://www.ncbi.nlm.nih.gov/clinvar/RCV000007221/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000012933](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012933/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000018525](https://www.ncbi.nlm.nih.gov/clinvar/RCV000018525/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000019099](https://www.ncbi.nlm.nih.gov/clinvar/RCV000019099/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000019610](https://www.ncbi.nlm.nih.gov/clinvar/RCV000019610/)|Autosomal dominant inheritance, Autosomal recessive inheritance
@@ -291,6 +297,7 @@ RCV|Modes of inheritance
 [RCV000020343](https://www.ncbi.nlm.nih.gov/clinvar/RCV000020343/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000023146](https://www.ncbi.nlm.nih.gov/clinvar/RCV000023146/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000032654](https://www.ncbi.nlm.nih.gov/clinvar/RCV000032654/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000035922](https://www.ncbi.nlm.nih.gov/clinvar/RCV000035922/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000036199](https://www.ncbi.nlm.nih.gov/clinvar/RCV000036199/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000043574](https://www.ncbi.nlm.nih.gov/clinvar/RCV000043574/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000056231](https://www.ncbi.nlm.nih.gov/clinvar/RCV000056231/)|Autosomal dominant inheritance, Autosomal recessive inheritance
@@ -300,18 +307,22 @@ RCV|Modes of inheritance
 [RCV000118941](https://www.ncbi.nlm.nih.gov/clinvar/RCV000118941/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000144577](https://www.ncbi.nlm.nih.gov/clinvar/RCV000144577/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000148607](https://www.ncbi.nlm.nih.gov/clinvar/RCV000148607/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000200615](https://www.ncbi.nlm.nih.gov/clinvar/RCV000200615/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000201628](https://www.ncbi.nlm.nih.gov/clinvar/RCV000201628/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000211634](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211634/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000211690](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211690/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000237691](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237691/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000379715](https://www.ncbi.nlm.nih.gov/clinvar/RCV000379715/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000411593](https://www.ncbi.nlm.nih.gov/clinvar/RCV000411593/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000445356](https://www.ncbi.nlm.nih.gov/clinvar/RCV000445356/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000475238](https://www.ncbi.nlm.nih.gov/clinvar/RCV000475238/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000477802](https://www.ncbi.nlm.nih.gov/clinvar/RCV000477802/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000477915](https://www.ncbi.nlm.nih.gov/clinvar/RCV000477915/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000502958](https://www.ncbi.nlm.nih.gov/clinvar/RCV000502958/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000593585](https://www.ncbi.nlm.nih.gov/clinvar/RCV000593585/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000667182](https://www.ncbi.nlm.nih.gov/clinvar/RCV000667182/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000721136](https://www.ncbi.nlm.nih.gov/clinvar/RCV000721136/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV000722043](https://www.ncbi.nlm.nih.gov/clinvar/RCV000722043/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000754614](https://www.ncbi.nlm.nih.gov/clinvar/RCV000754614/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000754840](https://www.ncbi.nlm.nih.gov/clinvar/RCV000754840/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000857293](https://www.ncbi.nlm.nih.gov/clinvar/RCV000857293/)|Autosomal dominant inheritance, Autosomal recessive inheritance
@@ -325,6 +336,7 @@ RCV|Modes of inheritance
 [RCV002226807](https://www.ncbi.nlm.nih.gov/clinvar/RCV002226807/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV002254418](https://www.ncbi.nlm.nih.gov/clinvar/RCV002254418/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV002288501](https://www.ncbi.nlm.nih.gov/clinvar/RCV002288501/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV002288504](https://www.ncbi.nlm.nih.gov/clinvar/RCV002288504/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV002470862](https://www.ncbi.nlm.nih.gov/clinvar/RCV002470862/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV003221786](https://www.ncbi.nlm.nih.gov/clinvar/RCV003221786/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV003225946](https://www.ncbi.nlm.nih.gov/clinvar/RCV003225946/)|Autosomal dominant inheritance, Autosomal recessive inheritance
@@ -333,12 +345,16 @@ RCV|Modes of inheritance
 [RCV003444054](https://www.ncbi.nlm.nih.gov/clinvar/RCV003444054/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV003532128](https://www.ncbi.nlm.nih.gov/clinvar/RCV003532128/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV004007447](https://www.ncbi.nlm.nih.gov/clinvar/RCV004007447/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV004017440](https://www.ncbi.nlm.nih.gov/clinvar/RCV004017440/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV004017745](https://www.ncbi.nlm.nih.gov/clinvar/RCV004017745/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV004594930](https://www.ncbi.nlm.nih.gov/clinvar/RCV004594930/)|Autosomal dominant inheritance, Autosomal recessive inheritance
+[RCV005622815](https://www.ncbi.nlm.nih.gov/clinvar/RCV005622815/)|Autosomal dominant inheritance, Autosomal recessive inheritance
 [RCV000017712](https://www.ncbi.nlm.nih.gov/clinvar/RCV000017712/)|Autosomal dominant inheritance, Autosomal recessive inheritance, Autosomal unknown
 [RCV000211568](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211568/)|Autosomal dominant inheritance, Autosomal recessive inheritance, Semidominant inheritance
 [RCV000211628](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211628/)|Autosomal dominant inheritance, Autosomal recessive inheritance, Semidominant inheritance
 [RCV000237660](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237660/)|Autosomal dominant inheritance, Autosomal recessive inheritance, Semidominant inheritance
 [RCV000408777](https://www.ncbi.nlm.nih.gov/clinvar/RCV000408777/)|Autosomal dominant inheritance, Autosomal recessive inheritance, Semidominant inheritance
+[RCV000416146](https://www.ncbi.nlm.nih.gov/clinvar/RCV000416146/)|Autosomal dominant inheritance, Autosomal recessive inheritance, Sporadic
 [RCV000000321](https://www.ncbi.nlm.nih.gov/clinvar/RCV000000321/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000005625](https://www.ncbi.nlm.nih.gov/clinvar/RCV000005625/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000029756](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029756/)|Autosomal dominant inheritance, Autosomal unknown
@@ -353,10 +369,12 @@ RCV|Modes of inheritance
 [RCV000208873](https://www.ncbi.nlm.nih.gov/clinvar/RCV000208873/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000229595](https://www.ncbi.nlm.nih.gov/clinvar/RCV000229595/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000237977](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237977/)|Autosomal dominant inheritance, Autosomal unknown
+[RCV000709705](https://www.ncbi.nlm.nih.gov/clinvar/RCV000709705/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000763076](https://www.ncbi.nlm.nih.gov/clinvar/RCV000763076/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000991155](https://www.ncbi.nlm.nih.gov/clinvar/RCV000991155/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV003322683](https://www.ncbi.nlm.nih.gov/clinvar/RCV003322683/)|Autosomal dominant inheritance, Autosomal unknown
 [RCV000211607](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211607/)|Autosomal dominant inheritance, Codominant
+[RCV000211563](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211563/)|Autosomal dominant inheritance, Codominant, Semidominant inheritance
 [RCV000003868](https://www.ncbi.nlm.nih.gov/clinvar/RCV000003868/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000003870](https://www.ncbi.nlm.nih.gov/clinvar/RCV000003870/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000003871](https://www.ncbi.nlm.nih.gov/clinvar/RCV000003871/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -470,6 +488,7 @@ RCV|Modes of inheritance
 [RCV000237135](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237135/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237143](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237143/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237148](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237148/)|Autosomal dominant inheritance, Semidominant inheritance
+[RCV000237157](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237157/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237163](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237163/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237167](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237167/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237174](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237174/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -501,6 +520,7 @@ RCV|Modes of inheritance
 [RCV000237333](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237333/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237335](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237335/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237345](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237345/)|Autosomal dominant inheritance, Semidominant inheritance
+[RCV000237348](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237348/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237360](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237360/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237371](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237371/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237372](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237372/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -552,6 +572,7 @@ RCV|Modes of inheritance
 [RCV000237694](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237694/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237696](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237696/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237699](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237699/)|Autosomal dominant inheritance, Semidominant inheritance
+[RCV000237707](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237707/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237709](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237709/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237711](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237711/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000237712](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237712/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -636,6 +657,7 @@ RCV|Modes of inheritance
 [RCV000238167](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238167/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238173](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238173/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238178](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238178/)|Autosomal dominant inheritance, Semidominant inheritance
+[RCV000238192](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238192/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238197](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238197/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238200](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238200/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238203](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238203/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -675,6 +697,7 @@ RCV|Modes of inheritance
 [RCV000238320](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238320/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238329](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238329/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238336](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238336/)|Autosomal dominant inheritance, Semidominant inheritance
+[RCV000238337](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238337/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238354](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238354/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238355](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238355/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238358](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238358/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -709,6 +732,7 @@ RCV|Modes of inheritance
 [RCV000238558](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238558/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238563](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238563/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238570](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238570/)|Autosomal dominant inheritance, Semidominant inheritance
+[RCV000238571](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238571/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238573](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238573/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238578](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238578/)|Autosomal dominant inheritance, Semidominant inheritance
 [RCV000238579](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238579/)|Autosomal dominant inheritance, Semidominant inheritance
@@ -781,7 +805,6 @@ RCV|Modes of inheritance
 [RCV000258148](https://www.ncbi.nlm.nih.gov/clinvar/RCV000258148/)|Autosomal dominant inheritance, Sporadic
 [RCV000381002](https://www.ncbi.nlm.nih.gov/clinvar/RCV000381002/)|Autosomal dominant inheritance, Sporadic
 [RCV000414819](https://www.ncbi.nlm.nih.gov/clinvar/RCV000414819/)|Autosomal dominant inheritance, Sporadic
-[RCV000416146](https://www.ncbi.nlm.nih.gov/clinvar/RCV000416146/)|Autosomal dominant inheritance, Sporadic
 [RCV000496159](https://www.ncbi.nlm.nih.gov/clinvar/RCV000496159/)|Autosomal dominant inheritance, Sporadic
 [RCV000496332](https://www.ncbi.nlm.nih.gov/clinvar/RCV000496332/)|Autosomal dominant inheritance, Sporadic
 [RCV000515748](https://www.ncbi.nlm.nih.gov/clinvar/RCV000515748/)|Autosomal dominant inheritance, Sporadic
@@ -796,6 +819,7 @@ RCV|Modes of inheritance
 [RCV001199967](https://www.ncbi.nlm.nih.gov/clinvar/RCV001199967/)|Autosomal dominant inheritance, Sporadic
 [RCV001290203](https://www.ncbi.nlm.nih.gov/clinvar/RCV001290203/)|Autosomal dominant inheritance, Sporadic
 [RCV001559131](https://www.ncbi.nlm.nih.gov/clinvar/RCV001559131/)|Autosomal dominant inheritance, Sporadic
+[RCV001786337](https://www.ncbi.nlm.nih.gov/clinvar/RCV001786337/)|Autosomal dominant inheritance, Sporadic
 [RCV003325406](https://www.ncbi.nlm.nih.gov/clinvar/RCV003325406/)|Autosomal dominant inheritance, Sporadic
 [RCV000015145](https://www.ncbi.nlm.nih.gov/clinvar/RCV000015145/)|Autosomal dominant inheritance, Unknown mechanism
 [RCV000017724](https://www.ncbi.nlm.nih.gov/clinvar/RCV000017724/)|Autosomal dominant inheritance, Unknown mechanism
@@ -805,6 +829,7 @@ RCV|Modes of inheritance
 [RCV000372727](https://www.ncbi.nlm.nih.gov/clinvar/RCV000372727/)|Autosomal dominant inheritance, Unknown mechanism
 [RCV001787918](https://www.ncbi.nlm.nih.gov/clinvar/RCV001787918/)|Autosomal dominant inheritance, Unknown mechanism
 [RCV001807754](https://www.ncbi.nlm.nih.gov/clinvar/RCV001807754/)|Autosomal dominant inheritance, Unknown mechanism
+[RCV003450957](https://www.ncbi.nlm.nih.gov/clinvar/RCV003450957/)|Autosomal dominant inheritance, Unknown mechanism
 [RCV003989278](https://www.ncbi.nlm.nih.gov/clinvar/RCV003989278/)|Autosomal dominant inheritance, Unknown mechanism
 [RCV000256185](https://www.ncbi.nlm.nih.gov/clinvar/RCV000256185/)|Autosomal dominant inheritance, X-linked dominant inheritance
 [RCV000491111](https://www.ncbi.nlm.nih.gov/clinvar/RCV000491111/)|Autosomal dominant inheritance, X-linked dominant inheritance
@@ -820,6 +845,7 @@ RCV|Modes of inheritance
 [RCV000169933](https://www.ncbi.nlm.nih.gov/clinvar/RCV000169933/)|Autosomal dominant inheritance, X-linked inheritance
 [RCV002226590](https://www.ncbi.nlm.nih.gov/clinvar/RCV002226590/)|Autosomal dominant inheritance, X-linked inheritance
 [RCV002280364](https://www.ncbi.nlm.nih.gov/clinvar/RCV002280364/)|Autosomal dominant inheritance, X-linked inheritance
+[RCV000011727](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011727/)|Autosomal dominant inheritance, X-linked inheritance, X-linked recessive inheritance
 [RCV000029704](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029704/)|Autosomal dominant inheritance, autosomal unknown
 [RCV000029710](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029710/)|Autosomal dominant inheritance, autosomal unknown
 [RCV000029714](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029714/)|Autosomal dominant inheritance, autosomal unknown
@@ -841,7 +867,6 @@ RCV|Modes of inheritance
 [RCV000233045](https://www.ncbi.nlm.nih.gov/clinvar/RCV000233045/)|Autosomal recessive inheritance, Autosomal unknown
 [RCV004783724](https://www.ncbi.nlm.nih.gov/clinvar/RCV004783724/)|Autosomal recessive inheritance, Autosomal unknown
 [RCV000856596](https://www.ncbi.nlm.nih.gov/clinvar/RCV000856596/)|Autosomal recessive inheritance, Codominant
-[RCV000410600](https://www.ncbi.nlm.nih.gov/clinvar/RCV000410600/)|Autosomal recessive inheritance, Semidominant inheritance
 [RCV000417287](https://www.ncbi.nlm.nih.gov/clinvar/RCV000417287/)|Autosomal recessive inheritance, Semidominant inheritance
 [RCV000009664](https://www.ncbi.nlm.nih.gov/clinvar/RCV000009664/)|Autosomal recessive inheritance, Somatic mutation
 [RCV000169276](https://www.ncbi.nlm.nih.gov/clinvar/RCV000169276/)|Autosomal recessive inheritance, Somatic mutation
@@ -854,6 +879,7 @@ RCV|Modes of inheritance
 [RCV000177014](https://www.ncbi.nlm.nih.gov/clinvar/RCV000177014/)|Autosomal recessive inheritance, X-linked recessive inheritance
 [RCV000853199](https://www.ncbi.nlm.nih.gov/clinvar/RCV000853199/)|Autosomal recessive inheritance, X-linked recessive inheritance
 [RCV004547259](https://www.ncbi.nlm.nih.gov/clinvar/RCV004547259/)|Autosomal recessive inheritance, X-linked recessive inheritance
+[RCV000029350](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029350/)|Autosomal recessive inheritance, autosomal unknown
 [RCV000029356](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029356/)|Autosomal recessive inheritance, autosomal unknown
 [RCV000029357](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029357/)|Autosomal recessive inheritance, autosomal unknown
 [RCV000029370](https://www.ncbi.nlm.nih.gov/clinvar/RCV000029370/)|Autosomal recessive inheritance, autosomal unknown
@@ -862,14 +888,18 @@ RCV|Modes of inheritance
 [RCV000030126](https://www.ncbi.nlm.nih.gov/clinvar/RCV000030126/)|Autosomal unknown, Semidominant inheritance
 [RCV000149480](https://www.ncbi.nlm.nih.gov/clinvar/RCV000149480/)|Autosomal unknown, Sporadic
 [RCV000159917](https://www.ncbi.nlm.nih.gov/clinvar/RCV000159917/)|Autosomal unknown, Unknown mechanism
+[RCV000159924](https://www.ncbi.nlm.nih.gov/clinvar/RCV000159924/)|Autosomal unknown, Unknown mechanism
 [RCV000160301](https://www.ncbi.nlm.nih.gov/clinvar/RCV000160301/)|Autosomal unknown, Unknown mechanism
 [RCV000217859](https://www.ncbi.nlm.nih.gov/clinvar/RCV000217859/)|Autosomal unknown, Unknown mechanism
-[RCV000211563](https://www.ncbi.nlm.nih.gov/clinvar/RCV000211563/)|Codominant, Semidominant inheritance
+[RCV000478446](https://www.ncbi.nlm.nih.gov/clinvar/RCV000478446/)|Autosomal unknown, Unknown mechanism
+[RCV000754646](https://www.ncbi.nlm.nih.gov/clinvar/RCV000754646/)|Mitochondrial inheritance, Sporadic
+[RCV001030995](https://www.ncbi.nlm.nih.gov/clinvar/RCV001030995/)|Sporadic, X-linked dominant inheritance
 [RCV000056321](https://www.ncbi.nlm.nih.gov/clinvar/RCV000056321/)|Sporadic, X-linked dominant inheritance, X-linked inheritance
 [RCV000170288](https://www.ncbi.nlm.nih.gov/clinvar/RCV000170288/)|Sporadic, X-linked dominant inheritance, X-linked inheritance
 [RCV000012590](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012590/)|Sporadic, X-linked inheritance
 [RCV000132985](https://www.ncbi.nlm.nih.gov/clinvar/RCV000132985/)|Sporadic, X-linked inheritance
 [RCV000149865](https://www.ncbi.nlm.nih.gov/clinvar/RCV000149865/)|Sporadic, X-linked inheritance
+[RCV000020176](https://www.ncbi.nlm.nih.gov/clinvar/RCV000020176/)|Unknown mechanism, X-linked dominant inheritance, X-linked inheritance
 [RCV000118961](https://www.ncbi.nlm.nih.gov/clinvar/RCV000118961/)|Unknown mechanism, X-linked inheritance
 [RCV000011205](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011205/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000011495](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011495/)|X-linked dominant inheritance, X-linked inheritance
@@ -879,7 +909,6 @@ RCV|Modes of inheritance
 [RCV000012525](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012525/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000012602](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012602/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000012620](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012620/)|X-linked dominant inheritance, X-linked inheritance
-[RCV000020176](https://www.ncbi.nlm.nih.gov/clinvar/RCV000020176/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000020628](https://www.ncbi.nlm.nih.gov/clinvar/RCV000020628/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000020629](https://www.ncbi.nlm.nih.gov/clinvar/RCV000020629/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000021422](https://www.ncbi.nlm.nih.gov/clinvar/RCV000021422/)|X-linked dominant inheritance, X-linked inheritance
@@ -894,9 +923,11 @@ RCV|Modes of inheritance
 [RCV000133237](https://www.ncbi.nlm.nih.gov/clinvar/RCV000133237/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000133280](https://www.ncbi.nlm.nih.gov/clinvar/RCV000133280/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000133283](https://www.ncbi.nlm.nih.gov/clinvar/RCV000133283/)|X-linked dominant inheritance, X-linked inheritance
+[RCV000145413](https://www.ncbi.nlm.nih.gov/clinvar/RCV000145413/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000145523](https://www.ncbi.nlm.nih.gov/clinvar/RCV000145523/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000147560](https://www.ncbi.nlm.nih.gov/clinvar/RCV000147560/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000168701](https://www.ncbi.nlm.nih.gov/clinvar/RCV000168701/)|X-linked dominant inheritance, X-linked inheritance
+[RCV000169915](https://www.ncbi.nlm.nih.gov/clinvar/RCV000169915/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000169946](https://www.ncbi.nlm.nih.gov/clinvar/RCV000169946/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000170100](https://www.ncbi.nlm.nih.gov/clinvar/RCV000170100/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000170103](https://www.ncbi.nlm.nih.gov/clinvar/RCV000170103/)|X-linked dominant inheritance, X-linked inheritance
@@ -911,6 +942,7 @@ RCV|Modes of inheritance
 [RCV000578469](https://www.ncbi.nlm.nih.gov/clinvar/RCV000578469/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000633503](https://www.ncbi.nlm.nih.gov/clinvar/RCV000633503/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000758011](https://www.ncbi.nlm.nih.gov/clinvar/RCV000758011/)|X-linked dominant inheritance, X-linked inheritance
+[RCV000760185](https://www.ncbi.nlm.nih.gov/clinvar/RCV000760185/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000995729](https://www.ncbi.nlm.nih.gov/clinvar/RCV000995729/)|X-linked dominant inheritance, X-linked inheritance
 [RCV000995742](https://www.ncbi.nlm.nih.gov/clinvar/RCV000995742/)|X-linked dominant inheritance, X-linked inheritance
 [RCV001027719](https://www.ncbi.nlm.nih.gov/clinvar/RCV001027719/)|X-linked dominant inheritance, X-linked inheritance
@@ -919,7 +951,6 @@ RCV|Modes of inheritance
 [RCV001706845](https://www.ncbi.nlm.nih.gov/clinvar/RCV001706845/)|X-linked dominant inheritance, X-linked inheritance
 [RCV002226465](https://www.ncbi.nlm.nih.gov/clinvar/RCV002226465/)|X-linked dominant inheritance, X-linked inheritance
 [RCV002466274](https://www.ncbi.nlm.nih.gov/clinvar/RCV002466274/)|X-linked dominant inheritance, X-linked inheritance
-[RCV002468692](https://www.ncbi.nlm.nih.gov/clinvar/RCV002468692/)|X-linked dominant inheritance, X-linked inheritance
 [RCV002471908](https://www.ncbi.nlm.nih.gov/clinvar/RCV002471908/)|X-linked dominant inheritance, X-linked inheritance
 [RCV003326123](https://www.ncbi.nlm.nih.gov/clinvar/RCV003326123/)|X-linked dominant inheritance, X-linked inheritance
 [RCV003333750](https://www.ncbi.nlm.nih.gov/clinvar/RCV003333750/)|X-linked dominant inheritance, X-linked inheritance
@@ -928,6 +959,7 @@ RCV|Modes of inheritance
 [RCV000179363](https://www.ncbi.nlm.nih.gov/clinvar/RCV000179363/)|X-linked dominant inheritance, X-linked inheritance, X-linked recessive inheritance
 [RCV000282708](https://www.ncbi.nlm.nih.gov/clinvar/RCV000282708/)|X-linked dominant inheritance, X-linked inheritance, X-linked recessive inheritance
 [RCV000991015](https://www.ncbi.nlm.nih.gov/clinvar/RCV000991015/)|X-linked dominant inheritance, X-linked recessive inheritance
+[RCV002246158](https://www.ncbi.nlm.nih.gov/clinvar/RCV002246158/)|X-linked dominant inheritance, X-linked recessive inheritance
 [RCV002291308](https://www.ncbi.nlm.nih.gov/clinvar/RCV002291308/)|X-linked dominant inheritance, X-linked recessive inheritance
 [RCV003991395](https://www.ncbi.nlm.nih.gov/clinvar/RCV003991395/)|X-linked dominant inheritance, X-linked recessive inheritance
 [RCV000010565](https://www.ncbi.nlm.nih.gov/clinvar/RCV000010565/)|X-linked inheritance, X-linked recessive inheritance
@@ -942,9 +974,9 @@ RCV|Modes of inheritance
 [RCV000011232](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011232/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000011237](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011237/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000011325](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011325/)|X-linked inheritance, X-linked recessive inheritance
-[RCV000011727](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011727/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000011760](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011760/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000011826](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011826/)|X-linked inheritance, X-linked recessive inheritance
+[RCV000011993](https://www.ncbi.nlm.nih.gov/clinvar/RCV000011993/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000012151](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012151/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000012596](https://www.ncbi.nlm.nih.gov/clinvar/RCV000012596/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000022859](https://www.ncbi.nlm.nih.gov/clinvar/RCV000022859/)|X-linked inheritance, X-linked recessive inheritance
@@ -964,6 +996,8 @@ RCV|Modes of inheritance
 [RCV000180545](https://www.ncbi.nlm.nih.gov/clinvar/RCV000180545/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000180546](https://www.ncbi.nlm.nih.gov/clinvar/RCV000180546/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000197147](https://www.ncbi.nlm.nih.gov/clinvar/RCV000197147/)|X-linked inheritance, X-linked recessive inheritance
+[RCV000201002](https://www.ncbi.nlm.nih.gov/clinvar/RCV000201002/)|X-linked inheritance, X-linked recessive inheritance
+[RCV000201160](https://www.ncbi.nlm.nih.gov/clinvar/RCV000201160/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000204452](https://www.ncbi.nlm.nih.gov/clinvar/RCV000204452/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000210834](https://www.ncbi.nlm.nih.gov/clinvar/RCV000210834/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000223722](https://www.ncbi.nlm.nih.gov/clinvar/RCV000223722/)|X-linked inheritance, X-linked recessive inheritance
@@ -973,11 +1007,13 @@ RCV|Modes of inheritance
 [RCV000592238](https://www.ncbi.nlm.nih.gov/clinvar/RCV000592238/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000627036](https://www.ncbi.nlm.nih.gov/clinvar/RCV000627036/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000679996](https://www.ncbi.nlm.nih.gov/clinvar/RCV000679996/)|X-linked inheritance, X-linked recessive inheritance
+[RCV000680065](https://www.ncbi.nlm.nih.gov/clinvar/RCV000680065/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000694688](https://www.ncbi.nlm.nih.gov/clinvar/RCV000694688/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000699943](https://www.ncbi.nlm.nih.gov/clinvar/RCV000699943/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000722143](https://www.ncbi.nlm.nih.gov/clinvar/RCV000722143/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000800624](https://www.ncbi.nlm.nih.gov/clinvar/RCV000800624/)|X-linked inheritance, X-linked recessive inheritance
 [RCV000825507](https://www.ncbi.nlm.nih.gov/clinvar/RCV000825507/)|X-linked inheritance, X-linked recessive inheritance
+[RCV000990940](https://www.ncbi.nlm.nih.gov/clinvar/RCV000990940/)|X-linked inheritance, X-linked recessive inheritance
 [RCV001007857](https://www.ncbi.nlm.nih.gov/clinvar/RCV001007857/)|X-linked inheritance, X-linked recessive inheritance
 [RCV001007931](https://www.ncbi.nlm.nih.gov/clinvar/RCV001007931/)|X-linked inheritance, X-linked recessive inheritance
 [RCV001251210](https://www.ncbi.nlm.nih.gov/clinvar/RCV001251210/)|X-linked inheritance, X-linked recessive inheritance
@@ -989,186 +1025,194 @@ RCV|Modes of inheritance
 [RCV001901601](https://www.ncbi.nlm.nih.gov/clinvar/RCV001901601/)|X-linked inheritance, X-linked recessive inheritance
 [RCV002250297](https://www.ncbi.nlm.nih.gov/clinvar/RCV002250297/)|X-linked inheritance, X-linked recessive inheritance
 [RCV002470779](https://www.ncbi.nlm.nih.gov/clinvar/RCV002470779/)|X-linked inheritance, X-linked recessive inheritance
+[RCV002471263](https://www.ncbi.nlm.nih.gov/clinvar/RCV002471263/)|X-linked inheritance, X-linked recessive inheritance
+[RCV002471265](https://www.ncbi.nlm.nih.gov/clinvar/RCV002471265/)|X-linked inheritance, X-linked recessive inheritance
 [RCV002595793](https://www.ncbi.nlm.nih.gov/clinvar/RCV002595793/)|X-linked inheritance, X-linked recessive inheritance
-
 
 ## Multiple allele origins
 Allele origins|Count
 :--|:--
-germline, unknown|75786
-germline, not provided|2725
-de novo, germline|2000
-germline, inherited|1858
-germline, maternal|1519
-germline, paternal|1059
-germline, inherited, unknown|746
-de novo, germline, unknown|644
-germline, not applicable|631
-germline, not provided, unknown|544
-germline, maternal, unknown|533
-germline, paternal, unknown|383
-inherited, unknown|382
-germline, somatic|303
-maternal, unknown|290
-de novo, unknown|268
-not applicable, unknown|266
-biparental, germline|242
-paternal, unknown|185
+germline, unknown|80556
+germline, not provided|2764
+de novo, germline|2213
+germline, inherited|1996
+germline, maternal|1622
+germline, paternal|1113
+germline, inherited, unknown|784
+de novo, germline, unknown|680
+germline, not applicable|618
+germline, not provided, unknown|566
+germline, maternal, unknown|566
+germline, paternal, unknown|404
+inherited, unknown|385
+germline, somatic|320
+maternal, unknown|300
+biparental, germline|285
+de novo, unknown|279
+not applicable, unknown|264
+paternal, unknown|196
 not provided, unknown|184
 maternal, not provided|145
-germline, not applicable, unknown|118
+germline, not applicable, unknown|129
+biparental, germline, unknown|121
 not provided, paternal|100
-biparental, germline, unknown|99
-maternal, paternal|87
-inherited, maternal|84
-inherited, not applicable|81
-de novo, not applicable|80
-germline, maternal, paternal, unknown|67
+maternal, paternal|90
+inherited, not applicable|84
+inherited, maternal|82
+de novo, not applicable|78
+germline, maternal, paternal, unknown|72
 germline, somatic, unknown|65
 de novo, not provided|58
-inherited, paternal|55
-germline, maternal, paternal|50
+inherited, paternal|53
+germline, inherited, maternal|53
+germline, maternal, paternal|52
+germline, inherited, paternal|51
 maternal, not applicable|48
-germline, inherited, maternal|46
-germline, inherited, paternal|45
-somatic, unknown|40
-germline, inherited, maternal, unknown|40
-germline, inherited, paternal, unknown|39
+germline, inherited, paternal, unknown|43
+germline, inherited, maternal, unknown|43
+somatic, unknown|41
+biparental, unknown|41
 maternal, not provided, paternal|37
-biparental, unknown|36
-de novo, germline, inherited, unknown|33
-de novo, maternal|32
-de novo, germline, maternal, unknown|32
-de novo, inherited|31
+de novo, maternal|35
+de novo, germline, inherited, unknown|35
+de novo, germline, maternal, unknown|33
+de novo, germline, inherited|32
+de novo, germline, maternal|32
+de novo, inherited|30
 germline, inherited, maternal, paternal, unknown|29
-de novo, germline, inherited|28
-not applicable, paternal|27
-de novo, germline, maternal|27
+not applicable, paternal|28
+biparental, germline, inherited, unknown|23
 maternal, paternal, unknown|23
-germline, inherited, not provided, unknown|22
-biparental, germline, inherited, unknown|21
-biparental, not applicable|20
+germline, inherited, not provided, unknown|23
+biparental, not applicable|22
+de novo, germline, paternal, unknown|20
 de novo, paternal|19
 germline, inherited, not applicable|19
-de novo, germline, paternal, unknown|19
+biparental, germline, inherited|17
 de novo, somatic|16
-biparental, germline, inherited|13
-de novo, germline, not applicable|13
+de novo, germline, not applicable|14
+biparental, germline, maternal, unknown|14
+biparental, inherited|13
 inherited, maternal, paternal|13
 germline, maternal, not applicable|13
-biparental, inherited|12
 not applicable, somatic|12
 de novo, maternal, not provided|11
-biparental, germline, maternal, unknown|11
+biparental, germline, paternal|11
+de novo, germline, paternal|11
+germline, inherited, not provided|11
+de novo, germline, somatic|10
 de novo, maternal, not provided, paternal|10
-germline, inherited, not provided|10
-de novo, germline, somatic|9
-de novo, germline, paternal|9
+de novo, germline, somatic, unknown|8
 de novo, not provided, paternal|8
+biparental, germline, not applicable|8
 germline, maternal, not provided, unknown|8
 germline, not provided, somatic, unknown|8
-de novo, germline, somatic, unknown|7
-biparental, germline, not applicable|7
-biparental, germline, paternal|7
-de novo, maternal, unknown|6
+de novo, maternal, unknown|7
+germline, inherited, not applicable, unknown|7
+germline, uniparental|7
 inherited, paternal, unknown|6
+biparental, germline, paternal, unknown|6
+biparental, germline, inherited, maternal, unknown|6
 biparental, germline, maternal, paternal, unknown|6
-biparental, germline, paternal, unknown|5
-germline, inherited, not applicable, unknown|5
-biparental, germline, inherited, maternal, unknown|5
-de novo, germline, inherited, maternal, unknown|5
+de novo, germline, inherited, maternal, unknown|6
+biparental, maternal|5
+biparental, germline, maternal|5
+biparental, paternal|5
 de novo, germline, not provided|5
-biparental, maternal|4
 not provided, tested-inconclusive|4
 biparental, not provided|4
-biparental, germline, maternal|4
-biparental, paternal|4
 inherited, maternal, unknown|4
-de novo, germline, not provided, unknown|4
-biparental, germline, inherited, paternal, unknown|4
 not applicable, paternal, unknown|4
-de novo, paternal, unknown|3
+germline, maternal, not applicable, unknown|4
+de novo, germline, inherited, paternal, unknown|4
 de novo, somatic, unknown|3
-inherited, not applicable, unknown|3
-germline, inherited, somatic, unknown|3
-biparental, germline, maternal, paternal|3
-biparental, germline, not provided|3
 germline, maternal, not provided|3
 inherited, not provided|3
-germline, not provided, paternal, unknown|3
-germline, not provided, paternal|3
 germline, inherited, somatic|3
 inherited, not provided, unknown|3
 germline, inherited, maternal, paternal|3
-germline, maternal, not applicable, unknown|3
 biparental, germline, not provided, unknown|3
-de novo, germline, inherited, paternal, unknown|3
-germline, tested-inconclusive|3
 germline, not applicable, paternal|3
+inherited, not applicable, unknown|3
+biparental, germline, not provided|3
+de novo, germline, not provided, unknown|3
+biparental, germline, maternal, paternal|3
+germline, not provided, paternal|3
+de novo, paternal, unknown|3
+biparental, germline, inherited, maternal, paternal, unknown|3
+germline, not provided, paternal, unknown|3
+germline, tested-inconclusive|3
+germline, inherited, maternal, somatic, unknown|3
 de novo, maternal, paternal|2
 germline, maternal, somatic|2
 biparental, de novo|2
-germline, not applicable, somatic|2
 germline, not provided, somatic|2
 maternal, somatic|2
 biparental, maternal, paternal|2
-de novo, inherited, unknown|2
-germline, uniparental|2
-de novo, germline, maternal, not provided|2
-de novo, germline, inherited, maternal|2
-de novo, germline, maternal, paternal, unknown|2
-germline, maternal, not provided, paternal, unknown|2
-germline, inherited, maternal, not provided, unknown|2
 germline, inherited, tested-inconclusive, unknown|2
-de novo, germline, not applicable, unknown|2
 maternal, not applicable, unknown|2
+de novo, germline, not applicable, unknown|2
+germline, not applicable, somatic|2
 de novo, maternal, not applicable|2
+biparental, inherited, unknown|2
+biparental, germline, inherited, paternal, unknown|2
+de novo, germline, maternal, not provided|2
+de novo, inherited, not applicable|2
+de novo, germline, maternal, paternal, unknown|2
+germline, inherited, maternal, not provided, paternal, unknown|2
+germline, inherited, maternal, not provided, unknown|2
 maternal, not provided, tested-inconclusive|1
 biparental, maternal, not provided, paternal|1
-inherited, maternal, paternal, unknown|1
-de novo, germline, tested-inconclusive|1
 de novo, tested-inconclusive|1
-biparental, de novo, germline|1
 de novo, germline, maternal, not applicable, paternal, unknown|1
 biparental, germline, inherited, not provided|1
 germline, not-reported|1
-maternal, not applicable, paternal, unknown|1
 biparental, de novo, maternal, paternal|1
-de novo, paternal, somatic|1
-de novo, germline, inherited, not provided|1
 de novo, not provided, unknown|1
 uniparental, unknown|1
 biparental, maternal, not applicable|1
-de novo, maternal, paternal, unknown|1
-de novo, germline, inherited, maternal, paternal|1
-germline, maternal, somatic, unknown|1
-biparental, inherited, unknown|1
-germline, inherited, maternal, not provided, paternal, unknown|1
-biparental, germline, inherited, maternal, paternal, unknown|1
-germline, not applicable, paternal, unknown|1
-biparental, germline, inherited, maternal, paternal|1
-germline, not applicable, not provided, unknown|1
-de novo, germline, inherited, paternal|1
-germline, maternal, not applicable, paternal|1
-de novo, germline, maternal, not applicable|1
+de novo, germline, inherited, maternal|1
 biparental, germline, inherited, not applicable|1
-de novo, germline, inherited, somatic, unknown|1
-not provided, somatic|1
-germline, inherited, maternal, somatic, unknown|1
 inherited, somatic|1
 inherited, not applicable, paternal|1
-biparental, inherited, not applicable|1
 paternal, somatic|1
+germline, maternal, not provided, paternal, unknown|1
+de novo, inherited, maternal|1
+de novo, germline, inherited, not provided, unknown|1
 inherited, maternal, not applicable, unknown|1
-de novo, germline, inherited, maternal, paternal, unknown|1
-germline, maternal, not applicable, paternal, unknown|1
+de novo, inherited, unknown|1
+germline, maternal, not applicable, paternal|1
+biparental, de novo, germline|1
+germline, maternal, somatic, unknown|1
+de novo, germline, inherited, not provided|1
+not provided, somatic|1
+biparental, inherited, not applicable|1
+de novo, germline, inherited, maternal, paternal|1
+inherited, maternal, paternal, unknown|1
+de novo, germline, tested-inconclusive|1
+de novo, paternal, somatic|1
+biparental, germline, inherited, maternal, paternal|1
+de novo, germline, inherited, paternal|1
+de novo, germline, maternal, not applicable|1
+de novo, germline, inherited, somatic, unknown|1
+de novo, maternal, paternal, unknown|1
 de novo, germline, paternal, somatic|1
+germline, not applicable, paternal, unknown|1
+maternal, not applicable, paternal, unknown|1
+de novo, germline, not provided, somatic|1
+germline, inherited, somatic, unknown|1
+germline, not applicable, not provided, unknown|1
+de novo, germline, inherited, maternal, paternal, unknown|1
+germline, inherited, not provided, paternal, unknown|1
+germline, maternal, not applicable, paternal, unknown|1
 germline, inherited, paternal, somatic, unknown|1
+biparental, maternal, unknown|1
 inherited, maternal, not applicable|1
 
 ## Inconsistent mode of inheritance and allele origin values
 RCV|Modes of inheritance|Allele origins
 :--|:--|:--
+[RCV000013205](https://www.ncbi.nlm.nih.gov/clinvar/RCV000013205/)|Autosomal dominant inheritance|de novo, germline, not provided, somatic
 [RCV000199099](https://www.ncbi.nlm.nih.gov/clinvar/RCV000199099/)|Autosomal dominant inheritance|de novo, germline, paternal, somatic
 [RCV000032907](https://www.ncbi.nlm.nih.gov/clinvar/RCV000032907/)|Autosomal dominant inheritance|de novo, germline, somatic
 [RCV000114724](https://www.ncbi.nlm.nih.gov/clinvar/RCV000114724/)|Autosomal dominant inheritance|de novo, germline, somatic
@@ -1191,9 +1235,11 @@ RCV|Modes of inheritance|Allele origins
 [RCV000009907](https://www.ncbi.nlm.nih.gov/clinvar/RCV000009907/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
 [RCV000019229](https://www.ncbi.nlm.nih.gov/clinvar/RCV000019229/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
 [RCV000019243](https://www.ncbi.nlm.nih.gov/clinvar/RCV000019243/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
+[RCV000031541](https://www.ncbi.nlm.nih.gov/clinvar/RCV000031541/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
 [RCV000111891](https://www.ncbi.nlm.nih.gov/clinvar/RCV000111891/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
 [RCV000112410](https://www.ncbi.nlm.nih.gov/clinvar/RCV000112410/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
 [RCV000113532](https://www.ncbi.nlm.nih.gov/clinvar/RCV000113532/)|Autosomal dominant inheritance|germline, not provided, somatic, unknown
+[RCV000002303](https://www.ncbi.nlm.nih.gov/clinvar/RCV000002303/)|Autosomal dominant inheritance|germline, somatic
 [RCV000003451](https://www.ncbi.nlm.nih.gov/clinvar/RCV000003451/)|Autosomal dominant inheritance|germline, somatic
 [RCV000023398](https://www.ncbi.nlm.nih.gov/clinvar/RCV000023398/)|Autosomal dominant inheritance|germline, somatic
 [RCV000024242](https://www.ncbi.nlm.nih.gov/clinvar/RCV000024242/)|Autosomal dominant inheritance|germline, somatic
@@ -1210,6 +1256,7 @@ RCV|Modes of inheritance|Allele origins
 [RCV000114988](https://www.ncbi.nlm.nih.gov/clinvar/RCV000114988/)|Autosomal dominant inheritance|germline, somatic
 [RCV000128554](https://www.ncbi.nlm.nih.gov/clinvar/RCV000128554/)|Autosomal dominant inheritance|germline, somatic
 [RCV000168196](https://www.ncbi.nlm.nih.gov/clinvar/RCV000168196/)|Autosomal dominant inheritance|germline, somatic
+[RCV000191028](https://www.ncbi.nlm.nih.gov/clinvar/RCV000191028/)|Autosomal dominant inheritance|germline, somatic
 [RCV000237153](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237153/)|Autosomal dominant inheritance|germline, somatic
 [RCV000237481](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237481/)|Autosomal dominant inheritance|germline, somatic
 [RCV000237597](https://www.ncbi.nlm.nih.gov/clinvar/RCV000237597/)|Autosomal dominant inheritance|germline, somatic
@@ -1226,6 +1273,7 @@ RCV|Modes of inheritance|Allele origins
 [RCV000310444](https://www.ncbi.nlm.nih.gov/clinvar/RCV000310444/)|Autosomal dominant inheritance|germline, somatic
 [RCV000315800](https://www.ncbi.nlm.nih.gov/clinvar/RCV000315800/)|Autosomal dominant inheritance|germline, somatic
 [RCV000394901](https://www.ncbi.nlm.nih.gov/clinvar/RCV000394901/)|Autosomal dominant inheritance|germline, somatic
+[RCV000466652](https://www.ncbi.nlm.nih.gov/clinvar/RCV000466652/)|Autosomal dominant inheritance|germline, somatic
 [RCV000537710](https://www.ncbi.nlm.nih.gov/clinvar/RCV000537710/)|Autosomal dominant inheritance|germline, somatic
 [RCV000550478](https://www.ncbi.nlm.nih.gov/clinvar/RCV000550478/)|Autosomal dominant inheritance|germline, somatic
 [RCV000578109](https://www.ncbi.nlm.nih.gov/clinvar/RCV000578109/)|Autosomal dominant inheritance|germline, somatic
@@ -1277,7 +1325,6 @@ RCV|Modes of inheritance|Allele origins
 [RCV000032908](https://www.ncbi.nlm.nih.gov/clinvar/RCV000032908/)|Autosomal dominant inheritance|germline, somatic, unknown
 [RCV000043585](https://www.ncbi.nlm.nih.gov/clinvar/RCV000043585/)|Autosomal dominant inheritance|germline, somatic, unknown
 [RCV000077518](https://www.ncbi.nlm.nih.gov/clinvar/RCV000077518/)|Autosomal dominant inheritance|germline, somatic, unknown
-[RCV000111553](https://www.ncbi.nlm.nih.gov/clinvar/RCV000111553/)|Autosomal dominant inheritance|germline, somatic, unknown
 [RCV000111758](https://www.ncbi.nlm.nih.gov/clinvar/RCV000111758/)|Autosomal dominant inheritance|germline, somatic, unknown
 [RCV000112019](https://www.ncbi.nlm.nih.gov/clinvar/RCV000112019/)|Autosomal dominant inheritance|germline, somatic, unknown
 [RCV000148749](https://www.ncbi.nlm.nih.gov/clinvar/RCV000148749/)|Autosomal dominant inheritance|germline, somatic, unknown
@@ -1556,7 +1603,7 @@ RCV|Modes of inheritance|Allele origins
 [RCV000238117](https://www.ncbi.nlm.nih.gov/clinvar/RCV000238117/)|Autosomal dominant inheritance, Semidominant inheritance|germline, somatic
 [RCV001270435](https://www.ncbi.nlm.nih.gov/clinvar/RCV001270435/)|Autosomal dominant inheritance, Semidominant inheritance|germline, somatic
 [RCV000003878](https://www.ncbi.nlm.nih.gov/clinvar/RCV000003878/)|Autosomal dominant inheritance, Semidominant inheritance|germline, somatic, unknown
-[RCV000288398](https://www.ncbi.nlm.nih.gov/clinvar/RCV000288398/)|Autosomal recessive inheritance|germline, inherited, somatic, unknown
+[RCV000288398](https://www.ncbi.nlm.nih.gov/clinvar/RCV000288398/)|Autosomal recessive inheritance|germline, inherited, maternal, somatic, unknown
 [RCV001449970](https://www.ncbi.nlm.nih.gov/clinvar/RCV001449970/)|Autosomal recessive inheritance|germline, not applicable, somatic
 [RCV000077812](https://www.ncbi.nlm.nih.gov/clinvar/RCV000077812/)|Autosomal recessive inheritance|germline, somatic
 [RCV000087253](https://www.ncbi.nlm.nih.gov/clinvar/RCV000087253/)|Autosomal recessive inheritance|germline, somatic
@@ -1580,7 +1627,7 @@ RCV|Modes of inheritance|Allele origins
 [RCV002248304](https://www.ncbi.nlm.nih.gov/clinvar/RCV002248304/)|Autosomal recessive inheritance|somatic
 [RCV003153263](https://www.ncbi.nlm.nih.gov/clinvar/RCV003153263/)|Autosomal recessive inheritance|somatic
 [RCV001092442](https://www.ncbi.nlm.nih.gov/clinvar/RCV001092442/)|Autosomal unknown|germline, somatic
-[RCV000495738](https://www.ncbi.nlm.nih.gov/clinvar/RCV000495738/)|Mitochondrial inheritance|germline, inherited, somatic, unknown
+[RCV000495738](https://www.ncbi.nlm.nih.gov/clinvar/RCV000495738/)|Mitochondrial inheritance|germline, inherited, maternal, somatic, unknown
 [RCV000505667](https://www.ncbi.nlm.nih.gov/clinvar/RCV000505667/)|Mitochondrial inheritance|somatic
 [RCV000708565](https://www.ncbi.nlm.nih.gov/clinvar/RCV000708565/)|Somatic mutation|de novo
 [RCV000754629](https://www.ncbi.nlm.nih.gov/clinvar/RCV000754629/)|Somatic mutation|de novo
@@ -1599,13 +1646,11 @@ RCV|Modes of inheritance|Allele origins
 [RCV003338604](https://www.ncbi.nlm.nih.gov/clinvar/RCV003338604/)|Somatic mutation|germline
 [RCV000017553](https://www.ncbi.nlm.nih.gov/clinvar/RCV000017553/)|Somatic mutation|germline, inherited, somatic
 [RCV001202383](https://www.ncbi.nlm.nih.gov/clinvar/RCV001202383/)|Somatic mutation|germline, maternal
-[RCV000429128](https://www.ncbi.nlm.nih.gov/clinvar/RCV000429128/)|Somatic mutation|germline, somatic
-[RCV000430182](https://www.ncbi.nlm.nih.gov/clinvar/RCV000430182/)|Somatic mutation|germline, somatic
 [RCV000432136](https://www.ncbi.nlm.nih.gov/clinvar/RCV000432136/)|Somatic mutation|germline, somatic
-[RCV000445302](https://www.ncbi.nlm.nih.gov/clinvar/RCV000445302/)|Somatic mutation|germline, somatic
 [RCV000589007](https://www.ncbi.nlm.nih.gov/clinvar/RCV000589007/)|Somatic mutation|germline, somatic
 [RCV000703643](https://www.ncbi.nlm.nih.gov/clinvar/RCV000703643/)|Somatic mutation|germline, somatic
 [RCV001265108](https://www.ncbi.nlm.nih.gov/clinvar/RCV001265108/)|Somatic mutation|germline, somatic
+[RCV001784354](https://www.ncbi.nlm.nih.gov/clinvar/RCV001784354/)|Somatic mutation|germline, somatic
 [RCV001849084](https://www.ncbi.nlm.nih.gov/clinvar/RCV001849084/)|Somatic mutation|germline, somatic
 [RCV003447584](https://www.ncbi.nlm.nih.gov/clinvar/RCV003447584/)|Somatic mutation|germline, somatic
 [RCV000080903](https://www.ncbi.nlm.nih.gov/clinvar/RCV000080903/)|Somatic mutation|germline, somatic, unknown
@@ -2099,13 +2144,14 @@ RCV|Modes of inheritance|Allele origins
 [RCV001526693](https://www.ncbi.nlm.nih.gov/clinvar/RCV001526693/)|Unknown mechanism|germline, somatic
 [RCV001252644](https://www.ncbi.nlm.nih.gov/clinvar/RCV001252644/)|X-linked dominant inheritance|paternal, somatic
 [RCV004823548](https://www.ncbi.nlm.nih.gov/clinvar/RCV004823548/)|X-linked dominant inheritance|somatic
+[RCV006250126](https://www.ncbi.nlm.nih.gov/clinvar/RCV006250126/)|X-linked dominant inheritance|somatic
+[RCV000680061](https://www.ncbi.nlm.nih.gov/clinvar/RCV000680061/)|X-linked inheritance|de novo, somatic
 [RCV001956170](https://www.ncbi.nlm.nih.gov/clinvar/RCV001956170/)|X-linked inheritance|germline, somatic
 [RCV002465470](https://www.ncbi.nlm.nih.gov/clinvar/RCV002465470/)|X-linked inheritance|germline, somatic
 [RCV000680058](https://www.ncbi.nlm.nih.gov/clinvar/RCV000680058/)|X-linked inheritance|somatic
-[RCV000680061](https://www.ncbi.nlm.nih.gov/clinvar/RCV000680061/)|X-linked inheritance|somatic
 [RCV001250664](https://www.ncbi.nlm.nih.gov/clinvar/RCV001250664/)|X-linked inheritance|somatic
 [RCV003389937](https://www.ncbi.nlm.nih.gov/clinvar/RCV003389937/)|X-linked inheritance|somatic
-[RCV000145521](https://www.ncbi.nlm.nih.gov/clinvar/RCV000145521/)|X-linked inheritance, X-linked recessive inheritance|germline, somatic, unknown
+[RCV000145521](https://www.ncbi.nlm.nih.gov/clinvar/RCV000145521/)|X-linked inheritance, X-linked recessive inheritance|de novo, germline, somatic, unknown
 [RCV001265107](https://www.ncbi.nlm.nih.gov/clinvar/RCV001265107/)|X-linked recessive inheritance|germline, somatic
 [RCV000785880](https://www.ncbi.nlm.nih.gov/clinvar/RCV000785880/)|X-linked recessive inheritance|somatic
 [RCV000785881](https://www.ncbi.nlm.nih.gov/clinvar/RCV000785881/)|X-linked recessive inheritance|somatic
