@@ -1,6 +1,8 @@
 import logging
 from itertools import groupby
 
+from cmat.trait_mapping.ols import is_current_and_in_ontology
+
 logger = logging.getLogger(__package__)
 
 
@@ -36,6 +38,7 @@ class Trait:
         self.ols_result_list = []
         self.zooma_result_list = []
         self.oxo_result_list = []
+        self.previous_mapping_list = []
         self.finished_mapping_set = set()
         self.associated_with_nt_expansion = associated_with_nt_expansion
 
@@ -70,4 +73,13 @@ class Trait:
             # Accept current mappings in the target ontology with full exact matches on the label
             if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
                 ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
+                self.finished_mapping_set.add(ontology_entry)
+
+    def process_previous_mappings(self, ontology):
+        """
+        Previous mappings are considered finished as long as they are still current.
+        """
+        for uri, label in self.previous_mapping_list:
+            if is_current_and_in_ontology(uri, ontology):
+                ontology_entry = OntologyEntry(uri, label)
                 self.finished_mapping_set.add(ontology_entry)

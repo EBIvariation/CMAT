@@ -1,6 +1,6 @@
 import argparse
 
-import cmat.trait_mapping.main as main
+from cmat.trait_mapping.trait_processing import parse_traits
 
 
 if __name__ == '__main__':
@@ -11,4 +11,4 @@ if __name__ == '__main__':
     parser.add_argument("-u", dest="output_for_platform", required=False,
                         help="path to output file for all traits, for use with curation platform")
     args = parser.parse_args()
-    main.parse_traits(args.input_filepath, args.output_traits_filepath, args.output_for_platform)
+    parse_traits(args.input_filepath, args.output_traits_filepath, args.output_for_platform)

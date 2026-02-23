@@ -1,14 +1,13 @@
 import argparse
 import sys
 
-import cmat.trait_mapping.main as main
+from cmat.trait_mapping.trait_processing import process_traits
 from cmat.trait_mapping.utils import string_to_preferred_ontologies
 
 
 def launch():
     parser = ArgParser(sys.argv)
-
-    main.process_traits(parser.input_traits_filepath, parser.latest_mappings_filepath, parser.output_mappings_filepath,
+    process_traits(parser.input_traits_filepath, parser.latest_mappings_filepath, parser.output_mappings_filepath,
                         parser.output_curation_filepath, parser.filters,
                         parser.oxo_target_list, parser.oxo_distance, parser.ols_query_fields, parser.ols_field_list,
                         parser.target_ontology, parser.preferred_ontologies)

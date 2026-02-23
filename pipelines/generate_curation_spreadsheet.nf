@@ -183,7 +183,6 @@ process createCurationTable {
     """
     \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/create_table_for_manual_curation.py \
         --traits-for-curation ${curationTraits} \
-        --previous-mappings ${params.mappings} \
         --previous-comments ${params.comments} \
         --output google_sheets_table.tsv
     """

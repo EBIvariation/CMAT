@@ -34,16 +34,17 @@ def get_uris_for_oxo(zooma_result_list: list) -> set:
     return uri_set
 
 
-def process_trait(trait: Trait, latest_mappings: dict, filters: dict, oxo_target_list: list, oxo_distance: int,
+def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_target_list: list, oxo_distance: int,
                   ols_query_fields: str, ols_field_list: str,
                   target_ontology: str, preferred_ontologies: list) -> Trait:
     """
     Process a single trait. First look for an exact string match in the target ontology and return immediately if found.
+    Then check previous mappings; if mappings found here are still current EFO terms then return immediately.
     Otherwise find any mappings in Zooma. If there are no high confidence Zooma mappings that are in EFO then query OxO
     with any high confidence mappings not in EFO.
 
     :param trait: The trait to be processed.
-    :param latest_mappings: Latest trait mappings.
+    :param previous_mappings: Previous trait mappings.
     :param filters: A dictionary of filters to use for querying Zooma.
     :param oxo_target_list: A list of strings, each being an OxO ID for an ontology. Used to specify
                             which ontologies should be queried using OxO.
@@ -73,16 +74,24 @@ def process_trait(trait: Trait, latest_mappings: dict, filters: dict, oxo_target
         if trait.is_finished:
             return trait
 
-    # TODO query latest mappings
+    # Query for a previous mapping
+    trait.previous_mapping_list = previous_mappings.get(lowercased_trait_name, [])
+    trait.process_previous_mappings(target_ontology)
+    if trait.is_finished:
+        return trait
 
+    # Query ZOOMA - these results will only be used as candidates for curation
+    logger.info(f'Querying ZOOMA for trait {trait.name}')
     trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, target_ontology)
-    # Use the previous criteria for returning a trait, minus the check for is_finished
+
+    # Only go on query OxO if we have high-confidence ZOOMA mappings that are not in the target ontology
     if (len(trait.zooma_result_list) == 0
             or any([entry.is_current
                     for mapping in trait.zooma_result_list
                     for entry in mapping.mapping_list])):
         return trait
 
+    # Query OxO - these results will only be used as candidates for curation
     logger.info(f'Querying OxO for trait {trait.name}')
     uris_for_oxo_set = get_uris_for_oxo(trait.zooma_result_list)
     oxo_input_id_list = uris_to_oxo_format(uris_for_oxo_set)
@@ -134,7 +143,7 @@ def process_traits(traits_filepath, latest_mappings_file, output_mappings_filepa
                    oxo_target_list, oxo_distance, ols_query_fields, ols_field_list, target_ontology, preferred_ontologies):
     trait_list = read_traits_from_csv(traits_filepath)
     logger.info(f'Read {len(trait_list)} traits from file')
-    latest_mappings = load_ontology_mapping(latest_mappings_file)
+    previous_mappings = load_ontology_mapping(latest_mappings_file)
     with open(output_mappings_filepath, "w", newline='') as mapping_file, \
             open(output_curation_filepath, "wt") as curation_file:
         mapping_writer = csv.writer(mapping_file, delimiter="\t")
@@ -145,7 +154,7 @@ def process_traits(traits_filepath, latest_mappings_file, output_mappings_filepa
         processed_trait_list = [
             trait_process_pool.apply(
                 process_trait,
-                args=(trait, latest_mappings, filters, oxo_target_list, oxo_distance, ols_query_fields,
+                args=(trait, previous_mappings, filters, oxo_target_list, oxo_distance, ols_query_fields,
                       ols_field_list, target_ontology, preferred_ontologies)
             )
             for trait in trait_list
