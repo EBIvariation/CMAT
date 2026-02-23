@@ -27,7 +27,7 @@ def build_ols_query(ontology_uri: str, include_obsoletes: bool = False) -> str:
 
 
 @lru_cache(maxsize=16384)
-def get_label_and_synonyms_from_ols(ontology_uri: str) -> str:
+def get_label_and_synonyms_from_ols(ontology_uri: str) -> tuple:
     """
     Using provided ontology URI, build an OLS URL with which to make a request to find the term label and synonyms for this URI.
 
@@ -393,3 +393,20 @@ def get_ols_search_results(trait_name, query_fields, field_list, target_ontology
     except requests.RequestException as e:
         logger.warning(f"Error querying OLS4: {e}")
         return []
+
+
+def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies):
+    try:
+        in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology, preferred_ontologies)
+        is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
+
+        label, synonyms = get_label_and_synonyms_from_ols(uri)
+        exact_match, contained_match, token_match = get_fields_with_match(
+            trait_name, ['label', EXACT_SYNONYM_KEY], {'label': label, EXACT_SYNONYM_KEY: list(synonyms)})
+
+        ols_result = OlsResult(uri, label, None, exact_match, contained_match, token_match, in_target_ontology,
+                               in_preferred_ontology, is_current)
+        return label, ols_result.get_match_type(), ols_result.get_mapping_source()
+    except Exception as e:
+        logger.warning(f'Error while getting mapping attributes from OLS: {e}')
+        return '', '', ''

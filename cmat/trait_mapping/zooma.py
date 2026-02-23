@@ -39,7 +39,6 @@ class ZoomaMapping:
         self.source = source
         self.ontology_label = ""
         self.in_ontology = False
-        self.exact_match = False
         # For non-EFO mappings, `is_current` property does not make sense and is not used
         self.is_current = False
 
@@ -53,8 +52,8 @@ class ZoomaMapping:
         return True
 
     def __lt__(self, other):
-        return ((self.confidence, self.exact_match, self.in_ontology, self.is_current) <
-                (other.confidence, other.exact_match, other.in_ontology, other.is_current))
+        return ((self.confidence, self.in_ontology, self.is_current) <
+                (other.confidence, other.in_ontology, other.is_current))
 
 
 class ZoomaResult:
@@ -115,8 +114,6 @@ def get_zooma_results(trait_name: str, filters: dict, target_ontology: str = 'EF
             else:
                 # If no label is returned (because OLS failed to provide it), keep the existing one from ZOOMA
                 zooma_mapping.ontology_label = zooma_result.zooma_label
-            if zooma_mapping.ontology_label is not None:
-                zooma_mapping.exact_match = zooma_mapping.ontology_label.lower() == trait_name.lower()
 
             uri_is_current_and_in_ontology = is_current_and_in_ontology(zooma_mapping.uri, target_ontology)
             if not uri_is_current_and_in_ontology:

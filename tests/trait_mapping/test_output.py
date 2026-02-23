@@ -1,8 +1,10 @@
 import csv
 import tempfile
 
-import cmat.trait_mapping.output as output
+import pytest
+
 from cmat.trait_mapping.ols import OlsResult
+from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation
 from cmat.trait_mapping.trait import OntologyEntry, Trait
 import cmat.trait_mapping.zooma as zooma
 
@@ -23,7 +25,7 @@ def test_output_trait_mapping():
                           'Adenine phosphoribosyltransferase deficiency type A')
         ]
 
-        output.output_trait_mapping(test_trait, mapping_writer)
+        output_trait_mapping(test_trait, mapping_writer)
 
     with open(tempfile_path, "rt", newline='') as mapping_file:
         mapping_reader = csv.reader(mapping_file, delimiter="\t")
@@ -35,6 +37,29 @@ def test_output_trait_mapping():
         assert ['aprt deficiency, japanese type',
                 'http://www.orpha.net/ORDO/Orphanet_977',
                 'Adenine phosphoribosyltransferase deficiency type A'] == next(mapping_reader)
+
+
+@pytest.mark.integration
+def test_find_replacement_mapping():
+    trait_name = 'genetic transient congenital hypothyroidism'
+    target_ontology = 'efo'
+    preferred_ontologies = ['mondo', 'hp']
+
+    # Current in EFO - no replacement term
+    assert find_replacement_mapping(
+        trait_name, 'http://purl.obolibrary.org/obo/MONDO_0011792', target_ontology, preferred_ontologies
+    ) == ''
+
+    # Deprecated in EFO with current replacement term
+    assert find_replacement_mapping(
+        trait_name, 'http://www.ebi.ac.uk/efo/EFO_0000665', target_ontology, preferred_ontologies
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0037939|porphyria|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
+
+    # Deprecated in EFO but replacement is also deprecated, so use its replacement
+    assert find_replacement_mapping(
+        trait_name, 'http://www.orpha.net/ORDO/Orphanet_226316', target_ontology, preferred_ontologies
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|MONDO_HP_NOT_EFO'
+
 
 # TODO reimplement these to test new logic
 # def test_get_non_efo_mapping():
@@ -117,12 +142,12 @@ def test_output_for_curation():
         )
         test_trait.ols_result_list = [test_ols_result]
 
-        output.output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
+        output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
 
     with open(tempfile_path, "rt") as curation_file:
         curation_reader = csv.reader(curation_file, delimiter="\t")
         expected_record = [
-            "transitional cell carcinoma of the bladder", "276", '',
+            "transitional cell carcinoma of the bladder", "276", '', '', '', '', '', '', '',
             "http://purl.obolibrary.org/obo/HP_0006740|Transitional cell carcinoma of the bladder|CONTAINED_MATCH_LABEL|MONDO_HP_NOT_EFO"
         ]
         assert expected_record == next(curation_reader)

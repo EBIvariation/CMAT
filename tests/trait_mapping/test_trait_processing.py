@@ -1,8 +1,14 @@
+import os
+
 import pytest
 
+from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping
 from cmat.trait_mapping.trait_processing import process_trait
 from cmat.trait_mapping.trait import Trait
 
+test_dir = os.path.dirname(__file__)
+mapping_file = os.path.join(test_dir, 'resources', 'string_to_ontology_mappings.tsv')
+previous_mappings = load_ontology_mapping(mapping_file)[0]
 
 # TODO rewrite and add more tests
 @pytest.mark.integration
@@ -19,7 +25,7 @@ class TestProcessTrait:
     preferred_ontologies = ['mondo', 'hp']
 
     def run_process_trait(self, trait):
-        return process_trait(trait, self.zooma_filters, self.oxo_targets, self.oxo_distance,
+        return process_trait(trait, previous_mappings, self.zooma_filters, self.oxo_targets, self.oxo_distance,
                              self.ols_query_fields, self.ols_field_list, self.target_ontology,
                              self.preferred_ontologies)
 
@@ -52,7 +58,7 @@ class TestProcessTrait:
         processed_trait = self.run_process_trait(trait)
         assert len(processed_trait.ols_result_list) == 11
         assert processed_trait.is_finished
-        assert {m.ontology_uri for m in processed_trait.finished_mapping_set} == {'http://www.ebi.ac.uk/efo/EFO_1001093'}
+        assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://www.ebi.ac.uk/efo/EFO_1001093'}
 
     def test_multiple_mappings(self):
         # Case 1: multiple mappings from OLS
@@ -84,12 +90,14 @@ def test_process_trait_zooma_exact_match():
     ols_field_list = None
 
     # This should be marked as finished, as it's an exact string match with a term contained in the target ontology
-    efo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, oxo_targets, oxo_distance,
-                              ols_query_fields, ols_field_list, target_ontology='efo', preferred_ontologies='')
+    efo_trait = process_trait(Trait(trait_name, None, None), previous_mappings, zooma_filters,
+                              oxo_targets, oxo_distance, ols_query_fields, ols_field_list, target_ontology='efo',
+                              preferred_ontologies=[])
     assert efo_trait.is_finished
 
     # This should not be marked as finished, even though Zooma finds an exact match in one of its ontologies, it's not
     # the requested target ontology and thus still needs to be curated
-    hpo_trait = process_trait(Trait(trait_name, None, None), zooma_filters, oxo_targets, oxo_distance,
-                              ols_query_fields, ols_field_list, target_ontology='hp', preferred_ontologies='')
+    hpo_trait = process_trait(Trait(trait_name, None, None), previous_mappings, zooma_filters,
+                              oxo_targets, oxo_distance, ols_query_fields, ols_field_list, target_ontology='hp',
+                              preferred_ontologies=[])
     assert not hpo_trait.is_finished

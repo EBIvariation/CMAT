@@ -2,8 +2,7 @@ import csv
 import logging
 from collections import Counter
 
-from cmat.trait_mapping import ols
-from cmat.trait_mapping.ols import MappingSource, MatchType, OlsResult
+from cmat.trait_mapping.ols import MappingSource, MatchType, get_mapping_attributes_from_ols, get_replacement_term
 from cmat.trait_mapping.trait import Trait
 
 logger = logging.getLogger(__package__)
@@ -48,9 +47,9 @@ def get_zooma_mappings(result_list, trait_name, target_ontology, preferred_ontol
         for mapping in result.mapping_list:
             if mapping.in_ontology and mapping.is_current and result.confidence.lower() == 'high':
                 high_conf_mappings.append(to_mapping_string(mapping.uri, trait_name, target_ontology, preferred_ontologies))
-            elif mapping.exact_match:
+            elif mapping.ontology_label.lower() == trait_name.lower():
                 exact_mappings.append(to_mapping_string(mapping.uri, trait_name, target_ontology, preferred_ontologies))
-    return high_conf_mappings, exact_mappings
+    return high_conf_mappings if high_conf_mappings else [''], exact_mappings
 
 
 def get_oxo_mappings(result_list, trait_name, target_ontology, preferred_ontologies):
@@ -65,9 +64,9 @@ def get_oxo_mappings(result_list, trait_name, target_ontology, preferred_ontolog
         for mapping in result.mapping_list:
             if mapping.in_ontology and mapping.is_current and mapping.distance == 1:
                 dist_one_mappings.append(to_mapping_string(mapping.uri.uri, trait_name, target_ontology, preferred_ontologies))
-            elif mapping.exact_match:
+            elif mapping.ontology_label.lower() == trait_name.lower():
                 exact_mappings.append(to_mapping_string(mapping.uri.uri, trait_name, target_ontology, preferred_ontologies))
-    return dist_one_mappings, exact_mappings
+    return dist_one_mappings if dist_one_mappings else [''], exact_mappings
 
 
 def get_previous_and_replacement_mappings(previous_mappings, trait_name, target_ontology, preferred_ontologies):
@@ -79,11 +78,13 @@ def get_previous_and_replacement_mappings(previous_mappings, trait_name, target_
         if mapping_source == MappingSource.TARGET_OBSOLETE:
             replacement_string = find_replacement_mapping(trait_name, uri, target_ontology, preferred_ontologies)
         previous_and_replacement.append((trait_string, replacement_string))
+    if not previous_and_replacement:
+        return [('', '')]
     return previous_and_replacement
 
 
 def find_replacement_mapping(trait_name, previous_uri, ontology, preferred_ontologies, max_depth=1):
-    replacement_uri = ols.get_replacement_term(previous_uri, ontology)
+    replacement_uri = get_replacement_term(previous_uri, ontology)
     if not replacement_uri:
         return ''
     label, match_type, mapping_source = get_mapping_attributes_from_ols(trait_name, replacement_uri, ontology,
@@ -116,27 +117,10 @@ def find_exact_mappings(ols_results, target_ontology, preferred_ontologies):
     return exact_label_match_str, exact_synonym_match_str, other_mapping_strs
 
 
-def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies):
-    try:
-        in_target_ontology, in_preferred_ontology = ols.get_is_in_ontologies(uri, target_ontology, preferred_ontologies)
-        is_current = ols.is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
-
-        label, synonyms = ols.get_label_and_synonyms_from_ols(uri)
-        exact_match, contained_match, token_match = ols.get_fields_with_match(
-            trait_name, ['label', ols.EXACT_SYNONYM_KEY], {'label': label, ols.EXACT_SYNONYM_KEY: list(synonyms)})
-
-        ols_result = OlsResult(uri, label, None, exact_match, contained_match, token_match, in_target_ontology,
-                               in_preferred_ontology, is_current)
-        return label, ols_result.get_match_type(), ols_result.get_mapping_source()
-    except Exception as e:
-        logger.warning(f'Error while getting mapping attributes from OLS: {e}')
-        return '', '', ''
-
-
 def get_exact_match_str(exact_match_ols, exact_match_zooma, exact_match_oxo):
     if exact_match_ols:
         return exact_match_ols
-    # TODO check the ordering of these
+    # TODO check how zooma and oxo are ranked
     if exact_match_zooma:
         return exact_match_zooma[0]
     if exact_match_oxo:
@@ -169,9 +153,11 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
                                                                       target_ontology, preferred_ontologies)
     oxo_dist_one_strs, exact_match_oxo_strs = get_oxo_mappings(trait.oxo_result_list, trait.name,
                                                                target_ontology, preferred_ontologies)
+    # Select just one of the exact string matches
     exact_match_str = get_exact_match_str(exact_match_ols_str, exact_match_zooma_strs, exact_match_oxo_strs)
 
     # Output result
+    # NB. previous_and_replacement, high_zooma_conf_strs, and high_zooma_conf_strs all must be non-empty for this to work
     for previous_str, replacement_str in previous_and_replacement:
         for zooma_str in high_zooma_conf_strs:
             for oxo_str in oxo_dist_one_strs:
