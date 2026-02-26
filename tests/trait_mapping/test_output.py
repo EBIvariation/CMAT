@@ -2,11 +2,12 @@ import csv
 import tempfile
 
 import pytest
+from cmat.trait_mapping import zooma, oxo
 
 from cmat.trait_mapping.ols import OlsResult
-from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation
+from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation, \
+    get_zooma_mappings, to_mapping_string, get_oxo_mappings
 from cmat.trait_mapping.trait import OntologyEntry, Trait
-import cmat.trait_mapping.zooma as zooma
 
 
 def test_output_trait_mapping():
@@ -39,6 +40,44 @@ def test_output_trait_mapping():
                 'Adenine phosphoribosyltransferase deficiency type A'] == next(mapping_reader)
 
 
+def test_get_zooma_mappings():
+    test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
+                                          'Adenine phosphoribosyltransferase deficiency',
+                                          'HIGH', 'eva-clinvar')
+    entry = test_zooma_result.mapping_list[0]
+    entry.confidence = zooma.ZoomaConfidence.HIGH
+    entry.in_ontology = True
+    entry.is_current = True
+    entry.ontology_label = "Adenine phosphoribosyltransferase deficiency"
+    entry.source = 'eva-clinvar'
+    entry.uri = 'http://www.orpha.net/ORDO/Orphanet_976'
+    high_conf_mappings, exact_mappings = get_zooma_mappings([test_zooma_result], 'aprt deficiency, japanese type',
+                                                            'efo', ['mondo', 'hp'])
+    assert len(high_conf_mappings) == 1
+    assert len(exact_mappings) == 0
+
+
+def test_get_oxo_mappings():
+    test_oxo_result = oxo.OxOResult('HP:0006706', 'Cystic liver disease', 'HP:0006706')
+
+    test_oxo_mapping_1 = oxo.OxOMapping('Isolated polycystic liver disease', 'Orphanet:2924', 2,
+                                        'HP:0006706')
+    test_oxo_mapping_1.in_ontology = True
+    test_oxo_mapping_1.is_current = True
+
+    test_oxo_mapping_2 = oxo.OxOMapping('cystic liver disease', 'EFO:1001505', 1, 'HP:0006706')
+    test_oxo_mapping_2.in_ontology = True
+    test_oxo_mapping_2.is_current = True
+
+    test_oxo_result.mapping_list = [test_oxo_mapping_1, test_oxo_mapping_2]
+
+    dist_one_mappings, exact_mappings = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
+                                                         ['mondo', 'hp'])
+
+    assert len(dist_one_mappings) == 1
+    assert len(exact_mappings) == 0
+
+
 @pytest.mark.integration
 def test_find_replacement_mapping():
     trait_name = 'genetic transient congenital hypothyroidism'
@@ -61,65 +100,10 @@ def test_find_replacement_mapping():
     ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|MONDO_HP_NOT_EFO'
 
 
-# TODO reimplement these to test new logic
-# def test_get_non_efo_mapping():
-#     """If mapping is not in EFO, its `is_current` flag should *not* be checked, and the mapping
-#     *should* be selected for curation."""
-#     test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/HP_0001892'],
-#                                           'abnormal bleeding', 'HIGH', 'eva-clinvar')
-#     mapping = test_zooma_result.mapping_list[0]
-#     mapping.confidence = zooma.ZoomaConfidence.HIGH
-#     mapping.in_ontology = False
-#     mapping.is_current = False
-#     mapping.ontology_label = 'abnormal bleeding'
-#     mapping.source = 'eva-clinvar'
-#     mapping.uri = 'http://purl.obolibrary.org/obo/HP_0000483'
-#     assert [mapping] == output.get_mappings_for_curation([test_zooma_result], 'abnormal bleeding')
-#
-#
-# def test_get_obsolete_efo_mapping():
-#     """If mapping is in EFO, but is not current, it *should not* be selected for curation."""
-#     test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
-#                                           'Adenine phosphoribosyltransferase deficiency',
-#                                           'HIGH', 'eva-clinvar')
-#     mapping = test_zooma_result.mapping_list[0]
-#     mapping.confidence = zooma.ZoomaConfidence.HIGH
-#     mapping.in_ontology = True
-#     mapping.is_current = False
-#     mapping.ontology_label = "Adenine phosphoribosyltransferase deficiency"
-#     mapping.source = 'eva-clinvar'
-#     mapping.uri = 'http://www.orpha.net/ORDO/Orphanet_976'
-#     assert [] == output.get_mappings_for_curation([test_zooma_result], 'adenine phosphoribosyltransferase deficiency')
-#
-#
-# def test_get_current_efo_mapping():
-#     """If mapping is in EFO and is current, it *should* be selected for curation."""
-#     test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
-#                                           'Abnormal neutrophil chemotactic response',
-#                                           'MEDIUM', 'eva-clinvar')
-#     mapping = test_zooma_result.mapping_list[0]
-#     mapping.confidence = zooma.ZoomaConfidence.HIGH
-#     mapping.in_ontology = True
-#     mapping.is_current = True
-#     mapping.ontology_label = "Abnormal neutrophil chemotactic response"
-#     mapping.source = 'eva-clinvar'
-#     mapping.uri = 'http://purl.obolibrary.org/obo/MONDO_0008091'
-#     assert [mapping] == output.get_mappings_for_curation([test_zooma_result], 'Abnormal neutrophil chemotactic response')
-#
-#
-# def test_get_current_efo_nonexact_mapping():
-#     """If mapping is in EFO and is current but is not an exact match, it *should* be selected for curation."""
-#     test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
-#                                           'Abnormal neutrophil chemotactic response',
-#                                           'MEDIUM', 'eva-clinvar')
-#     mapping = test_zooma_result.mapping_list[0]
-#     mapping.confidence = zooma.ZoomaConfidence.HIGH
-#     mapping.in_ontology = True
-#     mapping.is_current = True
-#     mapping.ontology_label = "Abnormal neutrophil chemotactic response"
-#     mapping.source = 'eva-clinvar'
-#     mapping.uri = 'http://purl.obolibrary.org/obo/MONDO_0008091'
-#     assert [] == output.get_mappings_for_curation([test_zooma_result], 'neutrophil chemotactic response')
+def test_to_mapping_string():
+    result = to_mapping_string('http://www.orpha.net/ORDO/Orphanet_976', 'aprt deficiency, japanese type', 'efo',
+                               ['mondo', 'hp'])
+    assert result == 'http://www.orpha.net/ORDO/Orphanet_976|Adenine phosphoribosyltransferase deficiency|NO_MATCH|EFO_OBSOLETE'
 
 
 def test_output_for_curation():

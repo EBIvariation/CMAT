@@ -48,7 +48,7 @@ def test_get_zooma_results_for_trait():
     entry.is_current = False
     entry.ontology_label = ""
     entry.source = 'eva-clinvar'
-    entry.ontology_uri = 'http://purl.obolibrary.org/obo/HP_0000483'
+    entry.uri = 'http://purl.obolibrary.org/obo/HP_0000483'
 
     expected_mappings = [expected_zooma_result]
 

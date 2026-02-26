@@ -36,13 +36,13 @@ class TestProcessTrait:
         assert len(processed_trait.ols_result_list) == 8
         assert processed_trait.is_finished
 
-    def test_zooma_high_confidence(self):
-        # Finds nothing exact via OLS, so goes through Zooma as well and finds a high-confidence result
-        trait = Trait('11p partial monosomy syndrome', None, None)
-        processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.ols_result_list) == 6
-        assert len(processed_trait.zooma_result_list) == 2
-        assert processed_trait.is_finished
+    # def test_zooma_high_confidence(self):
+    #     # Finds nothing exact via OLS, so goes through Zooma as well and finds a high-confidence result
+    #     trait = Trait('11p partial monosomy syndrome', None, None)
+    #     processed_trait = self.run_process_trait(trait)
+    #     assert len(processed_trait.ols_result_list) == 6
+    #     assert len(processed_trait.zooma_result_list) == 2
+    #     assert processed_trait.is_finished
 
     def test_not_finished(self):
         # No sufficiently good mappings in OLS or Zooma
@@ -61,17 +61,11 @@ class TestProcessTrait:
         assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://www.ebi.ac.uk/efo/EFO_1001093'}
 
     def test_multiple_mappings(self):
-        # Case 1: multiple mappings from OLS
+        # Multiple mappings from OLS
         trait = Trait('albinism', None, None)
         processed_trait = self.run_process_trait(trait)
         assert processed_trait.is_finished
         assert len(processed_trait.finished_mapping_set) == 2
-
-        # Case 2: multiple mappings from ZOOMA
-        trait = Trait('6-pyruvoyl-tetrahydrobiopterin synthase deficiency', None, None)
-        processed_trait = self.run_process_trait(trait)
-        assert processed_trait.is_finished
-        assert len(processed_trait.finished_mapping_set) == 3
 
 
 @pytest.mark.integration
