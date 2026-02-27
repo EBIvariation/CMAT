@@ -16,6 +16,7 @@ cd ${BATCH_ROOT}
 nextflow run ${CODE_ROOT}/pipelines/generate_curation_spreadsheet.nf \
   --curation_root ${BATCH_ROOT} \
   --clinvar ${BATCH_ROOT_BASE}/input.xml.gz \
+  --mappings ${CODE_ROOT}/mappings/latest_mappings.tsv \
   -resume
 
 sort -o ${BATCH_ROOT}/automated_trait_mappings.tsv ${BATCH_ROOT}/automated_trait_mappings.tsv
@@ -25,6 +26,7 @@ diff ${BATCH_ROOT}/google_sheets_table.tsv ${BATCH_ROOT_BASE}/expected/google_sh
 nextflow run ${CODE_ROOT}/pipelines/export_curation_spreadsheet.nf \
   --curation_root ${BATCH_ROOT} \
   --input_csv ${BATCH_ROOT_BASE}/finished_curation_spreadsheet.csv \
+  --mappings ${CODE_ROOT}/mappings/latest_mappings.tsv \
   -resume
 
 diff ${BATCH_ROOT}/curator_comments.tsv ${BATCH_ROOT_BASE}/expected/curator_comments.tsv

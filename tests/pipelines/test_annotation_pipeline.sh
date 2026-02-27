@@ -17,6 +17,7 @@ nextflow run ${CODE_ROOT}/pipelines/annotation_pipeline.nf \
   --output_dir ${BATCH_ROOT} \
   --schema $(cat "${CODE_ROOT}/OT_SCHEMA_VERSION") \
   --clinvar ${BATCH_ROOT_BASE}/input.xml.gz \
+  --mappings ${CODE_ROOT}/mappings/latest_mappings.tsv \
   -resume
 
 diff ${BATCH_ROOT}/gene_mapping/consequences_snp.tsv ${BATCH_ROOT_BASE}/expected/consequences_snp.tsv
