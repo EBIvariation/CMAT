@@ -6,13 +6,13 @@ from collections import Counter
 from unidecode import unidecode
 
 from cmat.clinvar_xml_io import ClinVarTrait
-from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping
 from cmat.trait_mapping.ols import get_ols_search_results
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
 from cmat.trait_mapping.trait import Trait
 from cmat.trait_mapping.trait_names_parsing import parse_trait_names
+from cmat.trait_mapping.utils import load_ontology_mapping
 from cmat.trait_mapping.zooma import get_zooma_results
 
 logger = logging.getLogger(__package__)
@@ -143,7 +143,7 @@ def process_traits(traits_filepath, latest_mappings_file, output_mappings_filepa
                    oxo_target_list, oxo_distance, ols_query_fields, ols_field_list, target_ontology, preferred_ontologies):
     trait_list = read_traits_from_csv(traits_filepath)
     logger.info(f'Read {len(trait_list)} traits from file')
-    previous_mappings = load_ontology_mapping(latest_mappings_file)
+    previous_mappings, _, _ = load_ontology_mapping(latest_mappings_file)
     with open(output_mappings_filepath, "w", newline='') as mapping_file, \
             open(output_curation_filepath, "wt") as curation_file:
         mapping_writer = csv.writer(mapping_file, delimiter="\t")

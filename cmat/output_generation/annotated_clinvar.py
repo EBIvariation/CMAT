@@ -6,9 +6,10 @@ from cmat.clinvar_xml_io.ontology_uri import OntologyUri
 
 from cmat.clinvar_xml_io import ClinVarTrait, ClinVarRecordMeasure, ClinVarDataset, ClinVarRecord
 from cmat.clinvar_xml_io.xml_parsing import iterate_rcv_from_xml
-from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping, get_consequence_types
+from cmat.output_generation.clinvar_to_evidence_strings import get_consequence_types
 from cmat.output_generation import consequence_type as CT
 from cmat.output_generation.evaluation.set_metrics import SetComparisonMetrics
+from cmat.trait_mapping.utils import load_ontology_mapping
 
 PROCESSOR = 'CMAT'
 

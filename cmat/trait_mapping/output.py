@@ -4,6 +4,7 @@ from collections import Counter
 
 from cmat.trait_mapping.ols import MappingSource, MatchType, get_mapping_attributes_from_ols, get_replacement_term
 from cmat.trait_mapping.trait import Trait
+from cmat.trait_mapping.zooma import ZoomaConfidence
 
 logger = logging.getLogger(__package__)
 
@@ -38,35 +39,41 @@ def to_mapping_string(uri, trait_name, target_ontology, preferred_ontologies):
 def get_zooma_mappings(result_list, trait_name, target_ontology, preferred_ontologies):
     """
     Two types of ZOOMA mappings are extracted as candidates for curation:
-     1. High confidence mappings (previously accepted as finished automated mappings)
-     2. Exact label matches (outside of target or preferred ontologies, as these are covered by OLS)
+     1. All high confidence mappings (previously accepted as finished automated mappings)
+     2. Top-ranked exact label match
     """
+    # First sort all Zooma mappings so we get the top-ranked choices first
+    all_mappings = [mapping for result in result_list for mapping in result.mapping_list]
+    all_mappings.sort(reverse=True)
+
     high_conf_mappings = []
     exact_mappings = []
-    for result in result_list:
-        for mapping in result.mapping_list:
-            if mapping.in_ontology and mapping.is_current and result.confidence.lower() == 'high':
-                high_conf_mappings.append(to_mapping_string(mapping.uri, trait_name, target_ontology, preferred_ontologies))
-            elif mapping.ontology_label.lower() == trait_name.lower():
-                exact_mappings.append(to_mapping_string(mapping.uri, trait_name, target_ontology, preferred_ontologies))
-    return high_conf_mappings if high_conf_mappings else [''], exact_mappings
+    for mapping in all_mappings:
+        if mapping.in_ontology and mapping.is_current and mapping.confidence == ZoomaConfidence.HIGH:
+            high_conf_mappings.append(to_mapping_string(mapping.uri, trait_name, target_ontology, preferred_ontologies))
+        elif mapping.ontology_label.lower() == trait_name.lower():
+            exact_mappings.append(to_mapping_string(mapping.uri, trait_name, target_ontology, preferred_ontologies))
+    return high_conf_mappings if high_conf_mappings else [''], exact_mappings[0] if exact_mappings else ''
 
 
 def get_oxo_mappings(result_list, trait_name, target_ontology, preferred_ontologies):
     """
     Two types of OxO mappings are candidates for curation:
-     1. Distance-1 mappings (previously accepted as finished automated mappings)
-     2. Exact label matches (outside of target or preferred ontologies, as these are covered by OLS)
+     1. All distance-1 mappings (previously accepted as finished automated mappings)
+     2. Top-ranked exact label match
     """
+    # First sort all OxO mappings so we get the top-ranked choices first
+    all_mappings = [mapping for result in result_list for mapping in result.mapping_list]
+    all_mappings.sort(reverse=True)
+
     dist_one_mappings = []
     exact_mappings = []
-    for result in result_list:
-        for mapping in result.mapping_list:
-            if mapping.in_ontology and mapping.is_current and mapping.distance == 1:
-                dist_one_mappings.append(to_mapping_string(mapping.uri.uri, trait_name, target_ontology, preferred_ontologies))
-            elif mapping.ontology_label.lower() == trait_name.lower():
-                exact_mappings.append(to_mapping_string(mapping.uri.uri, trait_name, target_ontology, preferred_ontologies))
-    return dist_one_mappings if dist_one_mappings else [''], exact_mappings
+    for mapping in all_mappings:
+        if mapping.in_ontology and mapping.is_current and mapping.distance == 1:
+            dist_one_mappings.append(to_mapping_string(mapping.uri.uri, trait_name, target_ontology, preferred_ontologies))
+        elif mapping.ontology_label.lower() == trait_name.lower():
+            exact_mappings.append(to_mapping_string(mapping.uri.uri, trait_name, target_ontology, preferred_ontologies))
+    return dist_one_mappings if dist_one_mappings else [''], exact_mappings[0] if exact_mappings else ''
 
 
 def get_previous_and_replacement_mappings(previous_mappings, trait_name, target_ontology, preferred_ontologies):
@@ -117,17 +124,6 @@ def find_exact_mappings(ols_results, target_ontology, preferred_ontologies):
     return exact_label_match_str, exact_synonym_match_str, other_mapping_strs
 
 
-def get_exact_match_str(exact_match_ols, exact_match_zooma, exact_match_oxo):
-    if exact_match_ols:
-        return exact_match_ols
-    # TODO check how zooma and oxo are ranked
-    if exact_match_zooma:
-        return exact_match_zooma[0]
-    if exact_match_oxo:
-        return exact_match_oxo[0]
-    return ''
-
-
 def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontology: str, preferred_ontologies: list):
     """
     Write any non-finished OLS, Zooma or OxO mappings of a trait to a file for manual curation.
@@ -142,19 +138,18 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     # records they are associated with is low. This is added to the "Notes" column.
     output_row = [trait.name, trait.frequency, 'NT expansion' if trait.associated_with_nt_expansion else '']
 
-    # TODO consider moving the candidate processing outside the "output" section
     # Collect candidate mappings to use
     previous_and_replacement = get_previous_and_replacement_mappings(trait.previous_mapping_list, trait.name,
                                                                      target_ontology, preferred_ontologies)
     exact_match_ols_str, exact_synonym_match_str, other_ols_mapping_strs = find_exact_mappings(trait.ols_result_list,
                                                                                                target_ontology,
                                                                                                preferred_ontologies)
-    high_zooma_conf_strs, exact_match_zooma_strs = get_zooma_mappings(trait.zooma_result_list, trait.name,
+    high_zooma_conf_strs, exact_match_zooma_str = get_zooma_mappings(trait.zooma_result_list, trait.name,
                                                                       target_ontology, preferred_ontologies)
-    oxo_dist_one_strs, exact_match_oxo_strs = get_oxo_mappings(trait.oxo_result_list, trait.name,
+    oxo_dist_one_strs, exact_match_oxo_str = get_oxo_mappings(trait.oxo_result_list, trait.name,
                                                                target_ontology, preferred_ontologies)
     # Select just one of the exact string matches
-    exact_match_str = get_exact_match_str(exact_match_ols_str, exact_match_zooma_strs, exact_match_oxo_strs)
+    exact_match_str = exact_match_ols_str or exact_match_zooma_str or exact_match_oxo_str or ''
 
     # Output result
     # NB. previous_and_replacement, high_zooma_conf_strs, and high_zooma_conf_strs all must be non-empty for this to work

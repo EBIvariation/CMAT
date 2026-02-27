@@ -41,20 +41,28 @@ def test_output_trait_mapping():
 
 
 def test_get_zooma_mappings():
+    # High confidence ZOOMA mapping
     test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
                                           'Adenine phosphoribosyltransferase deficiency',
                                           'HIGH', 'eva-clinvar')
     entry = test_zooma_result.mapping_list[0]
-    entry.confidence = zooma.ZoomaConfidence.HIGH
     entry.in_ontology = True
     entry.is_current = True
-    entry.ontology_label = "Adenine phosphoribosyltransferase deficiency"
-    entry.source = 'eva-clinvar'
-    entry.uri = 'http://www.orpha.net/ORDO/Orphanet_976'
-    high_conf_mappings, exact_mappings = get_zooma_mappings([test_zooma_result], 'aprt deficiency, japanese type',
+    entry.ontology_label = 'Adenine phosphoribosyltransferase deficiency'
+
+    # Exact string match ZOOMA mapping
+    test_zooma_result_2 = zooma.ZoomaResult(['http://snomed.info/id/65791008'],
+                                            'APRT deficiency, Japanese type',
+                                            'GOOD', 'clinvar-xrefs')
+    entry = test_zooma_result_2.mapping_list[0]
+    entry.in_ontology = False
+    entry.is_current = False
+    entry.ontology_label = 'APRT deficiency, Japanese type'
+
+    high_conf_mappings, exact_mapping = get_zooma_mappings([test_zooma_result, test_zooma_result_2], 'aprt deficiency, japanese type',
                                                             'efo', ['mondo', 'hp'])
     assert len(high_conf_mappings) == 1
-    assert len(exact_mappings) == 0
+    assert exact_mapping != ''
 
 
 def test_get_oxo_mappings():
@@ -71,11 +79,11 @@ def test_get_oxo_mappings():
 
     test_oxo_result.mapping_list = [test_oxo_mapping_1, test_oxo_mapping_2]
 
-    dist_one_mappings, exact_mappings = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
+    dist_one_mappings, exact_mapping = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
                                                          ['mondo', 'hp'])
 
     assert len(dist_one_mappings) == 1
-    assert len(exact_mappings) == 0
+    assert exact_mapping == ''
 
 
 @pytest.mark.integration

@@ -24,7 +24,7 @@ class ArgParser:
 
         parser.add_argument("-i", dest="input_traits_filepath", required=True,
                             help="path to input file for all traits")
-        parser.add_argument("-l", dest="latest_mappings_filepath", required=True,
+        parser.add_argument("-m", dest="latest_mappings_filepath", required=True,
                             help="path to latest mappings tsv file")
         parser.add_argument("-o", dest="output_mappings_filepath", required=True,
                             help="path to output file for mappings")

@@ -114,7 +114,7 @@ process processTraits {
     """
     \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/process_traits.py \
         -i ${traitChunk} \
-        -l ${params.mappings} \
+        -m ${params.mappings} \
         --target-ontology ${targetOntology} \
         ${queryOntologyFlag} \
         -o automated_traits_${traitChunk}.tsv \
