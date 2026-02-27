@@ -61,8 +61,7 @@ class SankeyDiagram(Counter):
         s.draw()
         plt.savefig(self.name, bbox_inches='tight')
 
-    def _format_label(self, label):
-        max_len = 20
+    def _format_label(self, label, max_len=20):
         words = label.split()
         lines = []
         line = []
@@ -75,7 +74,7 @@ class SankeyDiagram(Counter):
 
     def _apply_threshold(self, nodes, flows, threshold):
         """Recompute nodes and flows by combining nodes at the final level with value less than threshold."""
-        new_node_name = 'Other'
+        new_node_name = '[Other]'
         new_nodes = nodes[:-1]
         new_final_level = []
         new_value = 0
@@ -382,8 +381,8 @@ def main(clinvar_xml, process_items=None):
     # Output the code for Sankey diagrams. Transitions are sorted in decreasing number of counts, so that the most frequent
     # cases are on top.
     for sankey_diagram in (sankey_variation_representation, sankey_trait_representation, sankey_trait_quality,
-                           sankey_clinical_classification, sankey_somatic_classification,
-                           sankey_mode_of_inheritance, sankey_allele_origin, sankey_inheritance_origin):
+                           sankey_somatic_classification, sankey_mode_of_inheritance, sankey_allele_origin,
+                           sankey_inheritance_origin):
         print('\n')
         print(sankey_diagram)
         try:
@@ -393,12 +392,14 @@ def main(clinvar_xml, process_items=None):
             continue
 
     # Sankey diagrams requiring thresholding
-    print('\n')
-    print(sankey_star_rating)
-    try:
-        sankey_star_rating.generate_diagram(threshold=1000)
-    except Exception as e:
-        print(e)
+    for sankey_diagram, threshold in [(sankey_star_rating, 1000), (sankey_clinical_classification, 500)]:
+        print('\n')
+        print(sankey_diagram)
+        try:
+            sankey_diagram.generate_diagram(threshold=threshold)
+        except Exception as e:
+            print(e)
+            continue
 
     # Output the supplementary tables for the report.
     for supplementary_table in (counter_trait_xrefs, counter_clin_class_complex, counter_clin_class_all,
