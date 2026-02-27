@@ -50,7 +50,8 @@ jobs:
 #      run: bash tests/pipelines/test_curation_pipelines.sh
     
     - name: Upload the coverage data to Coveralls
-      env: 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Ensure failure to upload coverage does not fail the workflow
-      run: coveralls --no-fail
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        # Ensure failure to upload coverage does not fail the workflow
+        fail-on-error: false
