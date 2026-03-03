@@ -4,7 +4,7 @@ import tempfile
 import pytest
 from cmat.trait_mapping import zooma, oxo
 
-from cmat.trait_mapping.ols import OlsResult
+from cmat.trait_mapping.ols import OlsResult, EXACT_SYNONYM_KEY
 from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation, \
     get_zooma_mappings, to_mapping_string, get_oxo_mappings
 from cmat.trait_mapping.trait import OntologyEntry, Trait
@@ -141,5 +141,51 @@ def test_output_for_curation():
         expected_record = [
             "transitional cell carcinoma of the bladder", "276", '', '', '', '', '', '', '',
             "http://purl.obolibrary.org/obo/HP_0006740|Transitional cell carcinoma of the bladder|CONTAINED_MATCH_LABEL|MONDO_HP_NOT_EFO"
+        ]
+        assert expected_record == next(curation_reader)
+
+
+def test_output_for_curation_ordering():
+    tempfile_path = tempfile.mkstemp()[1]
+    with open(tempfile_path, "wt") as curation_file:
+        curation_writer = csv.writer(curation_file, delimiter="\t")
+
+        test_trait = Trait("hemoglobin s", '99999', 276)
+        test_trait.ols_result_list = [
+            # http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO
+            OlsResult(
+                uri='http://purl.obolibrary.org/obo/NCIT_C122123',
+                label='Hemoglobin S Measurement',
+                ontology=None,  # not needed for output
+                full_exact_match=[EXACT_SYNONYM_KEY],
+                contained_match=[],
+                token_match=[],
+                in_target_ontology=False,
+                in_preferred_ontology=False,
+                is_current=False
+            ),
+            # http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT
+            OlsResult(
+                uri='http://www.ebi.ac.uk/efo/EFO_0009223',
+                label='Hemoglobin S Measurement',
+                ontology=None,  # not needed for output
+                full_exact_match=[EXACT_SYNONYM_KEY],
+                contained_match=[],
+                token_match=[],
+                in_target_ontology=True,
+                in_preferred_ontology=False,
+                is_current=True
+            )
+        ]
+
+        output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
+
+    with open(tempfile_path, "rt") as curation_file:
+        curation_reader = csv.reader(curation_file, delimiter="\t")
+        expected_record = [
+            "hemoglobin s", "276", '', '', '', '',
+            # The exact synonym match chosen for the dedicated column should be the one in EFO
+            'http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT', '', '',
+            "http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO"
         ]
         assert expected_record == next(curation_reader)
