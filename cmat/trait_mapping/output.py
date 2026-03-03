@@ -105,8 +105,9 @@ def find_replacement_mapping(trait_name, previous_uri, ontology, preferred_ontol
     return trait_string
 
 
-def find_exact_mappings(ols_results, target_ontology, preferred_ontologies):
+def get_ols_mappings(ols_results, target_ontology, preferred_ontologies):
     """Returns the top ranked exact label match and exact synonym match mappings, along with the remaining mappings."""
+    ols_results.sort(reverse=True)
     exact_label_match_str = ''
     exact_synonym_match_str = ''
     other_mapping_strs = []
@@ -141,13 +142,13 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     # Collect candidate mappings to use
     previous_and_replacement = get_previous_and_replacement_mappings(trait.previous_mapping_list, trait.name,
                                                                      target_ontology, preferred_ontologies)
-    exact_match_ols_str, exact_synonym_match_str, other_ols_mapping_strs = find_exact_mappings(trait.ols_result_list,
-                                                                                               target_ontology,
-                                                                                               preferred_ontologies)
+    exact_match_ols_str, exact_synonym_match_str, other_ols_mapping_strs = get_ols_mappings(trait.ols_result_list,
+                                                                                            target_ontology,
+                                                                                            preferred_ontologies)
     high_zooma_conf_strs, exact_match_zooma_str = get_zooma_mappings(trait.zooma_result_list, trait.name,
-                                                                      target_ontology, preferred_ontologies)
+                                                                     target_ontology, preferred_ontologies)
     oxo_dist_one_strs, exact_match_oxo_str = get_oxo_mappings(trait.oxo_result_list, trait.name,
-                                                               target_ontology, preferred_ontologies)
+                                                              target_ontology, preferred_ontologies)
     # Select just one of the exact string matches
     exact_match_str = exact_match_ols_str or exact_match_zooma_str or exact_match_oxo_str or ''
 
