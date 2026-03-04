@@ -153,7 +153,7 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     exact_match_str = exact_match_ols_str or exact_match_zooma_str or exact_match_oxo_str or ''
 
     # Output result
-    # NB. previous_and_replacement, high_zooma_conf_strs, and high_zooma_conf_strs all must be non-empty for this to work
+    # NB. previous_and_replacement, high_zooma_conf_strs, and oxo_dist_one_strs all must be non-empty for this to work
     for previous_str, replacement_str in previous_and_replacement:
         for zooma_str in high_zooma_conf_strs:
             for oxo_str in oxo_dist_one_strs:
