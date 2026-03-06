@@ -38,8 +38,9 @@ class OxOMapping:
                 self.is_current == other.is_current, self.ontology_label == other.ontology_label)
 
     def __lt__(self, other):
-        return ((self.distance, self.in_ontology, self.is_current) <
-                (other.distance, other.in_ontology, other.is_current))
+        # Lower distances are better and should be sorted high
+        return ((other.distance, self.in_ontology, self.is_current) <
+                (self.distance, other.in_ontology, other.is_current))
 
     def __str__(self):
         return "{}, {}, {}, {}".format(self.label, self.curie, self.distance, self.query_id)

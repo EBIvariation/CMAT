@@ -84,7 +84,8 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
     logger.info(f'Querying ZOOMA for trait {trait.name}')
     trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, target_ontology)
 
-    # Only go on query OxO if we have high-confidence ZOOMA mappings that are not in the target ontology
+    # Only go on query OxO if we have some results from ZOOMA, but none in the target ontology
+    # Otherwise return the trait for curation
     if (len(trait.zooma_result_list) == 0
             or any([entry.is_current
                     for mapping in trait.zooma_result_list
