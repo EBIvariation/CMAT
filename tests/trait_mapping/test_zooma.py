@@ -7,11 +7,10 @@ def test_build_zooma_query():
     filters = {'required': 'cttv,eva-clinvar,gwas',
                'preferred': 'eva-clinvar,cttv,gwas',
                'ontologies': 'efo,ordo,hp'}
-    zooma_host = 'https://www.ebi.ac.uk'
 
     expected_url = 'https://www.ebi.ac.uk/spot/zooma/v2/api/services/annotate?propertyValue=gastric cancer susceptibility after h. pylori infection&filter=required:[cttv,eva-clinvar,gwas],ontologies:[efo,ordo,hp],preferred:[eva-clinvar,cttv,gwas]'
 
-    assert zooma.build_zooma_query(trait_name, filters, zooma_host) == expected_url
+    assert zooma.build_zooma_query(trait_name, filters) == expected_url
 
 
 def test_get_zooma_results_for_trait():

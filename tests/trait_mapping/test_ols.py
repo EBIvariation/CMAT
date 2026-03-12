@@ -123,3 +123,16 @@ def test_get_ols_search_results():
     assert top_ranked_result.label == 'hemophilia A'
     assert top_ranked_result.get_match_type() == MatchType.EXACT_MATCH_SYNONYM
     assert top_ranked_result.get_mapping_source() == MappingSource.TARGET_CURRENT
+
+
+@pytest.mark.integration
+def test_get_mapping_attributes():
+    label, match_type, mapping_source = ols.get_mapping_attributes_from_ols(
+        trait_name='11p partial monosomy syndrome',
+        uri='http://purl.obolibrary.org/obo/MONDO_0008681',
+        target_ontology='EFO',
+        preferred_ontologies=['mondo', 'hp']
+    )
+    assert label == 'WAGR syndrome'
+    assert match_type == MatchType.EXACT_MATCH_SYNONYM
+    assert mapping_source == MappingSource.TARGET_CURRENT

@@ -5,7 +5,6 @@ import requests
 from retry import retry
 
 from cmat.consequence_prediction.common.vep import get_severity_ranking
-from cmat.trait_mapping.ols import OLS_BASE_URL
 
 logger = logging.getLogger(__package__)
 

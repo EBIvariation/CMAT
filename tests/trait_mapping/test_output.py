@@ -1,10 +1,13 @@
 import csv
 import tempfile
 
-import cmat.trait_mapping.output as output
-from cmat.trait_mapping.ols import OlsResult
+import pytest
+from cmat.trait_mapping import zooma, oxo
+
+from cmat.trait_mapping.ols import OlsResult, EXACT_SYNONYM_KEY
+from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation, \
+    get_zooma_mappings, to_mapping_string, get_oxo_mappings
 from cmat.trait_mapping.trait import OntologyEntry, Trait
-import cmat.trait_mapping.zooma as zooma
 
 
 def test_output_trait_mapping():
@@ -23,7 +26,7 @@ def test_output_trait_mapping():
                           'Adenine phosphoribosyltransferase deficiency type A')
         ]
 
-        output.output_trait_mapping(test_trait, mapping_writer)
+        output_trait_mapping(test_trait, mapping_writer)
 
     with open(tempfile_path, "rt", newline='') as mapping_file:
         mapping_reader = csv.reader(mapping_file, delimiter="\t")
@@ -37,64 +40,78 @@ def test_output_trait_mapping():
                 'Adenine phosphoribosyltransferase deficiency type A'] == next(mapping_reader)
 
 
-def test_get_non_efo_mapping():
-    """If mapping is not in EFO, its `is_current` flag should *not* be checked, and the mapping
-    *should* be selected for curation."""
-    test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/HP_0001892'],
-                                          'abnormal bleeding', 'HIGH', 'eva-clinvar')
-    mapping = test_zooma_result.mapping_list[0]
-    mapping.confidence = zooma.ZoomaConfidence.HIGH
-    mapping.in_ontology = False
-    mapping.is_current = False
-    mapping.ontology_label = 'abnormal bleeding'
-    mapping.source = 'eva-clinvar'
-    mapping.uri = 'http://purl.obolibrary.org/obo/HP_0000483'
-    assert [mapping] == output.get_mappings_for_curation([test_zooma_result], 'abnormal bleeding')
-
-
-def test_get_obsolete_efo_mapping():
-    """If mapping is in EFO, but is not current, it *should not* be selected for curation."""
+def test_get_zooma_mappings():
+    # High confidence ZOOMA mapping
     test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
                                           'Adenine phosphoribosyltransferase deficiency',
                                           'HIGH', 'eva-clinvar')
-    mapping = test_zooma_result.mapping_list[0]
-    mapping.confidence = zooma.ZoomaConfidence.HIGH
-    mapping.in_ontology = True
-    mapping.is_current = False
-    mapping.ontology_label = "Adenine phosphoribosyltransferase deficiency"
-    mapping.source = 'eva-clinvar'
-    mapping.uri = 'http://www.orpha.net/ORDO/Orphanet_976'
-    assert [] == output.get_mappings_for_curation([test_zooma_result], 'adenine phosphoribosyltransferase deficiency')
+    entry = test_zooma_result.mapping_list[0]
+    entry.in_ontology = True
+    entry.is_current = True
+    entry.ontology_label = 'Adenine phosphoribosyltransferase deficiency'
+
+    # Exact string match ZOOMA mapping
+    test_zooma_result_2 = zooma.ZoomaResult(['http://snomed.info/id/65791008'],
+                                            'APRT deficiency, Japanese type',
+                                            'GOOD', 'clinvar-xrefs')
+    entry = test_zooma_result_2.mapping_list[0]
+    entry.in_ontology = False
+    entry.is_current = False
+    entry.ontology_label = 'APRT deficiency, Japanese type'
+
+    high_conf_mappings, exact_mapping = get_zooma_mappings([test_zooma_result, test_zooma_result_2], 'aprt deficiency, japanese type',
+                                                            'efo', ['mondo', 'hp'])
+    assert len(high_conf_mappings) == 1
+    assert exact_mapping != ''
 
 
-def test_get_current_efo_mapping():
-    """If mapping is in EFO and is current, it *should* be selected for curation."""
-    test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
-                                          'Abnormal neutrophil chemotactic response',
-                                          'MEDIUM', 'eva-clinvar')
-    mapping = test_zooma_result.mapping_list[0]
-    mapping.confidence = zooma.ZoomaConfidence.HIGH
-    mapping.in_ontology = True
-    mapping.is_current = True
-    mapping.ontology_label = "Abnormal neutrophil chemotactic response"
-    mapping.source = 'eva-clinvar'
-    mapping.uri = 'http://purl.obolibrary.org/obo/MONDO_0008091'
-    assert [mapping] == output.get_mappings_for_curation([test_zooma_result], 'Abnormal neutrophil chemotactic response')
+def test_get_oxo_mappings():
+    test_oxo_result = oxo.OxOResult('HP:0006706', 'Cystic liver disease', 'HP:0006706')
+
+    test_oxo_mapping_1 = oxo.OxOMapping('Isolated polycystic liver disease', 'Orphanet:2924', 2,
+                                        'HP:0006706')
+    test_oxo_mapping_1.in_ontology = True
+    test_oxo_mapping_1.is_current = True
+
+    test_oxo_mapping_2 = oxo.OxOMapping('cystic liver disease', 'EFO:1001505', 1, 'HP:0006706')
+    test_oxo_mapping_2.in_ontology = True
+    test_oxo_mapping_2.is_current = True
+
+    test_oxo_result.mapping_list = [test_oxo_mapping_1, test_oxo_mapping_2]
+
+    dist_one_mappings, exact_mapping = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
+                                                         ['mondo', 'hp'])
+
+    assert len(dist_one_mappings) == 1
+    assert exact_mapping == ''
 
 
-def test_get_current_efo_nonexact_mapping():
-    """If mapping is in EFO and is current but is not an exact match, it *should* be selected for curation."""
-    test_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/MONDO_0008091'],
-                                          'Abnormal neutrophil chemotactic response',
-                                          'MEDIUM', 'eva-clinvar')
-    mapping = test_zooma_result.mapping_list[0]
-    mapping.confidence = zooma.ZoomaConfidence.HIGH
-    mapping.in_ontology = True
-    mapping.is_current = True
-    mapping.ontology_label = "Abnormal neutrophil chemotactic response"
-    mapping.source = 'eva-clinvar'
-    mapping.uri = 'http://purl.obolibrary.org/obo/MONDO_0008091'
-    assert [] == output.get_mappings_for_curation([test_zooma_result], 'neutrophil chemotactic response')
+@pytest.mark.integration
+def test_find_replacement_mapping():
+    trait_name = 'genetic transient congenital hypothyroidism'
+    target_ontology = 'efo'
+    preferred_ontologies = ['mondo', 'hp']
+
+    # Current in EFO - no replacement term
+    assert find_replacement_mapping(
+        trait_name, 'http://purl.obolibrary.org/obo/MONDO_0011792', target_ontology, preferred_ontologies
+    ) == ''
+
+    # Deprecated in EFO with current replacement term
+    assert find_replacement_mapping(
+        trait_name, 'http://www.ebi.ac.uk/efo/EFO_0000665', target_ontology, preferred_ontologies
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0037939|porphyria|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
+
+    # Deprecated in EFO but replacement is also deprecated, so use its replacement
+    assert find_replacement_mapping(
+        trait_name, 'http://www.orpha.net/ORDO/Orphanet_226316', target_ontology, preferred_ontologies
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|MONDO_HP_NOT_EFO'
+
+
+def test_to_mapping_string():
+    result = to_mapping_string('http://www.orpha.net/ORDO/Orphanet_976', 'aprt deficiency, japanese type', 'efo',
+                               ['mondo', 'hp'])
+    assert result == 'http://www.orpha.net/ORDO/Orphanet_976|Adenine phosphoribosyltransferase deficiency|NO_MATCH|EFO_OBSOLETE'
 
 
 def test_output_for_curation():
@@ -117,12 +134,58 @@ def test_output_for_curation():
         )
         test_trait.ols_result_list = [test_ols_result]
 
-        output.output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
+        output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
 
     with open(tempfile_path, "rt") as curation_file:
         curation_reader = csv.reader(curation_file, delimiter="\t")
         expected_record = [
-            "transitional cell carcinoma of the bladder", "276", '',
+            "transitional cell carcinoma of the bladder", "276", '', '', '', '', '', '', '',
             "http://purl.obolibrary.org/obo/HP_0006740|Transitional cell carcinoma of the bladder|CONTAINED_MATCH_LABEL|MONDO_HP_NOT_EFO"
+        ]
+        assert expected_record == next(curation_reader)
+
+
+def test_output_for_curation_ordering():
+    tempfile_path = tempfile.mkstemp()[1]
+    with open(tempfile_path, "wt") as curation_file:
+        curation_writer = csv.writer(curation_file, delimiter="\t")
+
+        test_trait = Trait("hemoglobin s", '99999', 276)
+        test_trait.ols_result_list = [
+            # http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO
+            OlsResult(
+                uri='http://purl.obolibrary.org/obo/NCIT_C122123',
+                label='Hemoglobin S Measurement',
+                ontology=None,  # not needed for output
+                full_exact_match=[EXACT_SYNONYM_KEY],
+                contained_match=[],
+                token_match=[],
+                in_target_ontology=False,
+                in_preferred_ontology=False,
+                is_current=False
+            ),
+            # http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT
+            OlsResult(
+                uri='http://www.ebi.ac.uk/efo/EFO_0009223',
+                label='Hemoglobin S Measurement',
+                ontology=None,  # not needed for output
+                full_exact_match=[EXACT_SYNONYM_KEY],
+                contained_match=[],
+                token_match=[],
+                in_target_ontology=True,
+                in_preferred_ontology=False,
+                is_current=True
+            )
+        ]
+
+        output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
+
+    with open(tempfile_path, "rt") as curation_file:
+        curation_reader = csv.reader(curation_file, delimiter="\t")
+        expected_record = [
+            "hemoglobin s", "276", '', '', '', '',
+            # The exact synonym match chosen for the dedicated column should be the one in EFO
+            'http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT', '', '',
+            "http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO"
         ]
         assert expected_record == next(curation_reader)

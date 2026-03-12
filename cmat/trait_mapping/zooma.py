@@ -6,6 +6,7 @@ from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, is_current_a
 from cmat.trait_mapping.utils import json_request
 
 
+ZOOMA_HOST = 'https://www.ebi.ac.uk'
 logger = logging.getLogger(__package__)
 
 
@@ -81,7 +82,7 @@ class ZoomaResult:
                 self.mapping_list == other.mapping_list)
 
 
-def get_zooma_results(trait_name: str, filters: dict, zooma_host: str, target_ontology: str = 'EFO') -> list:
+def get_zooma_results(trait_name: str, filters: dict, target_ontology: str = 'EFO') -> list:
     """
     Given a trait name, Zooma filters in a dict and a hostname to use, query Zooma and return a list
     of Zooma mappings for this trait.
@@ -93,12 +94,11 @@ def get_zooma_results(trait_name: str, filters: dict, zooma_host: str, target_on
 
     :param trait_name: A string containing a trait name from a ClinVar record.
     :param filters: A dictionary containing filters used when querying OxO
-    :param zooma_host: Hostname of a Zooma instance to query.
     :param target_ontology: ID of target ontology (default EFO)
     :return: List of ZoomaResults
     """
 
-    url = build_zooma_query(trait_name, filters, zooma_host)
+    url = build_zooma_query(trait_name, filters)
     zooma_response_list = json_request(url)
 
     if zooma_response_list is None:
@@ -126,17 +126,16 @@ def get_zooma_results(trait_name: str, filters: dict, zooma_host: str, target_on
     return zooma_result_list
 
 
-def build_zooma_query(trait_name: str, filters: dict, zooma_host: str) -> str:
+def build_zooma_query(trait_name: str, filters: dict) -> str:
     """
     Given a trait name, filters and hostname, create a url with which to query Zooma. Return this
     url.
 
     :param trait_name: A string containing a trait name from a ClinVar record.
     :param filters: A dictionary containing filters used when querying OxO
-    :param zooma_host: Hostname of a Zooma instance to query.
     :return: String of a url which can be requested
     """
-    url = "{}/spot/zooma/v2/api/services/annotate?propertyValue={}".format(zooma_host, trait_name)
+    url = "{}/spot/zooma/v2/api/services/annotate?propertyValue={}".format(ZOOMA_HOST, trait_name)
     url_filters = [
                     "required:[{}]".format(filters["required"]),
                     "ontologies:[{}]".format(filters["ontologies"]),

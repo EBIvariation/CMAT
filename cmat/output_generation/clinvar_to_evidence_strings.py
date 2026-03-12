@@ -14,6 +14,7 @@ from cmat.clinvar_xml_io.clinical_classification import MultipleClinicalClassifi
 from cmat.clinvar_xml_io.filtering import filter_by_submission
 from cmat.output_generation import consequence_type as CT
 from cmat.output_generation.report import Report
+from cmat.trait_mapping.utils import load_ontology_mapping
 
 logger = logging.getLogger(__package__)
 
@@ -336,42 +337,6 @@ def get_consequence_types(clinvar_record_measure, consequence_type_dict):
 def write_string_list_to_file(string_list, filename):
     with open(filename, 'wt') as out_file:
         out_file.write('\n'.join(string_list))
-
-
-def load_ontology_mapping(trait_mapping_file, schema=None):
-    trait_2_ontology = defaultdict(list)
-    target_ontology = 'EFO'
-    n_ontology_mappings = 0
-    in_header = True
-    ontology_id_regex = '.*'
-    if schema:
-        ontology_id_regex = schema['definitions']['diseaseFromSourceMappedId']['pattern']
-    nonmatching_mappings = []
-
-    with open(trait_mapping_file, 'rt') as f:
-        for line in f:
-            line = line.rstrip()
-            if in_header:
-                # Extract ontology if present
-                m = re.match(r'^#ontology=(.*?)$', line)
-                if m and m.group(1):
-                    target_ontology = m.group(1).upper()
-            if line.startswith('#') or not line:
-                continue
-            in_header = False
-            line_list = line.split('\t')
-            assert len(line_list) == 3, f'Incorrect string to ontology mapping format for line {line}'
-            clinvar_name, ontology_id, ontology_label = line_list
-
-            # Only include the mapping if it matches the schema's regex
-            if re.match(ontology_id_regex, ontology_id.split('/')[-1]):
-                trait_2_ontology[clinvar_name.lower()].append((ontology_id, ontology_label))
-                n_ontology_mappings += 1
-            else:
-                nonmatching_mappings.append((clinvar_name, ontology_id, ontology_label))
-
-    logger.info('{} ontology mappings loaded for ontology {}'.format(n_ontology_mappings, target_ontology))
-    return trait_2_ontology, target_ontology, nonmatching_mappings
 
 
 def get_terms_from_file(terms_file_path):

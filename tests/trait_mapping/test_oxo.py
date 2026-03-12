@@ -74,6 +74,7 @@ class TestGetOxoResultsFromResponse:
             assert oxo.get_oxo_results_from_response(oxo_response) == expected_oxo_results
 
     @pytest.mark.integration
+    @pytest.mark.skip(reason="OxO frequently down")
     def test_get_oxo_results(self):
         id_list = ["OMIM:314580", "MeSH:D002277"]
         target_list = ["Orphanet", "efo", "hp"]

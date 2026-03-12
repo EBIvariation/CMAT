@@ -5,9 +5,8 @@ from datetime import datetime
 
 import yaml
 
-from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping
 from cmat.trait_mapping.ols import is_current_and_in_ontology
-
+from cmat.trait_mapping.utils import load_ontology_mapping
 
 OUTPUT_FILE_NAME = 'trait_names_to_ontology_mappings.tsv'
 OBSOLETE_FILE_NAME = 'obsolete_mappings.tsv'

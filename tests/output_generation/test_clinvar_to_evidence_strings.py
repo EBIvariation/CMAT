@@ -7,9 +7,10 @@ import xml.etree.ElementTree as ElementTree
 from cmat.clinvar_xml_io import ClinVarTrait
 from cmat.output_generation import clinvar_to_evidence_strings
 from cmat.output_generation import consequence_type as CT
-from cmat.output_generation.clinvar_to_evidence_strings import MAX_TARGET_GENES, load_ontology_mapping
+from cmat.output_generation.clinvar_to_evidence_strings import MAX_TARGET_GENES
 
 import config
+from cmat.trait_mapping.utils import load_ontology_mapping
 
 EFO_MAPPINGS, _, _ = load_ontology_mapping(config.efo_mapping_file)
 GENE_MAPPINGS = CT.process_consequence_type_file(config.snp_2_gene_file)

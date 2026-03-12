@@ -3,8 +3,8 @@ import argparse
 import csv
 import multiprocessing
 
-from cmat.output_generation.clinvar_to_evidence_strings import load_ontology_mapping
 from cmat.output_generation.evaluation.ols_utils import fetch_eval_data
+from cmat.trait_mapping.utils import load_ontology_mapping
 
 
 def main(mapping_file, output_file):

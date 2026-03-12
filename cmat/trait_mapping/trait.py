@@ -1,6 +1,8 @@
 import logging
 from itertools import groupby
 
+from cmat.trait_mapping.ols import is_current_and_in_ontology
+
 logger = logging.getLogger(__package__)
 
 
@@ -36,6 +38,7 @@ class Trait:
         self.ols_result_list = []
         self.zooma_result_list = []
         self.oxo_result_list = []
+        self.previous_mapping_list = []
         self.finished_mapping_set = set()
         self.associated_with_nt_expansion = associated_with_nt_expansion
 
@@ -72,29 +75,11 @@ class Trait:
                 ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
                 self.finished_mapping_set.add(ontology_entry)
 
-    def process_zooma_results(self):
+    def process_previous_mappings(self, ontology):
         """
-        Check whether any Zooma mappings can be output as a finished ontology mapping.
-        Put any finished mappings in finished_mapping_set
+        Previous mappings are considered finished as long as they are still current.
         """
-        for zooma_result in self.zooma_result_list:
-            for mapping in zooma_result.mapping_list:
-                # Accept current mappings in the target ontology with either high-confidence or exact string matches
-                if mapping.in_ontology and mapping.is_current and (zooma_result.confidence.lower() == "high"
-                                                                   or zooma_result.zooma_label.lower() == self.name.lower()):
-                    ontology_entry = OntologyEntry(mapping.uri, mapping.ontology_label)
-                    self.finished_mapping_set.add(ontology_entry)
-
-    def process_oxo_mappings(self):
-        """
-        Check whether any OxO mappings can be output as a finished ontology mapping.
-        Put any finished mappings in finished_mapping_set
-        """
-        for result in self.oxo_result_list:
-            for mapping in result.mapping_list:
-                if mapping.in_ontology and mapping.is_current and mapping.distance == 1:
-                    uri = str(mapping.uri)
-                    ontology_label = mapping.ontology_label
-                    ontology_entry = OntologyEntry(uri, ontology_label)
-                    logger.debug('Found an OxO finished mapping: {}'.format(uri))
-                    self.finished_mapping_set.add(ontology_entry)
+        for uri, label in self.previous_mapping_list:
+            if is_current_and_in_ontology(uri, ontology):
+                ontology_entry = OntologyEntry(uri, label)
+                self.finished_mapping_set.add(ontology_entry)
