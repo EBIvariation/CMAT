@@ -73,6 +73,10 @@ the filtered selection.
     * 2.3 **Exact synonym matches**
         * 2.3.1 Remove "Blank" from "Exact synonym matches" column
         * 2.3.2 Determine if the mapping is suitable, if not find a new term to use as mapping
+    * 2.4 **ZOOMA and OxO mappings:** These are services besides OLS that can sometimes provide useful mapping suggestions.
+        * 2.4.1 Remove "Blank" from "High-confidence ZOOMA" column
+        * 2.4.2 Determine if the mapping is suitable, if not find a new term to use as mapping
+        * 2.4.3 Repeat the above for the "Distance-1 OxO" column
 3. **Low-confidence mappings or unmapped terms**
     * 3.1 Set the "Status" column to only include "Blank" entries
     * 3.2 Look for suitable mappings from the "All other mappings" columns, or perform your own searches
