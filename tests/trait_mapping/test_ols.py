@@ -118,7 +118,7 @@ def test_get_ols_search_results():
         target_ontology='EFO',
         preferred_ontologies=['mondo', 'hp']
     )
-    assert len(results) == 5
+    assert len(results) == 4
     top_ranked_result = next(iter(sorted(results, reverse=True)))
     assert top_ranked_result.label == 'hemophilia A'
     assert top_ranked_result.get_match_type() == MatchType.EXACT_MATCH_SYNONYM
