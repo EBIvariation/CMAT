@@ -1,8 +1,8 @@
 #clinvar_trait_name	uri	label
 11p partial monosomy syndrome	http://purl.obolibrary.org/obo/MONDO_0008681	WAGR syndrome
 3 beta-hydroxysteroid dehydrogenase deficiency	http://www.orpha.net/ORDO/Orphanet_90791	Congenital adrenal hyperplasia due to 3-beta-hydroxysteroid dehydrogenase deficiency
-coronary artery disease/myocardial infarction	http://www.ebi.ac.uk/efo/EFO_0000612	myocardial infarction
-coronary artery disease/myocardial infarction	http://www.ebi.ac.uk/efo/EFO_0001645	coronary heart disease
+coronary artery disease/myocardial infarction	http://purl.obolibrary.org/obo/MONDO_0005068	myocardial infarction
+coronary artery disease/myocardial infarction	http://purl.obolibrary.org/obo/MONDO_0005010	coronary heart disease
 frontotemporal dementia, ubiquitin-positive	http://www.orpha.net/ORDO/Orphanet_282	Frontotemporal dementia
 meckel syndrome, type 3	http://purl.obolibrary.org/obo/MONDO_0018921	Meckel syndrome
 renal-hepatic-pancreatic dysplasia 2	http://www.orpha.net/ORDO/Orphanet_294415	Renal-hepatic-pancreatic dysplasia

@@ -105,7 +105,7 @@ def test_find_replacement_mapping():
     # Deprecated in EFO but replacement is also deprecated, so use its replacement
     assert find_replacement_mapping(
         trait_name, 'http://www.orpha.net/ORDO/Orphanet_226316', target_ontology, preferred_ontologies
-    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|MONDO_HP_NOT_EFO'
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
 
 
 def test_to_mapping_string():

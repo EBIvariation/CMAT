@@ -38,17 +38,8 @@ class TestGetMappingsTest:
             ('http://www.ebi.ac.uk/efo/EFO_0001645', 'coronary heart disease')]
 
     def test_efo_mapping_with_schema(self):
-        schema = {
-            "definitions": {
-                "diseaseFromSourceMappedId": {
-                    "type": "string",
-                    "description": "Identifier of the disease in the EFO ontology",
-                    "pattern": "(^NCIT_|^Orphanet_|^GO_|^HP_|^EFO_|^MONDO_|^DOID_|^MP_|^OTAR_|^PATO_|^OBI_|^OBA_|^OGMS_|^GSSO_|^UBERON_)",
-                    "examples": ["EFO_0005537"]
-                }
-            }
-        }
-        mappings, _, nonmatching_mappings = load_ontology_mapping(config.efo_mapping_file, schema)
+        ontology_id_regex = "(^NCIT_|^Orphanet_|^GO_|^HP_|^EFO_|^MONDO_|^DOID_|^MP_|^OTAR_|^PATO_|^OBI_|^OBA_|^OGMS_|^GSSO_|^UBERON_)"
+        mappings, _, nonmatching_mappings = load_ontology_mapping(config.efo_mapping_file, ontology_id_regex)
         assert len(mappings) == 10
         assert 'tbc1 domain family member 24' not in mappings
         assert len(nonmatching_mappings) == 1
