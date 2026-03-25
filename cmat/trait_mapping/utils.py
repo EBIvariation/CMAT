@@ -35,7 +35,7 @@ def string_to_preferred_ontologies(ontology_string, target_ontology):
     return preferred_ontologies
 
 
-def load_ontology_mapping(trait_mapping_file, schema=None):
+def load_ontology_mapping(trait_mapping_file, ontology_id_regex='.*'):
     """
     Load ontology mappings from a TSV file.
 
@@ -50,9 +50,6 @@ def load_ontology_mapping(trait_mapping_file, schema=None):
     target_ontology = 'EFO'
     n_ontology_mappings = 0
     in_header = True
-    ontology_id_regex = '.*'
-    if schema:
-        ontology_id_regex = schema['definitions']['diseaseFromSourceMappedId']['pattern']
     nonmatching_mappings = []
 
     with open(trait_mapping_file, 'rt') as f:
