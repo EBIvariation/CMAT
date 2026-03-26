@@ -58,7 +58,7 @@ class TestProcessTrait:
         processed_trait = self.run_process_trait(trait)
         assert len(processed_trait.ols_result_list) == 10
         assert processed_trait.is_finished
-        assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://www.ebi.ac.uk/efo/EFO_1001093'}
+        assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://purl.obolibrary.org/obo/MONDO_0008214'}
 
     def test_multiple_mappings(self):
         # Multiple mappings from OLS
