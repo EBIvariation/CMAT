@@ -43,8 +43,8 @@ workflow {
     )
 
     if (params.with_feedback) {
-        generateZoomaFeedback(addMappingsHeader.out.finalMappings)
-        updateLinks(addMappingsHeader.out.finalMappings, generateZoomaFeedback.out.zoomaFeedback)
+        generateZoomaFeedback(createLatestMappings.out.finalMappings)
+        updateLinks(createLatestMappings.out.finalMappings, generateZoomaFeedback.out.zoomaFeedback)
     }
 }
 
