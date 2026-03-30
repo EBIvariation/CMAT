@@ -47,7 +47,8 @@ def validate_evidence_string(ev_string, ot_schema_contents):
 def launch_pipeline(clinvar_xml_file, efo_mapping_file, gene_mapping_file, ot_schema_file, dir_out, start, end):
     os.makedirs(dir_out, exist_ok=True)
     ot_schema_contents = json.loads(open(ot_schema_file).read())
-    string_to_efo_mappings, _, nonmatching_mappings = load_ontology_mapping(efo_mapping_file, ot_schema_contents)
+    ontology_id_regex = ot_schema_contents['definitions']['diseaseFromSourceMappedId']['pattern']
+    string_to_efo_mappings, _, nonmatching_mappings = load_ontology_mapping(efo_mapping_file, ontology_id_regex)
     variant_to_gene_mappings = CT.process_consequence_type_file(gene_mapping_file)
 
     # Output mappings that don't conform to the schema in a separate file
