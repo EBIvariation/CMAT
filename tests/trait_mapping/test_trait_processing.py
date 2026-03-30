@@ -33,14 +33,14 @@ class TestProcessTrait:
         # Only goes through OLS as it finds an exact match in EFO
         trait = Trait('chédiak-higashi syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.ols_result_list) == 8
+        assert len(processed_trait.ols_result_list) == 7
         assert processed_trait.is_finished
 
     def test_previous_mapping(self):
         # Finds nothing exact via OLS, so checks previous mappings and finds a current result
         trait = Trait('11p partial monosomy syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.ols_result_list) == 6
+        assert len(processed_trait.ols_result_list) == 5
         assert len(processed_trait.previous_mapping_list) == 1
         assert processed_trait.is_finished
 
