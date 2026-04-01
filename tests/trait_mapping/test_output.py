@@ -4,7 +4,6 @@ import tempfile
 import pytest
 from cmat.trait_mapping import zooma, oxo
 
-from cmat.trait_mapping.ols import OlsResult, EXACT_SYNONYM_KEY
 from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation, \
     get_zooma_mappings, to_mapping_string, get_oxo_mappings
 from cmat.trait_mapping.trait import OntologyEntry, Trait
