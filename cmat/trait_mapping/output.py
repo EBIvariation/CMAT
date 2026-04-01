@@ -139,6 +139,8 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     # records they are associated with is low. This is added to the "Notes" column.
     output_row = [trait.name, trait.frequency, 'NT expansion' if trait.associated_with_nt_expansion else '']
 
+    # TODO update this
+
     # Collect candidate mappings to use
     previous_and_replacement = get_previous_and_replacement_mappings(trait.previous_mapping_list, trait.name,
                                                                      target_ontology, preferred_ontologies)

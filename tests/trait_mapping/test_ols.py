@@ -1,9 +1,11 @@
 import pytest
 import requests_mock
+from cmat.trait_mapping.ols import EXACT_SYNONYM_KEY
 
 import cmat.trait_mapping.ols as ols
-from cmat.trait_mapping.ols import OlsResult, MatchType, MappingSource, EXACT_SYNONYM_KEY
 import resources.test_ols_data as test_ols_data
+from cmat.trait_mapping.ols_search import OlsMapping
+from cmat.trait_mapping.ontology_mapping import MatchType, MappingSource, MappingContext
 
 
 def test_get_label_and_synonyms_from_ols():
@@ -50,33 +52,31 @@ def test_get_fields_with_match():
 
 
 def test_ols_result():
-    ols_result_1 = OlsResult(
+    mapping_context = MappingContext('carcinoma of the bladder', 'efo', ['mondo', 'hp'])
+    ols_result_1 = OlsMapping(mapping_context,
         uri='http://purl.obolibrary.org/obo/HP_0006740',
         label='Transitional cell carcinoma of the bladder',
-        ontology='mondo',
-        full_exact_match=[],
+        exact_match=[],
         contained_match=['label'],
         token_match=[EXACT_SYNONYM_KEY],
         in_target_ontology=False,
         in_preferred_ontology=True,
         is_current=False
     )
-    ols_result_2 = OlsResult(
+    ols_result_2 = OlsMapping(mapping_context,
         uri='http://purl.obolibrary.org/obo/MONDO_0004986',
         label='urinary bladder carcinoma',
-        ontology='mondo',
-        full_exact_match=[EXACT_SYNONYM_KEY],
+        exact_match=[EXACT_SYNONYM_KEY],
         contained_match=[],
         token_match=[EXACT_SYNONYM_KEY],
         in_target_ontology=False,
         in_preferred_ontology=True,
         is_current=False
     )
-    ols_result_3 = OlsResult(
+    ols_result_3 = OlsMapping(mapping_context,
         uri='http://purl.obolibrary.org/obo/EFO_123',
         label='urinary bladder carcinoma',
-        ontology='efo',
-        full_exact_match=[EXACT_SYNONYM_KEY],
+        exact_match=[EXACT_SYNONYM_KEY],
         contained_match=[],
         token_match=['synonym'],
         in_target_ontology=True,

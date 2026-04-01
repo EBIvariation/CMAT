@@ -6,7 +6,9 @@ from collections import Counter
 from unidecode import unidecode
 
 from cmat.clinvar_xml_io import ClinVarTrait
-from cmat.trait_mapping.ols import get_ols_search_results
+from cmat.trait_mapping.ols_search import get_ols_search_results
+
+from cmat.trait_mapping.ontology_mapping import MappingContext
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
@@ -59,22 +61,26 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
+    # TODO update this - everyone should add to ONE list of results for the trait.
+    #  Maybe also don't need the Trait object, or simplify at least?
+
     lowercased_trait_name = trait.name.lower()
-    trait.ols_result_list = get_ols_search_results(lowercased_trait_name, ols_query_fields, ols_field_list,
-                                                   target_ontology, preferred_ontologies)
+    mapping_context = MappingContext(lowercased_trait_name, target_ontology, preferred_ontologies)
+    trait.ols_result_list = get_ols_search_results(mapping_context, ols_query_fields, ols_field_list)
     trait.process_ols_results()
     if trait.is_finished:
         return trait
     # Search again with accents and other non-ASCII symbols replaced, if necessary
     normalised_trait_name = unidecode(lowercased_trait_name)
     if normalised_trait_name != lowercased_trait_name:
-        trait.ols_result_list += get_ols_search_results(normalised_trait_name, ols_query_fields, ols_field_list,
-                                                        target_ontology, preferred_ontologies)
+        norm_mapping_context = MappingContext(normalised_trait_name, target_ontology, preferred_ontologies)
+        trait.ols_result_list += get_ols_search_results(norm_mapping_context, ols_query_fields, ols_field_list)
         trait.process_ols_results()
         if trait.is_finished:
             return trait
 
     # Query for a previous mapping
+    # TODO do these need to be ontologyMapping objects as well?
     trait.previous_mapping_list = previous_mappings.get(lowercased_trait_name, [])
     trait.process_previous_mappings(target_ontology)
     if trait.is_finished:
@@ -82,7 +88,7 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
 
     # Query ZOOMA - these results will only be used as candidates for curation
     logger.info(f'Querying ZOOMA for trait {trait.name}')
-    trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, target_ontology)
+    trait.zooma_result_list = get_zooma_results(mapping_context, filters)
 
     # Only go on query OxO if we have some results from ZOOMA, but none in the target ontology
     # Otherwise return the trait for curation
@@ -98,7 +104,7 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
     oxo_input_id_list = uris_to_oxo_format(uris_for_oxo_set)
     if len(oxo_input_id_list) == 0:
         return trait
-    trait.oxo_result_list = get_oxo_results(oxo_input_id_list, oxo_target_list, oxo_distance)
+    trait.oxo_result_list = get_oxo_results(mapping_context, oxo_input_id_list, oxo_target_list, oxo_distance)
     if not trait.oxo_result_list:
         logger.debug('No OxO mapping for trait {}'.format(trait.name))
 
