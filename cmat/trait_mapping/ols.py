@@ -210,29 +210,11 @@ def get_fields_with_match(search_term, query_fields, result_json):
     return full_exact_match, contained_match, token_match
 
 
-def get_is_in_ontologies(uri, target_ontology, preferred_ontologies):
-    in_target_ontology = is_in_ontology(uri, target_ontology)
+def get_is_in_ontologies(uri, mapping_context):
+    in_target_ontology = is_in_ontology(uri, mapping_context.target_ontology)
     in_preferred_ontology = False
-    for ontology in preferred_ontologies:
+    for ontology in mapping_context.preferred_ontologies:
         if is_in_ontology(uri, ontology):
             in_preferred_ontology = True
             break
     return in_target_ontology, in_preferred_ontology
-
-
-# TODO shouldn't be needed anymore....
-# def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies):
-#     try:
-#         in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology, preferred_ontologies)
-#         is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
-#
-#         label, synonyms = get_label_and_synonyms_from_ols(uri)
-#         exact_match, contained_match, token_match = get_fields_with_match(
-#             trait_name, ['label', EXACT_SYNONYM_KEY], {'label': label, EXACT_SYNONYM_KEY: list(synonyms)})
-#
-#         ols_result = OlsResult(uri, label, None, exact_match, contained_match, token_match, in_target_ontology,
-#                                in_preferred_ontology, is_current)
-#         return label, ols_result.get_match_type(), ols_result.get_mapping_source()
-#     except Exception as e:
-#         logger.warning(f'Error while getting mapping attributes from OLS: {e}')
-#         return '', '', ''

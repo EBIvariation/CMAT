@@ -1,7 +1,7 @@
 import logging
 from itertools import groupby
 
-from cmat.trait_mapping.ols import is_current_and_in_ontology
+from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance, MatchType, MappingSource
 
 logger = logging.getLogger(__package__)
 
@@ -35,10 +35,7 @@ class Trait:
         self.name = name
         self.identifier = identifier
         self.frequency = frequency
-        self.ols_result_list = []
-        self.zooma_result_list = []
-        self.oxo_result_list = []
-        self.previous_mapping_list = []
+        self.candidate_mappings : list[OntologyMapping] = []
         self.finished_mapping_set = set()
         self.associated_with_nt_expansion = associated_with_nt_expansion
 
@@ -57,29 +54,40 @@ class Trait:
         """
         return self.associated_with_nt_expansion
 
-    def process_ols_results(self):
-        """
-        Deduplicate OLS mappings and check whether any can be output as a finished ontology mapping.
-        Put any finished mappings in finished_mapping_set
-        """
-        # First deduplicate by IRI, taking the top-ranked results associated with each IRI
-        sorted_results = sorted(self.ols_result_list, key=lambda x: x.uri)
-        deduplicated_results = []
-        for iri, grouped_results in groupby(sorted_results, key=lambda x: x.uri):
-            deduplicated_results.append(max(grouped_results))
-        self.ols_result_list = deduplicated_results
+    def assess_if_finished(self):
+        """Check whether any of the candidate mappings is acceptable as an automated mapping.
+        If so adds this to finished mappings."""
+        # TODO deduplication? Does this work across the mapping types?
+        for mapping in self.candidate_mappings:
+            if mapping.get_mapping_source() == MappingSource.TARGET_CURRENT:
+                # Accept any mappings full exact matches on the label, or ones we previously accepted
+                if mapping.get_match_type() == MatchType.EXACT_MATCH_LABEL or mapping.provenance == MappingProvenance.PREVIOUS:
+                    self.finished_mapping_set.add(mapping)
 
-        for ols_result in self.ols_result_list:
-            # Accept current mappings in the target ontology with full exact matches on the label
-            if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
-                ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
-                self.finished_mapping_set.add(ontology_entry)
 
-    def process_previous_mappings(self, ontology):
-        """
-        Previous mappings are considered finished as long as they are still current.
-        """
-        for uri, label in self.previous_mapping_list:
-            if is_current_and_in_ontology(uri, ontology):
-                ontology_entry = OntologyEntry(uri, label)
-                self.finished_mapping_set.add(ontology_entry)
+    # def process_ols_results(self):
+    #     """
+    #     Deduplicate OLS mappings and check whether any can be output as a finished ontology mapping.
+    #     Put any finished mappings in finished_mapping_set
+    #     """
+    #     # First deduplicate by IRI, taking the top-ranked results associated with each IRI
+    #     sorted_results = sorted(self.ols_result_list, key=lambda x: x.uri)
+    #     deduplicated_results = []
+    #     for iri, grouped_results in groupby(sorted_results, key=lambda x: x.uri):
+    #         deduplicated_results.append(max(grouped_results))
+    #     self.ols_result_list = deduplicated_results
+    #
+    #     for ols_result in self.ols_result_list:
+    #         # Accept current mappings in the target ontology with full exact matches on the label
+    #         if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
+    #             ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
+    #             self.finished_mapping_set.add(ontology_entry)
+    #
+    # def process_previous_mappings(self, ontology):
+    #     """
+    #     Previous mappings are considered finished as long as they are still current.
+    #     """
+    #     for uri, label in self.previous_mapping_list:
+    #         if is_current_and_in_ontology(uri, ontology):
+    #             ontology_entry = OntologyEntry(uri, label)
+    #             self.finished_mapping_set.add(ontology_entry)

@@ -1,9 +1,9 @@
 import logging
 from enum import Enum
-from functools import total_ordering
+from functools import total_ordering, cached_property
 
 from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, get_is_in_ontologies, is_current_and_in_ontology, \
-    get_fields_with_match, EXACT_SYNONYM_KEY
+    get_fields_with_match, EXACT_SYNONYM_KEY, is_in_ontology
 
 logger = logging.getLogger(__package__)
 
@@ -68,13 +68,14 @@ class OntologyMapping:
         self.mapping_context = mapping_context
         self.uri = uri
         self.provenance = provenance
-        self.label = label
-        self.in_target_ontology = in_target_ontology
-        self.in_preferred_ontology = in_preferred_ontology
-        self.is_current = is_current
-        self.exact_match = exact_match
-        self.contained_match = contained_match
-        self.token_match = token_match
+        # Should not be accessed directly as these may be lazily determined
+        self._label = label
+        self._in_target_ontology = in_target_ontology
+        self._in_preferred_ontology = in_preferred_ontology
+        self._is_current = is_current
+        self._exact_match = exact_match
+        self._contained_match = contained_match
+        self._token_match = token_match
 
     def __str__(self):
         mapping_source_str = self.get_mapping_source().to_string(self.mapping_context.target_ontology, self.mapping_context.preferred_ontologies)
@@ -91,6 +92,7 @@ class OntologyMapping:
         # Larger means better mapping
         # In general, full exact matches > contained matches > token matches,
         # and target ontology > preferred ontologies > neither
+        # TODO can we rewrite this using the public methods?
         if self.exact_match:
             if other.exact_match:
                 return self.ontology_rank() > other.ontology_rank()
@@ -122,44 +124,44 @@ class OntologyMapping:
 
     # TODO ensure these are robust to non-ontologies (e.g. medgen)
 
-    def get_label(self):
-        if self.label is not None:
-            return self.label
+    @cached_property
+    def label(self):
+        if self._label is not None:
+            return self._label
         return get_label_and_synonyms_from_ols(self.uri)[0]
 
     def get_match_type(self):
-        if any(x is None for x in [self.exact_match, self.contained_match, self.token_match]):
+        if any(x is None for x in [self._exact_match, self._contained_match, self._token_match]):
             label, synonyms = get_label_and_synonyms_from_ols(self.uri)
-            self.exact_match, self.contained_match, self.token_match = get_fields_with_match(
+            self._exact_match, self._contained_match, self._token_match = get_fields_with_match(
                 self.mapping_context.trait_name, ['label', EXACT_SYNONYM_KEY],
                 {'label': label, EXACT_SYNONYM_KEY: list(synonyms)})
 
-        if self.exact_match:
-            if 'label' in self.exact_match:
+        if self._exact_match:
+            if 'label' in self._exact_match:
                 return MatchType.EXACT_MATCH_LABEL
-            if EXACT_SYNONYM_KEY in self.exact_match:
+            if EXACT_SYNONYM_KEY in self._exact_match:
                 return MatchType.EXACT_MATCH_SYNONYM
-        if self.contained_match:
-            if 'label' in self.contained_match:
+        if self._contained_match:
+            if 'label' in self._contained_match:
                 return MatchType.CONTAINED_MATCH_LABEL
-            if EXACT_SYNONYM_KEY in self.contained_match:
+            if EXACT_SYNONYM_KEY in self._contained_match:
                 return MatchType.CONTAINED_MATCH_SYNONYM
-        if self.token_match:
-            if 'label' in self.token_match:
+        if self._token_match:
+            if 'label' in self._token_match:
                 return MatchType.TOKEN_MATCH_LABEL
-            if EXACT_SYNONYM_KEY in self.token_match:
+            if EXACT_SYNONYM_KEY in self._token_match:
                 return MatchType.TOKEN_MATCH_SYNONYM
         return MatchType.NO_MATCH
 
     def get_mapping_source(self):
-        if any(x is None for x in [self.in_target_ontology, self.in_preferred_ontology, self.is_current]):
-            self.in_target_ontology, self.in_preferred_ontology = get_is_in_ontologies(self.uri, self.mapping_context.target_ontology,
-                                                                                       self.mapping_context.preferred_ontologies)
-            self.is_current = is_current_and_in_ontology(self.uri, self.mapping_context.target_ontology) if self.in_target_ontology else False
+        if any(x is None for x in [self._in_target_ontology, self._in_preferred_ontology, self._is_current]):
+            self._in_target_ontology, self._in_preferred_ontology = get_is_in_ontologies(self.uri, self.mapping_context)
+            self._is_current = is_current_and_in_ontology(self.uri, self.mapping_context.target_ontology) if self._in_target_ontology else False
 
-        if self.in_target_ontology:
-            return MappingSource.TARGET_CURRENT if self.is_current else MappingSource.TARGET_OBSOLETE
-        if self.in_preferred_ontology:
+        if self._in_target_ontology:
+            return MappingSource.TARGET_CURRENT if self._is_current else MappingSource.TARGET_OBSOLETE
+        if self._in_preferred_ontology:
             return MappingSource.PREFERRED_NOT_TARGET
         return MappingSource.NOT_PREFERRED_TARGET
 
