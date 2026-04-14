@@ -182,34 +182,6 @@ def get_uri_from_exact_match(text, ontology='EFO'):
     return None
 
 
-def get_fields_with_match(search_term, query_fields, result_json):
-    search_term = search_term.lower().strip()
-    search_term_tokens = set(search_term.split())
-    full_exact_match = []
-    contained_match = []
-    token_match = []
-    for field in query_fields:
-        if field in result_json:
-            if isinstance(result_json[field], str):
-                field_value = result_json[field].lower().strip()
-                if search_term == field_value:
-                    full_exact_match.append(field)
-                elif search_term in field_value:
-                    contained_match.append(field)
-                elif search_term_tokens.intersection(field_value.split()):
-                    token_match.append(field)
-            if isinstance(result_json[field], list):
-                field_values = get_as_string_list(result_json[field])
-                if [element for element in field_values if search_term == element]:
-                    full_exact_match.append(field)
-                elif [element for element in field_values if search_term in element]:
-                    contained_match.append(field)
-                elif [search_term_tokens.intersection(element.split()) for element in field_values]:
-                    token_match.append(field)
-
-    return full_exact_match, contained_match, token_match
-
-
 def get_is_in_ontologies(uri, mapping_context):
     in_target_ontology = is_in_ontology(uri, mapping_context.target_ontology)
     in_preferred_ontology = False

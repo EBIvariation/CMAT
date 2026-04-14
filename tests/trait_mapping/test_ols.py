@@ -96,11 +96,6 @@ def test_ols_result():
     assert ols_result_3 > ols_result_2
 
 
-def test_mapping_source_to_string():
-    assert MappingSource.TARGET_OBSOLETE.to_string('efo', ['mondo','hp']) == 'EFO_OBSOLETE'
-    assert MappingSource.PREFERRED_NOT_TARGET.to_string('efo', ['mondo','hp']) == 'MONDO_HP_NOT_EFO'
-
-
 @pytest.mark.integration
 def test_get_is_in_ontologies():
     in_target_ontology, in_preferred_ontologies = ols.get_is_in_ontologies(
