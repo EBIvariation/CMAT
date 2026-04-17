@@ -5,6 +5,7 @@ import pytest
 from cmat.trait_mapping.ols import EXACT_SYNONYM_KEY
 
 from cmat.trait_mapping.ols_search import OlsMapping
+from cmat.trait_mapping.ontology_mapping import MappingContext
 from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation
 from cmat.trait_mapping.trait import OntologyEntry, Trait
 
@@ -115,7 +116,7 @@ def test_output_for_curation():
         test_trait = Trait("transitional cell carcinoma of the bladder", '99999', 276)
 
         test_ols_result = OlsMapping(
-            mapping_context=None,  # not needed for output
+            mapping_context=MappingContext('', 'efo', ['mondo', 'hp']),
             uri='http://purl.obolibrary.org/obo/HP_0006740',
             label='Transitional cell carcinoma of the bladder',
             exact_match=[],
@@ -125,15 +126,15 @@ def test_output_for_curation():
             in_preferred_ontology=True,
             is_current=False
         )
-        test_trait.ols_result_list = [test_ols_result]
+        test_trait.candidate_mappings = [test_ols_result]
 
         output_for_curation(test_trait, curation_writer, 'efo', ['mondo', 'hp'])
 
     with open(tempfile_path, "rt") as curation_file:
         curation_reader = csv.reader(curation_file, delimiter="\t")
         expected_record = [
-            "transitional cell carcinoma of the bladder", "276", '', '', '', '', '', '', '',
-            "http://purl.obolibrary.org/obo/HP_0006740|Transitional cell carcinoma of the bladder|CONTAINED_MATCH_LABEL|MONDO_HP_NOT_EFO"
+            "transitional cell carcinoma of the bladder", "276", '', '', '', '', '',
+            "http://purl.obolibrary.org/obo/HP_0006740|Transitional cell carcinoma of the bladder|OLS|CONTAINED_MATCH_LABEL|MONDO_HP_NOT_EFO"
         ]
         assert expected_record == next(curation_reader)
 
@@ -144,10 +145,11 @@ def test_output_for_curation_ordering():
         curation_writer = csv.writer(curation_file, delimiter="\t")
 
         test_trait = Trait("hemoglobin s", '99999', 276)
-        test_trait.ols_result_list = [
+        mapping_context = MappingContext('hemoglobin s', 'efo', ['mondo', 'hp'])
+        test_trait.candidate_mappings = [
             # http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO
             OlsMapping(
-                mapping_context=None,  # not needed for output
+                mapping_context=mapping_context,
                 uri='http://purl.obolibrary.org/obo/NCIT_C122123',
                 label='Hemoglobin S Measurement',
                 exact_match=[EXACT_SYNONYM_KEY],
@@ -159,7 +161,7 @@ def test_output_for_curation_ordering():
             ),
             # http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT
             OlsMapping(
-                mapping_context=None,  # not needed for output
+                mapping_context=mapping_context,
                 uri='http://www.ebi.ac.uk/efo/EFO_0009223',
                 label='Hemoglobin S Measurement',
                 exact_match=[EXACT_SYNONYM_KEY],
@@ -178,7 +180,7 @@ def test_output_for_curation_ordering():
         expected_record = [
             "hemoglobin s", "276", '', '', '', '',
             # The exact synonym match chosen for the dedicated column should be the one in EFO
-            'http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT', '', '',
-            "http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO"
+            'http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|OLS|EXACT_MATCH_SYNONYM|EFO_CURRENT',
+            "http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|OLS|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO"
         ]
         assert expected_record == next(curation_reader)
