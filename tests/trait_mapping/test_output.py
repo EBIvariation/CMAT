@@ -40,52 +40,6 @@ def test_output_trait_mapping():
                 'Adenine phosphoribosyltransferase deficiency type A'] == next(mapping_reader)
 
 
-# def test_get_zooma_mappings():
-#     # High confidence ZOOMA mapping
-#     test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
-#                                           'Adenine phosphoribosyltransferase deficiency',
-#                                           'HIGH', 'eva-clinvar')
-#     entry = test_zooma_result.mapping_list[0]
-#     entry.in_ontology = True
-#     entry.is_current = True
-#     entry.ontology_label = 'Adenine phosphoribosyltransferase deficiency'
-#
-#     # Exact string match ZOOMA mapping
-#     test_zooma_result_2 = zooma.ZoomaResult(['http://snomed.info/id/65791008'],
-#                                             'APRT deficiency, Japanese type',
-#                                             'GOOD', 'clinvar-xrefs')
-#     entry = test_zooma_result_2.mapping_list[0]
-#     entry.in_ontology = False
-#     entry.is_current = False
-#     entry.ontology_label = 'APRT deficiency, Japanese type'
-#
-#     high_conf_mappings, exact_mapping = get_zooma_mappings([test_zooma_result, test_zooma_result_2], 'aprt deficiency, japanese type',
-#                                                             'efo', ['mondo', 'hp'])
-#     assert len(high_conf_mappings) == 1
-#     assert exact_mapping != ''
-#
-#
-# def test_get_oxo_mappings():
-#     test_oxo_result = oxo.OxOResult('HP:0006706', 'Cystic liver disease', 'HP:0006706')
-#
-#     test_oxo_mapping_1 = oxo.OxOMapping('Isolated polycystic liver disease', 'Orphanet:2924', 2,
-#                                         'HP:0006706')
-#     test_oxo_mapping_1.in_ontology = True
-#     test_oxo_mapping_1.is_current = True
-#
-#     test_oxo_mapping_2 = oxo.OxOMapping('cystic liver disease', 'EFO:1001505', 1, 'HP:0006706')
-#     test_oxo_mapping_2.in_ontology = True
-#     test_oxo_mapping_2.is_current = True
-#
-#     test_oxo_result.mapping_list = [test_oxo_mapping_1, test_oxo_mapping_2]
-#
-#     dist_one_mappings, exact_mapping = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
-#                                                          ['mondo', 'hp'])
-#
-#     assert len(dist_one_mappings) == 1
-#     assert exact_mapping == ''
-
-
 @pytest.mark.integration
 def test_find_replacement_mapping():
     trait_name = 'genetic transient congenital hypothyroidism'
