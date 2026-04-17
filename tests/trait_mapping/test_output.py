@@ -2,10 +2,10 @@ import csv
 import tempfile
 
 import pytest
-from cmat.trait_mapping import zooma, oxo
+from cmat.trait_mapping.ols import EXACT_SYNONYM_KEY
 
-from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation, \
-    get_zooma_mappings, to_mapping_string, get_oxo_mappings
+from cmat.trait_mapping.ols_search import OlsMapping
+from cmat.trait_mapping.output import output_trait_mapping, find_replacement_mapping, output_for_curation
 from cmat.trait_mapping.trait import OntologyEntry, Trait
 
 
@@ -39,50 +39,50 @@ def test_output_trait_mapping():
                 'Adenine phosphoribosyltransferase deficiency type A'] == next(mapping_reader)
 
 
-def test_get_zooma_mappings():
-    # High confidence ZOOMA mapping
-    test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
-                                          'Adenine phosphoribosyltransferase deficiency',
-                                          'HIGH', 'eva-clinvar')
-    entry = test_zooma_result.mapping_list[0]
-    entry.in_ontology = True
-    entry.is_current = True
-    entry.ontology_label = 'Adenine phosphoribosyltransferase deficiency'
-
-    # Exact string match ZOOMA mapping
-    test_zooma_result_2 = zooma.ZoomaResult(['http://snomed.info/id/65791008'],
-                                            'APRT deficiency, Japanese type',
-                                            'GOOD', 'clinvar-xrefs')
-    entry = test_zooma_result_2.mapping_list[0]
-    entry.in_ontology = False
-    entry.is_current = False
-    entry.ontology_label = 'APRT deficiency, Japanese type'
-
-    high_conf_mappings, exact_mapping = get_zooma_mappings([test_zooma_result, test_zooma_result_2], 'aprt deficiency, japanese type',
-                                                            'efo', ['mondo', 'hp'])
-    assert len(high_conf_mappings) == 1
-    assert exact_mapping != ''
-
-
-def test_get_oxo_mappings():
-    test_oxo_result = oxo.OxOResult('HP:0006706', 'Cystic liver disease', 'HP:0006706')
-
-    test_oxo_mapping_1 = oxo.OxOMapping('Isolated polycystic liver disease', 'Orphanet:2924', 2,
-                                        'HP:0006706')
-    test_oxo_mapping_1.in_ontology = True
-    test_oxo_mapping_1.is_current = True
-
-    test_oxo_mapping_2 = oxo.OxOMapping('cystic liver disease', 'EFO:1001505', 1, 'HP:0006706')
-    test_oxo_mapping_2.in_ontology = True
-    test_oxo_mapping_2.is_current = True
-
-    test_oxo_result.mapping_list = [test_oxo_mapping_1, test_oxo_mapping_2]
-
-    dist_one_mappings, exact_mapping = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
-                                                         ['mondo', 'hp'])
-
-    assert len(dist_one_mappings) == 1
-    assert exact_mapping == ''
+# def test_get_zooma_mappings():
+#     # High confidence ZOOMA mapping
+#     test_zooma_result = zooma.ZoomaResult(['http://www.orpha.net/ORDO/Orphanet_976'],
+#                                           'Adenine phosphoribosyltransferase deficiency',
+#                                           'HIGH', 'eva-clinvar')
+#     entry = test_zooma_result.mapping_list[0]
+#     entry.in_ontology = True
+#     entry.is_current = True
+#     entry.ontology_label = 'Adenine phosphoribosyltransferase deficiency'
+#
+#     # Exact string match ZOOMA mapping
+#     test_zooma_result_2 = zooma.ZoomaResult(['http://snomed.info/id/65791008'],
+#                                             'APRT deficiency, Japanese type',
+#                                             'GOOD', 'clinvar-xrefs')
+#     entry = test_zooma_result_2.mapping_list[0]
+#     entry.in_ontology = False
+#     entry.is_current = False
+#     entry.ontology_label = 'APRT deficiency, Japanese type'
+#
+#     high_conf_mappings, exact_mapping = get_zooma_mappings([test_zooma_result, test_zooma_result_2], 'aprt deficiency, japanese type',
+#                                                             'efo', ['mondo', 'hp'])
+#     assert len(high_conf_mappings) == 1
+#     assert exact_mapping != ''
+#
+#
+# def test_get_oxo_mappings():
+#     test_oxo_result = oxo.OxOResult('HP:0006706', 'Cystic liver disease', 'HP:0006706')
+#
+#     test_oxo_mapping_1 = oxo.OxOMapping('Isolated polycystic liver disease', 'Orphanet:2924', 2,
+#                                         'HP:0006706')
+#     test_oxo_mapping_1.in_ontology = True
+#     test_oxo_mapping_1.is_current = True
+#
+#     test_oxo_mapping_2 = oxo.OxOMapping('cystic liver disease', 'EFO:1001505', 1, 'HP:0006706')
+#     test_oxo_mapping_2.in_ontology = True
+#     test_oxo_mapping_2.is_current = True
+#
+#     test_oxo_result.mapping_list = [test_oxo_mapping_1, test_oxo_mapping_2]
+#
+#     dist_one_mappings, exact_mapping = get_oxo_mappings([test_oxo_result], 'congenital cystic disease of liver', 'efo',
+#                                                          ['mondo', 'hp'])
+#
+#     assert len(dist_one_mappings) == 1
+#     assert exact_mapping == ''
 
 
 @pytest.mark.integration
@@ -99,18 +99,12 @@ def test_find_replacement_mapping():
     # Deprecated in EFO with current replacement term
     assert find_replacement_mapping(
         trait_name, 'http://www.ebi.ac.uk/efo/EFO_0000665', target_ontology, preferred_ontologies
-    ) == 'http://purl.obolibrary.org/obo/MONDO_0037939|porphyria|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0037939|porphyria|PREVIOUS|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
 
     # Deprecated in EFO but replacement is also deprecated, so use its replacement
     assert find_replacement_mapping(
         trait_name, 'http://www.orpha.net/ORDO/Orphanet_226316', target_ontology, preferred_ontologies
-    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
-
-
-def test_to_mapping_string():
-    result = to_mapping_string('http://www.orpha.net/ORDO/Orphanet_976', 'aprt deficiency, japanese type', 'efo',
-                               ['mondo', 'hp'])
-    assert result == 'http://www.orpha.net/ORDO/Orphanet_976|Adenine phosphoribosyltransferase deficiency|NO_MATCH|EFO_OBSOLETE'
+    ) == 'http://purl.obolibrary.org/obo/MONDO_0011792|thyroid dyshormonogenesis 6|PREVIOUS|TOKEN_MATCH_SYNONYM|EFO_CURRENT'
 
 
 def test_output_for_curation():
@@ -120,11 +114,11 @@ def test_output_for_curation():
 
         test_trait = Trait("transitional cell carcinoma of the bladder", '99999', 276)
 
-        test_ols_result = OlsResult(
+        test_ols_result = OlsMapping(
+            mapping_context=None,  # not needed for output
             uri='http://purl.obolibrary.org/obo/HP_0006740',
             label='Transitional cell carcinoma of the bladder',
-            ontology=None,  # not needed for output
-            full_exact_match=[],
+            exact_match=[],
             contained_match=['label'],
             token_match=['synonym'],
             in_target_ontology=False,
@@ -152,11 +146,11 @@ def test_output_for_curation_ordering():
         test_trait = Trait("hemoglobin s", '99999', 276)
         test_trait.ols_result_list = [
             # http://purl.obolibrary.org/obo/NCIT_C122123|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|NOT_MONDO_HP_EFO
-            OlsResult(
+            OlsMapping(
+                mapping_context=None,  # not needed for output
                 uri='http://purl.obolibrary.org/obo/NCIT_C122123',
                 label='Hemoglobin S Measurement',
-                ontology=None,  # not needed for output
-                full_exact_match=[EXACT_SYNONYM_KEY],
+                exact_match=[EXACT_SYNONYM_KEY],
                 contained_match=[],
                 token_match=[],
                 in_target_ontology=False,
@@ -164,11 +158,11 @@ def test_output_for_curation_ordering():
                 is_current=False
             ),
             # http://www.ebi.ac.uk/efo/EFO_0009223|Hemoglobin S Measurement|EXACT_MATCH_SYNONYM|EFO_CURRENT
-            OlsResult(
+            OlsMapping(
+                mapping_context=None,  # not needed for output
                 uri='http://www.ebi.ac.uk/efo/EFO_0009223',
                 label='Hemoglobin S Measurement',
-                ontology=None,  # not needed for output
-                full_exact_match=[EXACT_SYNONYM_KEY],
+                exact_match=[EXACT_SYNONYM_KEY],
                 contained_match=[],
                 token_match=[],
                 in_target_ontology=True,

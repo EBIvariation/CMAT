@@ -5,6 +5,7 @@ import cmat.trait_mapping.oxo as oxo
 from cmat.trait_mapping.ols import OLS_BASE_URL
 
 import resources.test_oxo_data as test_oxo_data
+from cmat.trait_mapping.ontology_mapping import MappingContext
 
 
 class TestUriToOxoFormat:
@@ -66,12 +67,22 @@ class TestGetOxoResultsFromResponse:
                   json=test_oxo_data.TestGetOxoResultsFromResponseData.hp_0001537_ols_terms_json)
 
             oxo_response = {'_embedded': {'searchResults': [{'curie': 'HP:0001537', '_links': {'self': {'href': 'https://www.ebi.ac.uk/spot/oxo/api/terms/HP:0001537'}, 'mappings': {'href': 'https://www.ebi.ac.uk/spot/oxo/api/mappings?fromId=HP:0001537'}}, 'label': 'Umbilical hernia', 'querySource': None, 'queryId': 'HP:0001537', 'mappingResponseList': [{'curie': 'Orphanet:660', 'targetPrefix': 'Orphanet', 'distance': 3, 'sourcePrefixes': ['ONTONEO', 'Orphanet', 'DOID', 'UMLS'], 'label': 'Omphalocele'}, {'curie': 'Orphanet:3164', 'targetPrefix': 'Orphanet', 'distance': 3, 'sourcePrefixes': ['ONTONEO', 'EFO', 'Orphanet', 'DOID'], 'label': 'Omphalocele syndrome, Shprintzen-Goldberg type'}]}]}, 'page': {'totalPages': 1, 'size': 1000, 'number': 0, 'totalElements': 1}, '_links': {'self': {'href': 'https://www.ebi.ac.uk/spot/oxo/api/search'}}}
-            expected_oxo_result = oxo.OxOResult("HP:0001537", "Umbilical hernia", "HP:0001537")
-            expected_oxo_result.mapping_list = [oxo.OxOMapping("Omphalocele", "Orphanet:660", 3, "HP:0001537"),
-                                                oxo.OxOMapping("Omphalocele syndrome, Shprintzen-Goldberg type", "Orphanet:3164", 3, "HP:0001537")]
-            expected_oxo_results = [expected_oxo_result]
+            mapping_context = MappingContext('omphalocele', 'efo', [])
+            expected_oxo_results = [
+                oxo.OxoMapping(
+                    mapping_context=mapping_context,
+                    uri="http://www.orpha.net/ORDO/Orphanet_660",
+                    label="Omphalocele",
+                    distance=3,
+                    query_id="http://purl.obolibrary.org/obo/HP_0001537"),
+                oxo.OxoMapping(
+                    mapping_context=mapping_context,
+                    uri="http://www.orpha.net/ORDO/Orphanet_3164",
+                    label="Omphalocele syndrome, Shprintzen-Goldberg type",
+                    distance=3,
+                    query_id="http://purl.obolibrary.org/obo/HP_0001537")]
 
-            assert oxo.get_oxo_results_from_response(oxo_response) == expected_oxo_results
+            assert oxo.get_oxo_results_from_response(mapping_context, oxo_response) == expected_oxo_results
 
     @pytest.mark.integration
     @pytest.mark.skip(reason="OxO frequently down")

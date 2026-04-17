@@ -8,7 +8,7 @@ from unidecode import unidecode
 from cmat.clinvar_xml_io import ClinVarTrait
 from cmat.trait_mapping.ols_search import get_ols_search_results
 
-from cmat.trait_mapping.ontology_mapping import MappingContext, PreviousMapping
+from cmat.trait_mapping.ontology_mapping import MappingContext, PreviousMapping, MappingSource
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
@@ -91,7 +91,7 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
 
     # Only go on query OxO if we have some results from ZOOMA, but none in the target ontology
     # Otherwise return the trait for curation
-    if len(zooma_results) == 0 or any(mapping.is_current for mapping in zooma_results):
+    if len(zooma_results) == 0 or any(mapping.get_mapping_source() == MappingSource.TARGET_CURRENT for mapping in zooma_results):
         return trait
 
     # Query OxO - these results will only be used as candidates for curation

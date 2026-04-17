@@ -17,18 +17,17 @@ class OxoMapping(OntologyMapping):
         self.distance = distance
         self.query_id = query_id
 
-    # TODO review these
+    # TODO review for consistency with OntologyMapping
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return (self.label == other.label, self.db == other.db, self.id_ == other.id_,
-                self.distance == other.distance, self.in_ontology == other.in_ontology,
-                self.is_current == other.is_current, self.ontology_label == other.ontology_label)
+        return (self.label == other.label, self.uri == other.uri,
+                self.distance == other.distance, self.get_mapping_source() == other.get_mapping_source())
 
     def __lt__(self, other):
-        # Lower distances are better and should be sorted high
-        return ((other.distance, self.in_ontology, self.is_current) <
-                (self.distance, other.in_ontology, other.is_current))
+        # Lower distances and mapping sources are better and should be sorted high
+        # TODO consider flipping the order of the enums or the mappings so they're more consistent
+        return (other.distance, other.get_mapping_source()) < (self.distance, self.get_mapping_source())
 
     def __str__(self):
         return "{}, {}, {}, {}".format(self.label, self.curie, self.distance, self.query_id)
