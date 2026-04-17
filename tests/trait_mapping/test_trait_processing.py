@@ -3,7 +3,7 @@ import os
 import pytest
 
 from cmat.trait_mapping.ols_search import OlsMapping
-from cmat.trait_mapping.ontology_mapping import PreviousMapping
+from cmat.trait_mapping.ontology_mapping import PreviousMapping, ClinVarXrefMapping
 from cmat.trait_mapping.trait_processing import process_trait
 from cmat.trait_mapping.trait import Trait
 from cmat.trait_mapping.utils import load_ontology_mapping
@@ -79,3 +79,14 @@ class TestProcessTrait:
         processed_trait = self.run_process_trait(trait)
         assert processed_trait.is_finished
         assert len(processed_trait.finished_mapping_set) == 2
+
+    def test_with_clinvar_xrefs(self):
+        xrefs = ['http://identifiers.org/medgen/C3150169']
+        trait = Trait('frontotemporal lobar degeneration with tdp43 inclusions, tardbp-related', None, None, xrefs)
+        processed_trait = self.run_process_trait(trait)
+        assert not processed_trait.is_finished
+        # TODO currently this contains the xref from both Zooma and ClinVar, should deduplicate...
+        assert len(processed_trait.candidate_mappings) == 3
+        for mapping in processed_trait.candidate_mappings:
+            if isinstance(mapping, ClinVarXrefMapping):
+                assert mapping.uri == xrefs[0]

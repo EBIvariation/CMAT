@@ -31,12 +31,13 @@ class Trait:
     Object to hold data for one trait name. Including the number of ClinVar record's traits it
     appears in, any Zooma and OxO mappings, and any mappings which are ready to be output.
     """
-    def __init__(self, name, identifier, frequency, associated_with_nt_expansion=False):
+    def __init__(self, name, identifier, frequency, xrefs=[], associated_with_nt_expansion=False):
         self.name = name
         self.identifier = identifier
         self.frequency = frequency
         self.candidate_mappings : list[OntologyMapping] = []
         self.finished_mapping_set = set()
+        self.xrefs = xrefs
         self.associated_with_nt_expansion = associated_with_nt_expansion
 
     @property
@@ -65,6 +66,7 @@ class Trait:
                     self.finished_mapping_set.add(mapping)
 
 
+    # TODO move the deduplication logic someplace
     # def process_ols_results(self):
     #     """
     #     Deduplicate OLS mappings and check whether any can be output as a finished ontology mapping.
@@ -81,13 +83,4 @@ class Trait:
     #         # Accept current mappings in the target ontology with full exact matches on the label
     #         if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
     #             ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
-    #             self.finished_mapping_set.add(ontology_entry)
-    #
-    # def process_previous_mappings(self, ontology):
-    #     """
-    #     Previous mappings are considered finished as long as they are still current.
-    #     """
-    #     for uri, label in self.previous_mapping_list:
-    #         if is_current_and_in_ontology(uri, ontology):
-    #             ontology_entry = OntologyEntry(uri, label)
     #             self.finished_mapping_set.add(ontology_entry)

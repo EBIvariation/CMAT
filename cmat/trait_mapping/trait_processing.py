@@ -8,7 +8,7 @@ from unidecode import unidecode
 from cmat.clinvar_xml_io import ClinVarTrait
 from cmat.trait_mapping.ols_search import get_ols_search_results
 
-from cmat.trait_mapping.ontology_mapping import MappingContext, PreviousMapping, MappingSource
+from cmat.trait_mapping.ontology_mapping import MappingContext, PreviousMapping, MappingSource, ClinVarXrefMapping
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
@@ -83,6 +83,9 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
     trait.assess_if_finished()
     if trait.is_finished:
         return trait
+
+    # Add ClinVar xrefs
+    trait.candidate_mappings.extend([ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs])
 
     # Query ZOOMA - these results will only be used as candidates for curation
     logger.info(f'Querying ZOOMA for trait {trait.name}')
