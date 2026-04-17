@@ -20,16 +20,12 @@ def output_trait_mapping(trait: Trait, mapping_writer: csv.writer, finished_sour
     :param finished_source_counts: Optional Counter to count sources of finished mappings
     """
     for ontology_entry in trait.finished_mapping_set:
-        # Need the corresponding Zooma result - for counting purposes only
-        zooma_mapping = None
-        for zooma_result in trait.zooma_result_list:
-            for zm in zooma_result.mapping_list:
-                if (zm.in_ontology and zm.is_current and ontology_entry.uri == zm.uri
-                        and ontology_entry.label == zm.ontology_label):
-                    zooma_mapping = zm
+        if finished_source_counts:
+            # Get the corresponding provenance for counting purposes
+            for mapping in trait.candidate_mappings:
+                if ontology_entry.uri == mapping.uri:
+                    finished_source_counts[mapping.provenance] += 1
                     break
-        if zooma_mapping and finished_source_counts:
-            finished_source_counts[zooma_mapping.source.lower()] += 1
         mapping_writer.writerow([trait.name, ontology_entry.uri, ontology_entry.label])
 
 
@@ -46,7 +42,7 @@ def get_previous_and_replacement_mappings(candidate_mappings, trait_name, target
         else:
             remaining_mappings.append(mapping)
     if not previous_and_replacement:
-        return [('', '')]
+        return [('', '')], candidate_mappings
     return previous_and_replacement, remaining_mappings
 
 

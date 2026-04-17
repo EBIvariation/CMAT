@@ -1,14 +1,14 @@
 import logging
-from enum import Enum
+from enum import IntEnum
 from functools import total_ordering, cached_property
 
 from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, get_is_in_ontologies, is_current_and_in_ontology, \
-    get_fields_with_match, EXACT_SYNONYM_KEY, is_in_ontology
+    get_fields_with_match, EXACT_SYNONYM_KEY
 
 logger = logging.getLogger(__package__)
 
 
-class MappingProvenance(Enum):
+class MappingProvenance(IntEnum):
     PREVIOUS = 0
     OLS = 1
     CLINVAR_XREF = 2
@@ -19,7 +19,7 @@ class MappingProvenance(Enum):
         return self.name
 
 
-class MatchType(Enum):
+class MatchType(IntEnum):
     EXACT_MATCH_LABEL = 0
     EXACT_MATCH_SYNONYM = 1
     CONTAINED_MATCH_LABEL = 2
@@ -32,7 +32,7 @@ class MatchType(Enum):
         return self.name
 
 
-class MappingSource(Enum):
+class MappingSource(IntEnum):
     TARGET_CURRENT = 0
     TARGET_OBSOLETE = 1
     PREFERRED_NOT_TARGET = 2
@@ -88,37 +88,36 @@ class OntologyMapping:
         return hash((self.mapping_context, self.uri))
 
     def __gt__(self, other):
-        # TODO add provenance to this
+        # TODO add provenance to this and rewrite using the public methods
         # Larger means better mapping
         # In general, full exact matches > contained matches > token matches,
         # and target ontology > preferred ontologies > neither
-        # TODO can we rewrite this using the public methods?
-        if self.exact_match:
-            if other.exact_match:
+        if self._exact_match:
+            if other._exact_match:
                 return self.ontology_rank() > other.ontology_rank()
             else:
                 return True
-        if self.contained_match:
-            if other.exact_match:
+        if self._contained_match:
+            if other._exact_match:
                 return False
-            if other.contained_match:
+            if other._contained_match:
                 return self.ontology_rank() > other.ontology_rank()
             else:
                 return True
-        if self.token_match:
-            if other.exact_match:
+        if self._token_match:
+            if other._exact_match:
                 return False
-            if other.contained_match:
+            if other._contained_match:
                 return False
-            if other.token_match:
+            if other._token_match:
                 return self.ontology_rank() > other.ontology_rank()
             else:
                 return True
 
     def ontology_rank(self):
-        if self.in_target_ontology:
+        if self._in_target_ontology:
             return 2
-        if self.in_preferred_ontology:
+        if self._in_preferred_ontology:
             return 1
         return 0
 
