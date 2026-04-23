@@ -30,7 +30,7 @@ class OxoMapping(OntologyMapping):
         return (other.distance, other.get_mapping_source()) < (self.distance, self.get_mapping_source())
 
     def __str__(self):
-        return "{}, {}, {}, {}".format(self.label, self.curie, self.distance, self.query_id)
+        return "{}, {}, {}, {}".format(self.label, self.uri, self.distance, self.query_id)
 
 
 URI_DB_TO_DB_DICT = {
