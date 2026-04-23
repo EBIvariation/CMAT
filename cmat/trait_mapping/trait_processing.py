@@ -6,19 +6,21 @@ from collections import Counter
 from unidecode import unidecode
 
 from cmat.clinvar_xml_io import ClinVarTrait
-from cmat.trait_mapping.ols import get_ols_search_results
+from cmat.trait_mapping.ols_search import get_ols_search_results
+
+from cmat.trait_mapping.ontology_mapping import MappingContext, PreviousMapping, MappingSource, ClinVarXrefMapping
 from cmat.trait_mapping.output import output_trait
 from cmat.trait_mapping.oxo import get_oxo_results
 from cmat.trait_mapping.oxo import uris_to_oxo_format
 from cmat.trait_mapping.trait import Trait
 from cmat.trait_mapping.trait_names_parsing import parse_trait_names
 from cmat.trait_mapping.utils import load_ontology_mapping
-from cmat.trait_mapping.zooma import get_zooma_results
+from cmat.trait_mapping.zooma import get_zooma_results, ZoomaMapping, ZoomaConfidence
 
 logger = logging.getLogger(__package__)
 
 
-def get_uris_for_oxo(zooma_result_list: list) -> set:
+def get_uris_for_oxo(zooma_result_list: list[ZoomaMapping]) -> set:
     """
     For a list of Zooma mappings return a list of uris for the mappings in that list with a high
     confidence.
@@ -29,8 +31,8 @@ def get_uris_for_oxo(zooma_result_list: list) -> set:
     uri_set = set()
     for mapping in zooma_result_list:
         # Only use high confidence Zooma mappings for querying OxO
-        if mapping.confidence.lower() == "high":
-            uri_set.update([entry.uri for entry in mapping.mapping_list])
+        if mapping.confidence == ZoomaConfidence.HIGH:
+            uri_set.add(mapping.uri)
     return uri_set
 
 
@@ -59,48 +61,50 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
+    # Query OLS for matches
     lowercased_trait_name = trait.name.lower()
-    trait.ols_result_list = get_ols_search_results(lowercased_trait_name, ols_query_fields, ols_field_list,
-                                                   target_ontology, preferred_ontologies)
-    trait.process_ols_results()
+    mapping_context = MappingContext(lowercased_trait_name, target_ontology, preferred_ontologies)
+    trait.candidate_mappings.extend(get_ols_search_results(mapping_context, ols_query_fields, ols_field_list))
+    trait.assess_if_finished()
     if trait.is_finished:
         return trait
     # Search again with accents and other non-ASCII symbols replaced, if necessary
     normalised_trait_name = unidecode(lowercased_trait_name)
     if normalised_trait_name != lowercased_trait_name:
-        trait.ols_result_list += get_ols_search_results(normalised_trait_name, ols_query_fields, ols_field_list,
-                                                        target_ontology, preferred_ontologies)
-        trait.process_ols_results()
+        norm_mapping_context = MappingContext(normalised_trait_name, target_ontology, preferred_ontologies)
+        trait.candidate_mappings.extend(get_ols_search_results(norm_mapping_context, ols_query_fields, ols_field_list))
+        trait.assess_if_finished()
         if trait.is_finished:
             return trait
 
     # Query for a previous mapping
-    trait.previous_mapping_list = previous_mappings.get(lowercased_trait_name, [])
-    trait.process_previous_mappings(target_ontology)
+    previous_mappings = previous_mappings.get(lowercased_trait_name, [])
+    trait.candidate_mappings.extend(PreviousMapping(mapping_context, uri, label) for uri, label in previous_mappings)
+    trait.assess_if_finished()
     if trait.is_finished:
         return trait
 
+    # Add ClinVar xrefs
+    if trait.xrefs:
+        trait.candidate_mappings.extend([ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs])
+
     # Query ZOOMA - these results will only be used as candidates for curation
     logger.info(f'Querying ZOOMA for trait {trait.name}')
-    trait.zooma_result_list = get_zooma_results(lowercased_trait_name, filters, target_ontology)
+    zooma_results = get_zooma_results(mapping_context, filters)
+    trait.candidate_mappings.extend(zooma_results)
 
     # Only go on query OxO if we have some results from ZOOMA, but none in the target ontology
     # Otherwise return the trait for curation
-    if (len(trait.zooma_result_list) == 0
-            or any([entry.is_current
-                    for mapping in trait.zooma_result_list
-                    for entry in mapping.mapping_list])):
+    if len(zooma_results) == 0 or any(mapping.get_mapping_source() == MappingSource.TARGET_CURRENT for mapping in zooma_results):
         return trait
 
     # Query OxO - these results will only be used as candidates for curation
     logger.info(f'Querying OxO for trait {trait.name}')
-    uris_for_oxo_set = get_uris_for_oxo(trait.zooma_result_list)
+    uris_for_oxo_set = get_uris_for_oxo(zooma_results)
     oxo_input_id_list = uris_to_oxo_format(uris_for_oxo_set)
     if len(oxo_input_id_list) == 0:
         return trait
-    trait.oxo_result_list = get_oxo_results(oxo_input_id_list, oxo_target_list, oxo_distance)
-    if not trait.oxo_result_list:
-        logger.debug('No OxO mapping for trait {}'.format(trait.name))
+    trait.candidate_mappings.extend(get_oxo_results(mapping_context, oxo_input_id_list, oxo_target_list, oxo_distance))
 
     return trait
 

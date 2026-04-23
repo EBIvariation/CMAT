@@ -1,5 +1,6 @@
 import cmat.trait_mapping.zooma as zooma
 from cmat.trait_mapping.ols import OLS_BASE_URL
+from cmat.trait_mapping.ontology_mapping import MappingContext
 
 
 def test_build_zooma_query():
@@ -14,6 +15,7 @@ def test_build_zooma_query():
 
 
 def test_get_zooma_results_for_trait():
+    mapping_context = MappingContext('abnormal bleeding', 'efo', ['mondo', 'hp'])
     zooma_response_list = [{'confidence': 'HIGH', 'semanticTags': ['http://purl.obolibrary.org/obo/HP_0001892'],
                             'provenance': {'source': {'uri': 'http://www.ebi.ac.uk/spot/zooma', 'type': 'DATABASE',
                                                       'name': 'zooma'}, 'generatedDate': 1502287637052,
@@ -40,16 +42,8 @@ def test_get_zooma_results_for_trait():
                                     'propertyValue': 'abnormal bleeding', 'propertyType': 'disease'},
                                             'uri': 'http://rdf.ebi.ac.uk/resource/zooma/eva-clinvar/2D66457AE8F4E9A31CDD27E66F5B4607',
                                             'replaces': [], 'replacedBy': []}, 'replaces': [], 'replacedBy': []}]
-    expected_zooma_result = zooma.ZoomaResult(['http://purl.obolibrary.org/obo/HP_0001892'],
-                                              'abnormal bleeding', 'HIGH', 'eva-clinvar')
-    entry = expected_zooma_result.mapping_list[0]
-    entry.confidence = zooma.ZoomaConfidence.HIGH
-    entry.in_ontology = False
-    entry.is_current = False
-    entry.ontology_label = ""
-    entry.source = 'eva-clinvar'
-    entry.uri = 'http://purl.obolibrary.org/obo/HP_0000483'
-
+    expected_zooma_result = zooma.ZoomaMapping(mapping_context,'http://purl.obolibrary.org/obo/HP_0001892',
+                                              'HIGH', 'eva-clinvar')
     expected_mappings = [expected_zooma_result]
 
-    assert zooma.get_zooma_results_for_trait(zooma_response_list) == expected_mappings
+    assert zooma.get_zooma_results_for_trait(mapping_context, zooma_response_list) == expected_mappings

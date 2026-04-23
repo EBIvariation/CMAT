@@ -1,7 +1,8 @@
-from collections import Counter
+from collections import Counter, defaultdict
 
 from cmat.clinvar_xml_io import ClinVarDataset
 from cmat.clinvar_xml_io.filtering import filter_by_submission
+from cmat.clinvar_xml_io.ontology_uri import OntologyUri
 from cmat.trait_mapping.trait import Trait
 
 
@@ -24,6 +25,11 @@ def parse_trait_names(filepath: str) -> list:
     # Tracks how many times a trait name occurs in ClinVar
     trait_name_counter = Counter()
 
+    # Track cross-references associated with each trait name.
+    # Do this separately from trait name/ID, just in case ClinVar has different sets of xrefs associated with the same
+    # trait across different RCVs.
+    trait_xrefs = defaultdict(list)
+
     # Tracks all traits which are at least once implicated in "NT expansion", or nucleotide repeat expansion, variants.
     # Their curation is of highest importance regardless of how many records they are actually associated with.
     nt_expansion_traits = set()
@@ -33,9 +39,12 @@ def parse_trait_names(filepath: str) -> list:
         if not filter_by_submission(clinvar_set):
             continue
         clinvar_record = clinvar_set.rcv
-        trait_names_and_ids = set((trait.preferred_or_other_valid_name.lower(), trait.identifier)
-                                  for trait in clinvar_record.traits_with_valid_names)
-        for trait_tuple in trait_names_and_ids:
+        trait_names_and_ids = set()
+        for trait in clinvar_record.traits_with_valid_names:
+            trait_tuple = (trait.preferred_or_other_valid_name.lower(), trait.identifier)
+            trait_names_and_ids.add(trait_tuple)
+            xrefs = [OntologyUri(id_, db).uri for (db, id_, status) in trait.xrefs if status.lower() == 'current']
+            trait_xrefs[trait_tuple].extend(xrefs)
             trait_name_counter[trait_tuple] += 1
         if clinvar_record.measure and clinvar_record.measure.is_repeat_expansion_variant:
             nt_expansion_traits |= trait_names_and_ids
@@ -48,6 +57,7 @@ def parse_trait_names(filepath: str) -> list:
             continue
         associated_with_nt_expansion = trait_tuple in nt_expansion_traits
         traits.append(Trait(name=trait_tuple[0], identifier=trait_tuple[1], frequency=trait_frequency,
+                            xrefs=trait_xrefs.get(trait_tuple),
                             associated_with_nt_expansion=associated_with_nt_expansion))
 
     return traits

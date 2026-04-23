@@ -2,7 +2,7 @@ from enum import Enum
 from functools import total_ordering
 import logging
 
-from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, is_current_and_in_ontology, is_in_ontology
+from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance, MappingContext
 from cmat.trait_mapping.utils import json_request
 
 
@@ -30,59 +30,26 @@ class ZoomaConfidence(Enum):
         return self.name
 
 
-@total_ordering
-class ZoomaMapping:
-    """Representation of one ontology term in a mapping in Zooma."""
-    def __init__(self, uri, confidence, source):
-        self.uri = uri
+class ZoomaMapping(OntologyMapping):
+    def __init__(self, mapping_context, uri, confidence, zooma_source):
+        super().__init__(mapping_context, uri, MappingProvenance.ZOOMA)
         self.confidence = ZoomaConfidence[confidence.upper()]
-        self.source = source
-        self.ontology_label = ""
-        self.in_ontology = False
-        # For non-EFO mappings, `is_current` property does not make sense and is not used
-        self.is_current = False
+        self.zooma_source = zooma_source
 
+    # TODO review for consistency with OntologyMapping
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
         if (self.uri != other.uri or self.confidence != other.confidence
-                or self.ontology_label != other.ontology_label or self.in_ontology != other.in_ontology
-                or self.is_current != other.is_current):
+                or self.get_mapping_source() != other.get_mapping_source()):
             return False
         return True
 
     def __lt__(self, other):
-        return ((self.confidence, self.in_ontology, self.is_current) <
-                (other.confidence, other.in_ontology, other.is_current))
+        return (self.confidence, other.get_mapping_source()) < (other.confidence, self.get_mapping_source())
 
 
-class ZoomaResult:
-    """
-    A mapping in Zooma from one term, which can contain multiple ontology IDs mapped to. One
-    term can be mapped to multiple mappings.
-    """
-    def __init__(self, uri_list, zooma_label, confidence, source):
-        self.uri_list = uri_list
-        self.zooma_label = zooma_label
-        self.confidence = confidence
-        self.source = source
-        self.mapping_list = []
-        for uri in uri_list:
-            self.mapping_list.append(ZoomaMapping(uri, confidence, source))
-
-    def __str__(self):
-        return "{}, {}, {}, {}".format(self.zooma_label, self.confidence, self.source,
-                                       self.mapping_list)
-
-    def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return (self.uri_list == other.uri_list, self.zooma_label == other.zooma_label,
-                self.confidence == other.confidence, self.source == other.source,
-                self.mapping_list == other.mapping_list)
-
-
-def get_zooma_results(trait_name: str, filters: dict, target_ontology: str = 'EFO') -> list:
+def get_zooma_results(mapping_context: MappingContext, filters: dict) -> list:
     """
     Given a trait name, Zooma filters in a dict and a hostname to use, query Zooma and return a list
     of Zooma mappings for this trait.
@@ -97,33 +64,13 @@ def get_zooma_results(trait_name: str, filters: dict, target_ontology: str = 'EF
     :param target_ontology: ID of target ontology (default EFO)
     :return: List of ZoomaResults
     """
-
-    url = build_zooma_query(trait_name, filters)
+    url = build_zooma_query(mapping_context.trait_name, filters)
     zooma_response_list = json_request(url)
 
     if zooma_response_list is None:
         return []
 
-    zooma_result_list = get_zooma_results_for_trait(zooma_response_list)
-
-    for zooma_result in zooma_result_list:
-        for zooma_mapping in zooma_result.mapping_list:
-            label, _ = get_label_and_synonyms_from_ols(zooma_mapping.uri)
-            if label is not None:
-                zooma_mapping.ontology_label = label
-            else:
-                # If no label is returned (because OLS failed to provide it), keep the existing one from ZOOMA
-                zooma_mapping.ontology_label = zooma_result.zooma_label
-
-            uri_is_current_and_in_ontology = is_current_and_in_ontology(zooma_mapping.uri, target_ontology)
-            if not uri_is_current_and_in_ontology:
-                uri_is_in_ontology = is_in_ontology(zooma_mapping.uri, target_ontology)
-                zooma_mapping.in_ontology = uri_is_in_ontology
-            else:
-                zooma_mapping.in_ontology = uri_is_current_and_in_ontology
-                zooma_mapping.is_current = uri_is_current_and_in_ontology
-
-    return zooma_result_list
+    return get_zooma_results_for_trait(mapping_context, zooma_response_list)
 
 
 def build_zooma_query(trait_name: str, filters: dict) -> str:
@@ -145,7 +92,7 @@ def build_zooma_query(trait_name: str, filters: dict) -> str:
     return url
 
 
-def get_zooma_results_for_trait(zooma_response_list: list) -> list:
+def get_zooma_results_for_trait(mapping_context: MappingContext, zooma_response_list: list) -> list:
     """
     Given a response from a Zooma request return ZoomaResults based upon the data in that request.
 
@@ -154,10 +101,9 @@ def get_zooma_results_for_trait(zooma_response_list: list) -> list:
     """
     result_list = []
     for response in zooma_response_list:
-        # uri_list = ",".join(result["semanticTags"])
         uris = response["semanticTags"]
-        zooma_label = response["annotatedProperty"]["propertyValue"]
         confidence = response["confidence"]
         source_name = response["derivedFrom"]["provenance"]["source"]["name"]
-        result_list.append(ZoomaResult(uris, zooma_label, confidence, source_name))
+        for uri in uris:
+            result_list.append(ZoomaMapping(mapping_context, uri, confidence, source_name))
     return result_list

@@ -1,7 +1,5 @@
-import os
 import re
-from enum import Enum
-from functools import lru_cache, total_ordering
+from functools import lru_cache
 import logging
 import requests
 import urllib
@@ -184,113 +182,6 @@ def get_uri_from_exact_match(text, ontology='EFO'):
     return None
 
 
-class MatchType(Enum):
-    EXACT_MATCH_LABEL = 0
-    EXACT_MATCH_SYNONYM = 1
-    CONTAINED_MATCH_LABEL = 2
-    CONTAINED_MATCH_SYNONYM = 3
-    TOKEN_MATCH_LABEL = 4
-    TOKEN_MATCH_SYNONYM = 5
-    NO_MATCH = 6
-
-    def __str__(self):
-        return self.name
-
-
-class MappingSource(Enum):
-    TARGET_CURRENT = 0
-    TARGET_OBSOLETE = 1
-    PREFERRED_NOT_TARGET = 2
-    NOT_PREFERRED_TARGET = 3
-
-    def to_string(self, target_ontology, preferred_ontologies):
-        # Workaround to make more curation-friendly output strings while staying ontology-agnostic
-        target_string = target_ontology.upper()
-        preferred_string = '_'.join(p.upper() for p in preferred_ontologies)
-        return self.name.replace('TARGET', target_string).replace('PREFERRED', preferred_string)
-
-
-@total_ordering
-class OlsResult:
-    """Representation of one ontology term coming from OLS search"""
-    def __init__(self, uri, label, ontology, full_exact_match, contained_match, token_match, in_target_ontology,
-                 in_preferred_ontology, is_current):
-        self.uri = uri
-        self.label = label
-        self.ontology = ontology
-        self.full_exact_match = full_exact_match
-        self.contained_match = contained_match
-        self.token_match = token_match
-        self.in_target_ontology = in_target_ontology
-        self.in_preferred_ontology = in_preferred_ontology
-        self.is_current = is_current
-
-    def __eq__(self, other):
-        return (isinstance(other, type(self)) and self.uri == other.uri and self.label == other.label
-                and self.ontology == other.ontology)
-
-    def __hash__(self):
-        return hash((self.uri, self.label, self.ontology))
-
-    def __gt__(self, other):
-        # Larger means better mapping
-        # In general, full exact matches > contained matches > token matches,
-        # and target ontology > preferred ontologies > neither
-        if self.full_exact_match:
-            if other.full_exact_match:
-                return self.ontology_rank() > other.ontology_rank()
-            else:
-                return True
-        if self.contained_match:
-            if other.full_exact_match:
-                return False
-            if other.contained_match:
-                return self.ontology_rank() > other.ontology_rank()
-            else:
-                return True
-        if self.token_match:
-            if other.full_exact_match:
-                return False
-            if other.contained_match:
-                return False
-            if other.token_match:
-                return self.ontology_rank() > other.ontology_rank()
-            else:
-                return True
-
-    def ontology_rank(self):
-        if self.in_target_ontology:
-            return 2
-        if self.in_preferred_ontology:
-            return 1
-        return 0
-
-    def get_match_type(self):
-        if self.full_exact_match:
-            if 'label' in self.full_exact_match:
-                return MatchType.EXACT_MATCH_LABEL
-            if EXACT_SYNONYM_KEY in self.full_exact_match:
-                return MatchType.EXACT_MATCH_SYNONYM
-        if self.contained_match:
-            if 'label' in self.contained_match:
-                return MatchType.CONTAINED_MATCH_LABEL
-            if EXACT_SYNONYM_KEY in self.contained_match:
-                return MatchType.CONTAINED_MATCH_SYNONYM
-        if self.token_match:
-            if 'label' in self.token_match:
-                return MatchType.TOKEN_MATCH_LABEL
-            if EXACT_SYNONYM_KEY in self.token_match:
-                return MatchType.TOKEN_MATCH_SYNONYM
-        return MatchType.NO_MATCH
-
-    def get_mapping_source(self):
-        if self.in_target_ontology:
-            return MappingSource.TARGET_CURRENT if self.is_current else MappingSource.TARGET_OBSOLETE
-        if self.in_preferred_ontology:
-            return MappingSource.PREFERRED_NOT_TARGET
-        return MappingSource.NOT_PREFERRED_TARGET
-
-
 def get_fields_with_match(search_term, query_fields, result_json):
     search_term = search_term.lower().strip()
     search_term_tokens = set(search_term.split())
@@ -319,94 +210,11 @@ def get_fields_with_match(search_term, query_fields, result_json):
     return full_exact_match, contained_match, token_match
 
 
-def get_is_in_ontologies(uri, target_ontology, preferred_ontologies):
-    in_target_ontology = is_in_ontology(uri, target_ontology)
+def get_is_in_ontologies(uri, mapping_context):
+    in_target_ontology = is_in_ontology(uri, mapping_context.target_ontology)
     in_preferred_ontology = False
-    for ontology in preferred_ontologies:
+    for ontology in mapping_context.preferred_ontologies:
         if is_in_ontology(uri, ontology):
             in_preferred_ontology = True
             break
     return in_target_ontology, in_preferred_ontology
-
-
-def get_ols_search_results(trait_name, query_fields, field_list, target_ontology, preferred_ontologies):
-    """
-    Search OLS for a given trait name with the specified parameters.
-
-    :param trait_name: String containing a trait name from a ClinVar record.
-    :param ontologies: String containing list of ontologies to search
-    :param query_fields: String containing list of fields to query
-    :param field_list: String containing list of fields to return
-    :param target_ontology: ID of target ontology
-    :param preferred_ontologies: List of preferred non-target ontology IDs
-    :return: List of OlsResults
-    """
-    if query_fields is None or field_list is None:
-        return []
-    query_fields_list = query_fields.split(',')
-    # V2 of the OLS API does not support search currently, so for now use V1
-    search_url = 'https://www.ebi.ac.uk/ols4/api/search'
-    params = {
-        'q': trait_name,
-        'exact': 'true',
-        'obsoletes': 'false',
-        'ontologies': f'{target_ontology.lower()},{",".join(preferred_ontologies)}',
-        'queryFields': query_fields,
-        'fieldList': field_list,
-        'rows': 1000
-    }
-
-
-    try:
-        results = json_request(search_url, params=params)
-        if results['response']['numFound'] > 0:
-            search_results = set()
-
-            for result in results['response']['docs']:
-                uri = result.get('iri')
-                label = result.get('label')
-                ontology = result.get('ontology_name')
-                full_exact_match, contained_match, token_match = get_fields_with_match(trait_name, query_fields_list, result)
-                in_target_ontology = (ontology == target_ontology.lower())
-                in_preferred_ontology = (ontology in preferred_ontologies)
-                # Query includes obsoletes=false
-                is_current = True if in_target_ontology else False
-                # If one of the matched fields is synonym, we must make an additional V2 API query in order to check
-                # that the synonym is exact, as the V1 search results do not separate synonym types.
-                if any('synonym' in l for l in [full_exact_match, contained_match, token_match]):
-                    classes_response = ols_ontology_query(uri, ontology)
-                    if classes_response.status_code != 200:
-                        continue
-                    full_exact_match, contained_match, token_match = get_fields_with_match(
-                        trait_name,
-                        [f if f != 'synonym' else EXACT_SYNONYM_KEY  for f in query_fields_list],
-                        classes_response.json()
-                    )
-                # Need to do this check, in case the only matches were to non-exact synonyms
-                if full_exact_match or contained_match or token_match:
-                    search_results.add(OlsResult(uri, label, ontology, full_exact_match, contained_match, token_match,
-                                                 in_target_ontology, in_preferred_ontology, is_current))
-            return list(search_results)
-        else:
-            return []
-
-    except requests.RequestException as e:
-        logger.warning(f"Error querying OLS4: {e}")
-        return []
-
-
-def get_mapping_attributes_from_ols(trait_name, uri, target_ontology, preferred_ontologies):
-    try:
-        in_target_ontology, in_preferred_ontology = get_is_in_ontologies(uri, target_ontology, preferred_ontologies)
-        is_current = is_current_and_in_ontology(uri, target_ontology) if in_target_ontology else False
-
-        label, synonyms = get_label_and_synonyms_from_ols(uri)
-        exact_match, contained_match, token_match = get_fields_with_match(
-            trait_name, ['label', EXACT_SYNONYM_KEY], {'label': label, EXACT_SYNONYM_KEY: list(synonyms)})
-
-        ols_result = OlsResult(uri, label, None, exact_match, contained_match, token_match, in_target_ontology,
-                               in_preferred_ontology, is_current)
-        return label, ols_result.get_match_type(), ols_result.get_mapping_source()
-    except Exception as e:
-        logger.warning(f'Error while getting mapping attributes from OLS: {e}')
-        return '', '', ''

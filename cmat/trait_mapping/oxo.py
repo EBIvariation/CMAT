@@ -1,10 +1,9 @@
-from functools import total_ordering, lru_cache
+from functools import lru_cache
 import logging
 import re
 import requests
 
-from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, is_in_ontology
-from cmat.trait_mapping.ols import is_current_and_in_ontology
+from cmat.trait_mapping.ontology_mapping import MappingProvenance, OntologyMapping, MappingContext
 from cmat.trait_mapping.ontology_uri import OntologyUri
 from cmat.trait_mapping.utils import json_request
 
@@ -12,62 +11,26 @@ from cmat.trait_mapping.utils import json_request
 logger = logging.getLogger(__package__)
 
 
-@total_ordering
-class OxOMapping:
-    """
-    Individual mapping for an ontology ID mapped to one other ontology ID. An OxO result can consist
-    of multiple mappings.
-    """
-    def __init__(self, label, curie, distance, query_id):
-        self.label = label
-        self.curie = curie
-        self.db, self.id_ = curie.split(":")
-        self.uri = OntologyUri(self.id_, self.db)
+class OxoMapping(OntologyMapping):
+    def __init__(self, mapping_context, uri, label, distance, query_id):
+        super().__init__(mapping_context, uri, MappingProvenance.OXO, label)
         self.distance = distance
         self.query_id = query_id
-        self.in_ontology = False
-        # For non-EFO mappings, `is_current` property does not make sense and is not used
-        self.is_current = False
-        self.ontology_label = ""
 
+    # TODO review for consistency with OntologyMapping
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return (self.label == other.label, self.db == other.db, self.id_ == other.id_,
-                self.distance == other.distance, self.in_ontology == other.in_ontology,
-                self.is_current == other.is_current, self.ontology_label == other.ontology_label)
+        return (self.label == other.label, self.uri == other.uri,
+                self.distance == other.distance, self.get_mapping_source() == other.get_mapping_source())
 
     def __lt__(self, other):
-        # Lower distances are better and should be sorted high
-        return ((other.distance, self.in_ontology, self.is_current) <
-                (self.distance, other.in_ontology, other.is_current))
+        # Lower distances and mapping sources are better and should be sorted high
+        # TODO consider flipping the order of the enums or the mappings so they're more consistent
+        return (other.distance, other.get_mapping_source()) < (self.distance, self.get_mapping_source())
 
     def __str__(self):
-        return "{}, {}, {}, {}".format(self.label, self.curie, self.distance, self.query_id)
-
-
-class OxOResult:
-    """
-    A single result from querying OxO for one ID. A result can contain multiple mappings. A response
-    from OxO can contain multiple results- one per queried ID.
-    """
-    def __init__(self, query_id, label, curie):
-        self.query_id = query_id
-        self.label = label
-        self.curie = curie
-        self.db, self.id_ = curie.split(":")
-        self.uri = OntologyUri(self.id_, self.db)
-        self.mapping_list = []
-
-    def __str__(self):
-        return "{}, {}, {}".format(self.query_id, self.label, self.curie)
-
-    def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return (self.query_id == other.query_id, self.label == other.label,
-                self.curie == other.curie, self.db == other.db, self.id_ == other.id_,
-                self.uri == other.uri, self.mapping_list == other.mapping_list)
+        return "{}, {}, {}, {}".format(self.label, self.uri, self.distance, self.query_id)
 
 
 URI_DB_TO_DB_DICT = {
@@ -136,7 +99,7 @@ def build_oxo_payload(id_list: list, target_list: list, distance: int) -> dict:
     return payload
 
 
-def get_oxo_results_from_response(oxo_response: dict, target_ontology: str = 'EFO') -> list:
+def get_oxo_results_from_response(mapping_context: MappingContext, oxo_response: dict) -> list:
     """
     For a json(/dict) response from an OxO request, parse the data into a list of OxOResults
 
@@ -150,37 +113,18 @@ def get_oxo_results_from_response(oxo_response: dict, target_ontology: str = 'EF
         if len(result["mappingResponseList"]) == 0:
             continue
         query_id = result["queryId"]
-        label = result["label"]
-        curie = result["curie"]
-        oxo_result = OxOResult(query_id, label, curie)
         for mapping_response in result["mappingResponseList"]:
             mapping_label = mapping_response["label"]
-            mapping_curie = mapping_response["curie"]
+            db, id = mapping_response["curie"].split(':')
+            uri = OntologyUri(id, db).uri
             mapping_distance = mapping_response["distance"]
-            oxo_mapping = OxOMapping(mapping_label, mapping_curie, mapping_distance, query_id)
-
-            uri = str(oxo_mapping.uri)
-
-            ontology_label, _ = get_label_and_synonyms_from_ols(uri)
-            if ontology_label is not None:
-                oxo_mapping.ontology_label = ontology_label
-
-            uri_is_current_and_in_ontology = is_current_and_in_ontology(uri, target_ontology)
-            if not uri_is_current_and_in_ontology:
-                uri_is_in_ontology = is_in_ontology(uri, target_ontology)
-                oxo_mapping.in_ontology = uri_is_in_ontology
-            else:
-                oxo_mapping.in_ontology = uri_is_current_and_in_ontology
-                oxo_mapping.is_current = uri_is_current_and_in_ontology
-
-            oxo_result.mapping_list.append(oxo_mapping)
-
-        oxo_result_list.append(oxo_result)
+            oxo_mapping = OxoMapping(mapping_context, uri, mapping_label, mapping_distance, query_id)
+            oxo_result_list.append(oxo_mapping)
 
     return oxo_result_list
 
 
-def get_oxo_results(id_list: list, target_list: list, distance: int) -> list:
+def get_oxo_results(mapping_context, id_list: list, target_list: list, distance: int) -> list:
     """
     Use list of ontology IDs, datasource targets and distance call function to query OxO and return
     a list of OxOResults.
@@ -207,4 +151,4 @@ def get_oxo_results(id_list: list, target_list: list, distance: int) -> list:
         logger.warning("Cannot parse the response from OxO for the following identifiers: {}".format(','.join(id_list)))
         return []
 
-    return get_oxo_results_from_response(oxo_response)
+    return get_oxo_results_from_response(mapping_context, oxo_response)
