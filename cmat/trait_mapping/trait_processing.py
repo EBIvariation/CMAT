@@ -85,7 +85,8 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
         return trait
 
     # Add ClinVar xrefs
-    trait.candidate_mappings.extend([ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs])
+    if trait.xrefs:
+        trait.candidate_mappings.extend([ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs])
 
     # Query ZOOMA - these results will only be used as candidates for curation
     logger.info(f'Querying ZOOMA for trait {trait.name}')
