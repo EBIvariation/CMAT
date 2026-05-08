@@ -22,6 +22,15 @@ def test_get_mapping_attributes():
     assert mapping.get_mapping_source() == MappingSource.TARGET_CURRENT
 
 
+@pytest.mark.integration
+def test_non_ontology_mapping():
+    mapping_context = MappingContext('11p partial monosomy syndrome', 'efo', ['mondo', 'hp'])
+    mapping = ClinVarXrefMapping(mapping_context, 'http://identifiers.org/medgen/C0206115')
+    assert mapping.label == ''
+    assert mapping.get_match_type() == MatchType.NO_MATCH
+    assert mapping.get_mapping_source() == MappingSource.NOT_PREFERRED_TARGET
+
+
 def test_ontology_mapping():
     mapping_context = MappingContext('something', 'efo', ['mondo', 'hp'])
     mappings = [
