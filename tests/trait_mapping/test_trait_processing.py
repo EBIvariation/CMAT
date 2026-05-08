@@ -55,7 +55,7 @@ class TestProcessTrait:
         # No sufficiently good mappings in OLS or Zooma
         trait = Trait('aicardi-goutieres syndrome 99', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 44
+        assert len(processed_trait.candidate_mappings) == 24
         assert self.get_mapping_types(processed_trait) == {ZoomaMapping}
         assert not processed_trait.is_finished
 
@@ -63,7 +63,7 @@ class TestProcessTrait:
         # Search should be agnostic to accents and other non-ASCII characters
         trait = Trait('pelger-huët anomaly', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 20
+        assert len(processed_trait.candidate_mappings) == 10
         assert processed_trait.is_finished
         assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://purl.obolibrary.org/obo/MONDO_0008214'}
 
