@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from cmat.trait_mapping.ols import ols_ontology_query, EXACT_SYNONYM_KEY, get_as_string_list
+from cmat.trait_mapping.ols import ols_ontology_query, EXACT_SYNONYM_KEY, get_fields_with_match
 from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance
 from cmat.trait_mapping.utils import json_request
 
@@ -14,34 +14,6 @@ class OlsMapping(OntologyMapping):
         super().__init__(mapping_context, uri, MappingProvenance.OLS, label,
                          in_target_ontology, in_preferred_ontology, is_current, exact_match, contained_match,
                          token_match)
-
-
-def get_fields_with_match(search_term, query_fields, result_json):
-    search_term = search_term.lower().strip()
-    search_term_tokens = set(search_term.split())
-    full_exact_match = []
-    contained_match = []
-    token_match = []
-    for field in query_fields:
-        if field in result_json:
-            if isinstance(result_json[field], str):
-                field_value = result_json[field].lower().strip()
-                if search_term == field_value:
-                    full_exact_match.append(field)
-                elif search_term in field_value:
-                    contained_match.append(field)
-                elif search_term_tokens.intersection(field_value.split()):
-                    token_match.append(field)
-            if isinstance(result_json[field], list):
-                field_values = get_as_string_list(result_json[field])
-                if [element for element in field_values if search_term == element]:
-                    full_exact_match.append(field)
-                elif [element for element in field_values if search_term in element]:
-                    contained_match.append(field)
-                elif [search_term_tokens.intersection(element.split()) for element in field_values]:
-                    token_match.append(field)
-
-    return full_exact_match, contained_match, token_match
 
 
 def get_ols_search_results(mapping_context, query_fields, field_list):

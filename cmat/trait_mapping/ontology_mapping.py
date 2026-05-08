@@ -3,8 +3,7 @@ from enum import IntEnum
 from functools import total_ordering, cached_property
 
 from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, get_is_in_ontologies, is_current_and_in_ontology, \
-    EXACT_SYNONYM_KEY
-from cmat.trait_mapping.ols_search import get_fields_with_match
+    EXACT_SYNONYM_KEY, get_fields_with_match
 
 logger = logging.getLogger(__package__)
 
@@ -93,8 +92,6 @@ class OntologyMapping:
             return NotImplemented
         # Smaller means better mapping
         return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(), other.get_match_type(), other.provenance)
-
-    # TODO ensure these are robust to non-ontologies (e.g. medgen)
 
     @cached_property
     def label(self):
