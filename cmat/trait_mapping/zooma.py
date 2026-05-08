@@ -36,17 +36,18 @@ class ZoomaMapping(OntologyMapping):
         self.confidence = ZoomaConfidence[confidence.upper()]
         self.zooma_source = zooma_source
 
-    # TODO review for consistency with OntologyMapping
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        if (self.uri != other.uri or self.confidence != other.confidence
-                or self.get_mapping_source() != other.get_mapping_source()):
-            return False
-        return True
+        return super().__eq__(other) and self.confidence == other.confidence
 
     def __lt__(self, other):
-        return (self.confidence, other.get_mapping_source()) < (other.confidence, self.get_mapping_source())
+        if isinstance(other, ZoomaMapping):
+            # Higher confidence means better mapping
+            return super().__lt__(other) and self.confidence > other.confidence
+        elif isinstance(other, OntologyMapping):
+            return super().__lt__(other)
+        return NotImplemented
 
 
 def get_zooma_results(mapping_context: MappingContext, filters: dict) -> list:

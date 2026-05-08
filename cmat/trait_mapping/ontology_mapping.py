@@ -3,7 +3,8 @@ from enum import IntEnum
 from functools import total_ordering, cached_property
 
 from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, get_is_in_ontologies, is_current_and_in_ontology, \
-    get_fields_with_match, EXACT_SYNONYM_KEY
+    EXACT_SYNONYM_KEY
+from cmat.trait_mapping.ols_search import get_fields_with_match
 
 logger = logging.getLogger(__package__)
 
@@ -11,9 +12,9 @@ logger = logging.getLogger(__package__)
 class MappingProvenance(IntEnum):
     PREVIOUS = 0
     OLS = 1
-    CLINVAR_XREF = 2
-    ZOOMA = 3
-    OXO = 4
+    ZOOMA = 2
+    OXO = 3
+    CLINVAR_XREF = 4
 
     def __str__(self):
         return self.name
@@ -87,39 +88,11 @@ class OntologyMapping:
     def __hash__(self):
         return hash((self.mapping_context, self.uri))
 
-    def __gt__(self, other):
-        # TODO add provenance to this and rewrite using the public methods
-        # Larger means better mapping
-        # In general, full exact matches > contained matches > token matches,
-        # and target ontology > preferred ontologies > neither
-        if self._exact_match:
-            if other._exact_match:
-                return self.ontology_rank() > other.ontology_rank()
-            else:
-                return True
-        if self._contained_match:
-            if other._exact_match:
-                return False
-            if other._contained_match:
-                return self.ontology_rank() > other.ontology_rank()
-            else:
-                return True
-        if self._token_match:
-            if other._exact_match:
-                return False
-            if other._contained_match:
-                return False
-            if other._token_match:
-                return self.ontology_rank() > other.ontology_rank()
-            else:
-                return True
-
-    def ontology_rank(self):
-        if self._in_target_ontology:
-            return 2
-        if self._in_preferred_ontology:
-            return 1
-        return 0
+    def __lt__(self, other):
+        if not isinstance(other, type(self)):
+            return NotImplemented
+        # Smaller means better mapping
+        return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(), other.get_match_type(), other.provenance)
 
     # TODO ensure these are robust to non-ontologies (e.g. medgen)
 
