@@ -107,4 +107,5 @@ def get_zooma_results_for_trait(mapping_context: MappingContext, zooma_response_
         source_name = response["derivedFrom"]["provenance"]["source"]["name"]
         for uri in uris:
             result_list.append(ZoomaMapping(mapping_context, uri, confidence, source_name))
+    # return [m for m in result_list if m.confidence == ZoomaConfidence.HIGH]
     return result_list

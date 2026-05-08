@@ -82,7 +82,9 @@ class OntologyMapping:
         return f'{self.uri}|{self.label}|{self.provenance}|{self.get_match_type()}|{mapping_source_str}'
 
     def __eq__(self, other):
-        return isinstance(other, type(self)) and self.mapping_context == other.mapping_context and self.uri == other.uri
+        return (isinstance(other, type(self)) and self.mapping_context == other.mapping_context
+                and self.uri == other.uri and self.provenance == other.provenance
+                and self.get_mapping_source() == other.get_mapping_source())
 
     def __hash__(self):
         return hash((self.mapping_context, self.uri))

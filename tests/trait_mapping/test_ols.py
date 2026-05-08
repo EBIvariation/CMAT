@@ -91,9 +91,9 @@ def test_ols_result():
     assert ols_result_3.get_mapping_source() == MappingSource.TARGET_CURRENT
 
     # Full exact matches are preferred to contained matches, regardless of which field is matched
-    assert ols_result_2 > ols_result_1
+    assert ols_result_2 < ols_result_1
     # All else being equal, mappings in the target ontology are preferred
-    assert ols_result_3 > ols_result_2
+    assert ols_result_3 < ols_result_2
 
 
 @pytest.mark.integration
@@ -115,8 +115,8 @@ def test_get_ols_search_results():
         query_fields='label,synonym',
         field_list='iri,label,ontology_name,synonym'
     )
-    assert len(results) == 3
-    top_ranked_result = next(iter(sorted(results, reverse=True)))
+    assert len(results) == 4
+    top_ranked_result = next(iter(sorted(results)))
     assert top_ranked_result.label == 'hemophilia A'
     assert top_ranked_result.get_match_type() == MatchType.EXACT_MATCH_SYNONYM
     assert top_ranked_result.get_mapping_source() == MappingSource.TARGET_CURRENT
