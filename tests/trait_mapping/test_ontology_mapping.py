@@ -39,9 +39,9 @@ def test_ontology_mapping():
         # Obsolete previous mapping
         OntologyMapping(mapping_context, 'uri', MappingProvenance.PREVIOUS),
         # Zooma high confidence
-        ZoomaMapping(mapping_context, 'uri', ZoomaConfidence.HIGH, ''),
+        ZoomaMapping(mapping_context, 'uri', 'high', ''),
         # Zooma lower confidence
-        ZoomaMapping(mapping_context, 'uri', ZoomaConfidence.GOOD, ''),
+        ZoomaMapping(mapping_context, 'uri', 'good', ''),
         # Oxo distance 1
         OxoMapping(mapping_context, 'uri', '', 1, ''),
         # OLS exact label in target
@@ -59,3 +59,4 @@ def test_ontology_mapping():
         # ClinVar Xref in neither
         ClinVarXrefMapping(mapping_context, 'uri'),
     ]
+    # TODO complete this test....

@@ -90,7 +90,7 @@ class OntologyMapping:
         return hash((self.mapping_context, self.uri))
 
     def __lt__(self, other):
-        if not isinstance(other, type(self)):
+        if not isinstance(other, OntologyMapping):
             return NotImplemented
         # Smaller means better mapping
         return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(), other.get_match_type(), other.provenance)

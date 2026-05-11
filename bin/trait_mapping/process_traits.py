@@ -38,7 +38,7 @@ class ArgParser:
                             help="preference for data sources, with preferred data source first.")
         parser.add_argument("-t", dest="oxo_target_list", default="efo,hp,mondo",
                             help="target ontologies to use with OxO")
-        parser.add_argument("-d", dest="oxo_distance", default=3,
+        parser.add_argument("-d", dest="oxo_distance", default=1,
                             help="distance to use to query OxO.")
         parser.add_argument("-l", dest="ols_ontology_list", default="efo,mondo,hp",
                             help="ontologies to use with OLS search")
