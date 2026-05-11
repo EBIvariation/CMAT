@@ -78,7 +78,7 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     previous_and_replacement, remaining_mappings = get_previous_and_replacement_mappings(
         trait.candidate_mappings, trait.name, target_ontology, preferred_ontologies)
     # From the rest, pull out top-ranked exact label and exact synonym matches
-    sorted_candidates = sorted(list(set(remaining_mappings)), reverse=True)
+    sorted_candidates = sorted(list(set(remaining_mappings)))
     exact_match_str = ''
     exact_synonym_match_str = ''
     other_mapping_strs = []
