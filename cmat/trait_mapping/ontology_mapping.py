@@ -55,6 +55,10 @@ class MappingContext:
         self.target_ontology = target_ontology
         self.preferred_ontologies = preferred_ontologies
 
+    def __eq__(self, other):
+        return (isinstance(other, MappingContext) and (self.trait_name, self.target_ontology, self.preferred_ontologies)
+                == (other.trait_name, other.target_ontology, other.preferred_ontologies))
+
 
 @total_ordering
 class OntologyMapping:
@@ -87,14 +91,36 @@ class OntologyMapping:
                 and self.get_mapping_source() == other.get_mapping_source())
 
     def __hash__(self):
-        return hash((self.mapping_context, self.uri))
+        return hash((self.mapping_context, self.uri, self.provenance, self.get_mapping_source()))
 
     def __lt__(self, other):
+        # Smaller means better mapping, so mappings.sort() will put the best mapping first
         if not isinstance(other, OntologyMapping):
             return NotImplemented
-        # Smaller means better mapping
-        # TODO fix the ranking.....
-        return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(), other.get_match_type(), other.provenance)
+        # For same mapping source, if it's TARGET_CURRENT, we prefer PREVIOUS mappings regardless of the match type
+        # Otherwise we rank based on match type 1st and provenance 2nd
+        if self.get_mapping_source() == other.get_mapping_source():
+            if self.get_mapping_source() == MappingSource.TARGET_CURRENT:
+                if self.provenance == MappingProvenance.PREVIOUS:
+                    return True
+                elif other.provenance == MappingProvenance.PREVIOUS:
+                    return False
+            return (self.get_match_type(), self.provenance) < (other.get_match_type(), other.provenance)
+        # Always prefer target/preferred ontologies, regardless of match type and provenance
+        elif self.get_mapping_source() == MappingSource.NOT_PREFERRED_TARGET:
+            return False
+        elif other.get_mapping_source() == MappingSource.NOT_PREFERRED_TARGET:
+            return True
+        # For same match type, we rank based on mapping source 1st and provenance 2nd
+        if self.get_match_type() == other.get_match_type():
+            return (self.get_mapping_source(), self.provenance) < (other.get_mapping_source(), other.provenance)
+        # For the same provenance, we rank based on match type 1st and mapping source 2nd
+        if self.provenance == other.provenance:
+            return (self.get_match_type(), self.get_mapping_source()) < (other.get_match_type(), other.get_mapping_source())
+        # All other cases
+        return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(),
+                                                                                      other.get_match_type(),
+                                                                                      other.provenance)
 
     @cached_property
     def label(self):
