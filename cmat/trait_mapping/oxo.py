@@ -120,8 +120,8 @@ def get_oxo_results_from_response(mapping_context: MappingContext, oxo_response:
             mapping_distance = mapping_response["distance"]
             oxo_mapping = OxoMapping(mapping_context, uri, mapping_label, mapping_distance, query_id)
             oxo_result_list.append(oxo_mapping)
-
-    return oxo_result_list
+    # Keep only distance 1 results
+    return [m for m in oxo_result_list if m.distance <= 1]
 
 
 def get_oxo_results(mapping_context, id_list: list, target_list: list, distance: int) -> list:

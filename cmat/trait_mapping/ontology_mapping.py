@@ -93,6 +93,7 @@ class OntologyMapping:
         if not isinstance(other, OntologyMapping):
             return NotImplemented
         # Smaller means better mapping
+        # TODO fix the ranking.....
         return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(), other.get_match_type(), other.provenance)
 
     @cached_property
