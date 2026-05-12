@@ -1,5 +1,9 @@
+from copy import deepcopy
+from random import shuffle
+
 import pytest
 
+from cmat.trait_mapping.ols import EXACT_SYNONYM_KEY
 from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingContext, MappingProvenance, MatchType, \
     MappingSource, ClinVarXrefMapping
 from cmat.trait_mapping.oxo import OxoMapping
@@ -31,32 +35,25 @@ def test_non_ontology_mapping():
     assert mapping.get_mapping_source() == MappingSource.NOT_PREFERRED_TARGET
 
 
-def test_ontology_mapping():
+def test_ontology_mapping_ranking_same_provenance():
     mapping_context = MappingContext('something', 'efo', ['mondo', 'hp'])
-    mappings = [
-        # Previous mapping
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.PREVIOUS),
-        # Obsolete previous mapping
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.PREVIOUS),
-        # Zooma high confidence
-        ZoomaMapping(mapping_context, 'uri', 'high', ''),
-        # Zooma lower confidence
-        ZoomaMapping(mapping_context, 'uri', 'good', ''),
-        # Oxo distance 1
-        OxoMapping(mapping_context, 'uri', '', 1, ''),
+    expected_mappings = [
         # OLS exact label in target
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS),
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, None, True, False, True, ['label'], [], []),
         # OLS exact label in preferred
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS),
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, None, False, True, False, ['label'], [], []),
+        # OLS exact synonym in preferred
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, None, False, True, False, [EXACT_SYNONYM_KEY], [], []),
+        # OLS token match label in target
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, None, True, False, True, [], [], ['label']),
+        # OLS contained match label in target
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, None, False, True, False, [], ['label'], []),
         # OLS exact label in neither
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS),
-        # OLS exact synonym
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS),
-        # OLS contained label
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS),
-        # ClinVar Xref in preferred
-        ClinVarXrefMapping(mapping_context, 'uri'),
-        # ClinVar Xref in neither
-        ClinVarXrefMapping(mapping_context, 'uri'),
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, None, False, False, False, ['label'], [], []),
     ]
-    # TODO complete this test....
+    test_mappings = deepcopy(expected_mappings)
+    while test_mappings == expected_mappings:
+        shuffle(test_mappings)
+
+    test_mappings.sort()
+    assert test_mappings == expected_mappings
