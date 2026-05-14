@@ -8,8 +8,8 @@ from cmat.trait_mapping.trait import Trait
 
 def parse_trait_names(filepath: str) -> list:
     """For a file containing ClinVar records in the XML format, return a list of Traits for the records in the file.
-    Each Trait object contains trait name, how many times it occurs in the input file, and whether it is linked to an NT
-    expansion variant.
+    Each Trait object contains trait name, how many times it occurs in the input file, a list of URLs appearing as
+    ClinVar cross-references, and whether it is linked to an NT expansion variant.
 
     Trait occurrence count is calculated based on all unique (RCV, trait name) tuples in the input file. This is because
     each such tuple will, generally speaking, correspond to one output evidence string. So if we want to gauge which

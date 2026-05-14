@@ -30,13 +30,13 @@ class ArgParser:
                             help="path to output file for mappings")
         parser.add_argument("-c", dest="output_curation_filepath", required=True,
                             help="path to output file for curation")
-        parser.add_argument("-n", dest="zooma_ontologies", default="efo,hp,mondo",
+        parser.add_argument("-n", dest="zooma_ontologies", default="efo,hp,mondo,ordo",
                             help="ontologies to use in zooma query")
         parser.add_argument("-r", dest="required", default="cttv,eva-clinvar,clinvar-xrefs,gwas",
                             help="data sources to use in query.")
         parser.add_argument("-p", dest="preferred", default="eva-clinvar,cttv,gwas,clinvar-xrefs",
                             help="preference for data sources, with preferred data source first.")
-        parser.add_argument("-t", dest="oxo_target_list", default="efo,hp,mondo",
+        parser.add_argument("-t", dest="oxo_target_list", default="efo,hp,mondo,Orphanet",
                             help="target ontologies to use with OxO")
         parser.add_argument("-d", dest="oxo_distance", default=1,
                             help="distance to use to query OxO.")

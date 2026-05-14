@@ -39,24 +39,11 @@ def test_assess_if_finished():
             exact_match=['http://www.geneontology.org/formats/oboInOwl#hasExactSynonym'],
             contained_match=[],
             token_match=['label'],
-            in_target_ontology=False,
-            in_preferred_ontology=True,
-            is_current=False
+            in_target_ontology=True,
+            in_preferred_ontology=False,
+            is_current=True
         ),
         # MONDO_0010602 in EFO via OLS
-        OntologyMapping(
-            mapping_context=mapping_context,
-            uri='http://purl.obolibrary.org/obo/MONDO_0010602',
-            provenance=MappingProvenance.OLS,
-            label='hemophilia A',
-            exact_match=['http://www.geneontology.org/formats/oboInOwl#hasExactSynonym'],
-            contained_match=[],
-            token_match=['label'],
-            in_target_ontology=False,
-            in_preferred_ontology=True,
-            is_current=False
-        ),
-        # MONDO_0010602 in Mondo via OLS
         OntologyMapping(
             mapping_context=mapping_context,
             uri='http://purl.obolibrary.org/obo/MONDO_0010602',
@@ -68,6 +55,19 @@ def test_assess_if_finished():
             in_target_ontology=True,
             in_preferred_ontology=False,
             is_current=True
+        ),
+        # MONDO_0010602 in Mondo via OLS
+        OntologyMapping(
+            mapping_context=mapping_context,
+            uri='http://purl.obolibrary.org/obo/MONDO_0010602',
+            provenance=MappingProvenance.OLS,
+            label='hemophilia A',
+            exact_match=['http://www.geneontology.org/formats/oboInOwl#hasExactSynonym'],
+            contained_match=[],
+            token_match=['label'],
+            in_target_ontology=False,
+            in_preferred_ontology=True,
+            is_current=False
         )
     ]
     test_trait.candidate_mappings = mappings

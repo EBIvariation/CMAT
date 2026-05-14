@@ -52,12 +52,11 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
                             which ontologies should be queried using OxO.
     :param oxo_distance: int specifying the maximum number of steps to use to query OxO. i.e. OxO's
                          "distance" parameter.
-    :param ols_ontology_list: A string listing ontologies used to query OLS
     :param ols_query_fields: A string listing query fields used to query OLS
     :param ols_field_list: A string listing fields to return from OLS query
     :param target_ontology: ID of target ontology
     :param preferred_ontologies: List of preferred non-target ontology IDs
-    :return: The original trait after querying Zooma and possibly OxO, with any results found.
+    :return: The original trait with any results found.
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
