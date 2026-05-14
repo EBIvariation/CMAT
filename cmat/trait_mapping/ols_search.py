@@ -1,7 +1,7 @@
 import logging
 import requests
 
-from cmat.trait_mapping.ols import ols_ontology_query, EXACT_SYNONYM_KEY, get_fields_with_match
+from cmat.trait_mapping.ols import get_fields_with_match, ols_ontology_query, EXACT_SYNONYM_KEY
 from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance
 from cmat.trait_mapping.utils import json_request
 

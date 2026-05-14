@@ -86,7 +86,7 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
 
     # Add ClinVar xrefs
     if trait.xrefs:
-        trait.candidate_mappings.extend([ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs])
+        trait.candidate_mappings.extend(ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs)
 
     # Query ZOOMA - these results will only be used as candidates for curation
     logger.info(f'Querying ZOOMA for trait {trait.name}')
@@ -118,6 +118,7 @@ def output_traits_to_csv(trait_list, output_filepath, for_platform=False):
         for trait in trait_list:
             row = [trait.name, trait.identifier, trait.frequency]
             if not for_platform:
+                row.append('|'.join(trait.xrefs))
                 row.append(trait.associated_with_nt_expansion)
             writer.writerow(row)
 
@@ -127,7 +128,8 @@ def read_traits_from_csv(traits_filepath):
     with open(traits_filepath, 'r') as input_file:
         reader = csv.reader(input_file, delimiter=',')
         for row in reader:
-            traits.append(Trait(row[0], row[1], int(row[2]), row[3] == 'True'))
+            xrefs = row[3].split('|') if row[3] else []
+            traits.append(Trait(row[0], row[1], int(row[2]), xrefs, row[4] == 'True'))
     return traits
 
 

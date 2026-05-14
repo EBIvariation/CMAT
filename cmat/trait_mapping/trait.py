@@ -1,7 +1,7 @@
 import logging
-from itertools import groupby
 
-from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance, MatchType, MappingSource
+from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance, MatchType, MappingSource, \
+    sort_and_deduplicate_mappings
 
 logger = logging.getLogger(__package__)
 
@@ -58,12 +58,7 @@ class Trait:
     def assess_if_finished(self):
         """Check whether any of the candidate mappings is acceptable as an automated mapping.
         If so adds this to finished mappings."""
-        # First deduplicate by IRI, taking the top-ranked results associated with each IRI
-        sorted_results = sorted(self.candidate_mappings, key=lambda x: x.uri)
-        deduplicated_results = []
-        for iri, grouped_results in groupby(sorted_results, key=lambda x: x.uri):
-            deduplicated_results.append(min(grouped_results))
-        self.candidate_mappings = deduplicated_results
+        self.candidate_mappings = sort_and_deduplicate_mappings(self.candidate_mappings)
         for mapping in self.candidate_mappings:
             if mapping.get_mapping_source() == MappingSource.TARGET_CURRENT:
                 # Accept any mappings full exact matches on the label, or ones we previously accepted

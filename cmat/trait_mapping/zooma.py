@@ -23,6 +23,9 @@ class ZoomaConfidence(Enum):
             return False
         return self.value == other.value
 
+    def __hash__(self):
+        return hash(self.value)
+
     def __lt__(self, other):
         return self.value < other.value
 
@@ -40,6 +43,9 @@ class ZoomaMapping(OntologyMapping):
         if not isinstance(other, type(self)):
             return False
         return super().__eq__(other) and self.confidence == other.confidence
+
+    def __hash__(self):
+        return hash((super().__hash__, self.confidence, self.zooma_source))
 
     def __lt__(self, other):
         if isinstance(other, ZoomaMapping):

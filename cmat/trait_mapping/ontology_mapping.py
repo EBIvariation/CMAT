@@ -1,14 +1,16 @@
 import logging
 from enum import IntEnum
 from functools import total_ordering, cached_property
+from itertools import groupby
 
-from cmat.trait_mapping.ols import get_label_and_synonyms_from_ols, get_is_in_ontologies, is_current_and_in_ontology, \
-    EXACT_SYNONYM_KEY, get_fields_with_match
+from cmat.trait_mapping.ols import get_fields_with_match, get_label_and_synonyms_from_ols, get_is_in_ontologies, \
+    is_current_and_in_ontology, EXACT_SYNONYM_KEY
 
 logger = logging.getLogger(__package__)
 
 
 class MappingProvenance(IntEnum):
+    """Provenance of the mapping, in descending order of preference."""
     PREVIOUS = 0
     OLS = 1
     ZOOMA = 2
@@ -20,6 +22,7 @@ class MappingProvenance(IntEnum):
 
 
 class MatchType(IntEnum):
+    """Type of string match of mapping relative to the trait name, in descending order of preference."""
     EXACT_MATCH_LABEL = 0
     EXACT_MATCH_SYNONYM = 1
     CONTAINED_MATCH_LABEL = 2
@@ -33,6 +36,7 @@ class MatchType(IntEnum):
 
 
 class MappingSource(IntEnum):
+    """Source of mapping relative to target and preferred ontologies, in descending order of preference."""
     TARGET_CURRENT = 0
     TARGET_OBSOLETE = 1
     PREFERRED_NOT_TARGET = 2
@@ -50,6 +54,7 @@ class MappingContext:
     MappingContext provides the context in which a mapping is proposed. It includes the search term (trait name),
     the target ontology and any preferred ontologies.
     """
+
     def __init__(self, trait_name, target_ontology, preferred_ontologies):
         self.trait_name = trait_name
         self.target_ontology = target_ontology
@@ -59,6 +64,9 @@ class MappingContext:
         return (isinstance(other, MappingContext) and (self.trait_name, self.target_ontology, self.preferred_ontologies)
                 == (other.trait_name, other.target_ontology, other.preferred_ontologies))
 
+    def __hash__(self):
+        return hash((self.trait_name, self.target_ontology) + tuple(x for x in self.preferred_ontologies))
+
 
 @total_ordering
 class OntologyMapping:
@@ -66,6 +74,7 @@ class OntologyMapping:
     An OntologyMapping represents a possible mapping between a string (trait name) and an ontology term (URI).
     It utilises (cached) OLS queries in order to gather relevant information for determining the quality of the mapping.
     """
+
     def __init__(self, mapping_context, uri, provenance,
                  label=None, in_target_ontology=None, in_preferred_ontology=None, is_current=None,
                  exact_match=None, contained_match=None, token_match=None):
@@ -82,7 +91,8 @@ class OntologyMapping:
         self._token_match = token_match
 
     def __str__(self):
-        mapping_source_str = self.get_mapping_source().to_string(self.mapping_context.target_ontology, self.mapping_context.preferred_ontologies)
+        mapping_source_str = self.get_mapping_source().to_string(self.mapping_context.target_ontology,
+                                                                 self.mapping_context.preferred_ontologies)
         return f'{self.uri}|{self.label}|{self.provenance}|{self.get_match_type()}|{mapping_source_str}'
 
     def __eq__(self, other):
@@ -116,7 +126,8 @@ class OntologyMapping:
             return (self.get_mapping_source(), self.provenance) < (other.get_mapping_source(), other.provenance)
         # For the same provenance, we rank based on match type 1st and mapping source 2nd
         if self.provenance == other.provenance:
-            return (self.get_match_type(), self.get_mapping_source()) < (other.get_match_type(), other.get_mapping_source())
+            return (self.get_match_type(), self.get_mapping_source()) < (other.get_match_type(),
+                                                                         other.get_mapping_source())
         # All other cases
         return (self.get_mapping_source(), self.get_match_type(), self.provenance) < (other.get_mapping_source(),
                                                                                       other.get_match_type(),
@@ -155,7 +166,10 @@ class OntologyMapping:
     def get_mapping_source(self):
         if any(x is None for x in [self._in_target_ontology, self._in_preferred_ontology, self._is_current]):
             self._in_target_ontology, self._in_preferred_ontology = get_is_in_ontologies(self.uri, self.mapping_context)
-            self._is_current = is_current_and_in_ontology(self.uri, self.mapping_context.target_ontology) if self._in_target_ontology else False
+            self._is_current = (
+                is_current_and_in_ontology(self.uri, self.mapping_context.target_ontology)
+                if self._in_target_ontology else False
+            )
 
         if self._in_target_ontology:
             return MappingSource.TARGET_CURRENT if self._is_current else MappingSource.TARGET_OBSOLETE
@@ -172,3 +186,12 @@ class PreviousMapping(OntologyMapping):
 class ClinVarXrefMapping(OntologyMapping):
     def __init__(self, mapping_context, uri):
         super().__init__(mapping_context, uri, MappingProvenance.CLINVAR_XREF)
+
+
+def sort_and_deduplicate_mappings(mappings):
+    """Sort mappings and deduplicate by IRI, taking the top-ranked results associated with each IRI"""
+    sorted_results = sorted(list(set(mappings)), key=lambda x: x.uri)
+    deduplicated_results = []
+    for iri, grouped_results in groupby(sorted_results, key=lambda x: x.uri):
+        deduplicated_results.append(min(grouped_results))
+    return deduplicated_results
