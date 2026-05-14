@@ -29,8 +29,14 @@ modifiers.
 
 ## Mapping string
 The spreadsheet is populated by the pipeline with suggested mappings. The mapping strings have the format 
-`URL|LABEL|MATCH_TYPE|MAPPING_SOURCE`.
+`URL|LABEL|PROVENANCE|MATCH_TYPE|MAPPING_SOURCE`.
 
+* **Provenance** indicates how the mapping was found. Options are:
+    * `PREVIOUS`: Mappings previously selected by us
+    * `OLS`: Search results from [OLS](https://www.ebi.ac.uk/ols4/)
+    * `ZOOMA`: High confidence results from [ZOOMA](https://www.ebi.ac.uk/spot/zooma/)
+    * `OXO`: Distance 1 search results from [OxO](https://www.ebi.ac.uk/spot/oxo/)
+    * `CLINVAR_XREF`: Cross-references provided by ClinVar for this trait
 * **Match type** indicates how closely the term label matches against the ClinVar trait name. Options are:
     * `EXACT_MATCH_LABEL`: the ClinVar trait matches the term label exactly
     * `EXACT_MATCH_SYNONYM`: the ClinVar trait matches a synonym of the term exactly
@@ -73,10 +79,6 @@ the filtered selection.
     * 2.3 **Exact synonym matches**
         * 2.3.1 Remove "Blank" from "Exact synonym matches" column
         * 2.3.2 Determine if the mapping is suitable, if not find a new term to use as mapping
-    * 2.4 **ZOOMA and OxO mappings:** These are services besides OLS that can sometimes provide useful mapping suggestions.
-        * 2.4.1 Remove "Blank" from "High-confidence ZOOMA" column
-        * 2.4.2 Determine if the mapping is suitable, if not find a new term to use as mapping
-        * 2.4.3 Repeat the above for the "Distance-1 OxO" column
 3. **Low-confidence mappings or unmapped terms**
     * 3.1 Set the "Status" column to only include "Blank" entries
     * 3.2 Look for suitable mappings from the "All other mappings" columns, or perform your own searches
@@ -87,10 +89,10 @@ the filtered selection.
 ### Adding new mappings
 
 To add a new mapping which does not appear in the list of automatically generated mappings, use the following shortened
-format: `URL|LABEL||MAPPING_SOURCE`, for example:
-`http://purl.obolibrary.org/obo/MONDO_0100460|tobacco addiction, susceptibility to||MONDO_HP_NOT_EFO`.
-The match type does not need to be filled in, but make sure to use the right number of pipe separators (`|`) to ensure
-it is properly parsed.
+format: `URL|LABEL|||MAPPING_SOURCE`, for example:
+`http://purl.obolibrary.org/obo/MONDO_0100460|tobacco addiction, susceptibility to|||MONDO_HP_NOT_EFO`.
+The match type and provenance do not need to be filled in, but make sure to use the right number of pipe separators
+(`|`) to ensure it is properly parsed.
 
 ### Marking the status of curated terms
 
@@ -142,17 +144,17 @@ The export pipeline will handle this modification accordingly.
 
 For example (some columns omitted for brevity):
 
-| Mapping to use | Status | ClinVar label | Previous mapping | Replacement mapping | Exact matches |
-|-|-|-|-|-|-|
-| | | lissencephaly 8 | `http://purl.obolibrary.org/obo/HP_0001339\|Lissencephaly\|TOKEN_MATCH_LABEL\|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` |
-| | | lissencephaly 8 | `http://purl.obolibrary.org/obo/MONDO_0018838\|lissencephaly spectrum disorders\|TOKEN_MATCH_LABEL\|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` |
+| Mapping to use | Status | ClinVar label | Previous mapping                                                                                                 | Replacement mapping | Exact matches                                                                                             |
+|-|-|-|------------------------------------------------------------------------------------------------------------------|-|-----------------------------------------------------------------------------------------------------------|
+| | | lissencephaly 8 | `http://purl.obolibrary.org/obo/HP_0001339\|Lissencephaly\|PREVIOUS\|TOKEN_MATCH_LABEL\|EFO_CURRENT`             | | `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|OLS\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` |
+| | | lissencephaly 8 | `http://purl.obolibrary.org/obo/MONDO_0018838\|lissencephaly spectrum disorders\|PREVIOUS\|TOKEN_MATCH_LABEL\|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|OLS\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` |
 
 Here "lissencephaly 8" refers to a single disease, and has an exact label match in MONDO that we can import. So we
 should delete one of the rows (in this case it doesn't matter which) and use the mapping string from "Exact matches":
 
-| Mapping to use | Status | ClinVar label | Previous mapping | Replacement mapping | Exact matches |
-|-|-|-|-|-|-|
-| `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` | IMPORT | lissencephaly 8 | `http://purl.obolibrary.org/obo/HP_0001339\|Lissencephaly\|TOKEN_MATCH_LABEL\|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` |
+| Mapping to use                                                                                            | Status | ClinVar label | Previous mapping | Replacement mapping | Exact matches |
+|-----------------------------------------------------------------------------------------------------------|-|-|-|-|-|
+| `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|OLS\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` | IMPORT | lissencephaly 8 | `http://purl.obolibrary.org/obo/HP_0001339\|Lissencephaly\|PREVIOUS\|TOKEN_MATCH_LABEL\|EFO_CURRENT` | | `http://purl.obolibrary.org/obo/MONDO_0014992\|lissencephaly 8\|OLS\|EXACT_MATCH_LABEL\|MONDO_HP_NOT_EFO` |
 
 ### Note on spaces and line breaks
 

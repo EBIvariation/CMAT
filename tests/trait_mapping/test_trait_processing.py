@@ -84,7 +84,6 @@ class TestProcessTrait:
         trait = Trait('frontotemporal lobar degeneration with tdp43 inclusions, tardbp-related', None, None, xrefs)
         processed_trait = self.run_process_trait(trait)
         assert not processed_trait.is_finished
-        # TODO Zooma is currently not returning medgen results, come back to this once rectified
         assert len(processed_trait.candidate_mappings) == 1
         for mapping in processed_trait.candidate_mappings:
             if isinstance(mapping, ClinVarXrefMapping):

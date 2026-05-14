@@ -45,28 +45,28 @@ def sort_and_assert_ranking(expected_mappings):
 
 
 def test_ranking_same_provenance():
-    # Test ranking among mappings with the same provenance
+    """Test ranking among mappings with the same provenance"""
     mapping_context = MappingContext('something', 'efo', ['mondo', 'hp'])
     # Expected order of mappings
     expected_mappings = [
-        # OLS exact label in target
+        # Exact label in target
         OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', True, False, True, ['label'], [], []),
-        # OLS exact label in preferred
+        # Exact label in preferred
         OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', False, True, False, ['label'], [], []),
-        # OLS exact synonym in preferred
+        # Exact synonym in preferred
         OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', False, True, False, [EXACT_SYNONYM_KEY], [], []),
-        # OLS contained match label in target
-        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', False, True, False, [], ['label'], []),
-        # OLS token match label in target
+        # Contained match label in target
+        OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', True, False, True, [], ['label'], []),
+        # Token match label in target
         OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', True, False, True, [], [], ['label']),
-        # OLS exact label in neither
+        # Exact label in neither
         OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', False, False, False, ['label'], [], []),
     ]
     sort_and_assert_ranking(expected_mappings)
 
 
 def test_ranking_same_match_type():
-    # Test ranking among mappings with the same match type
+    """Test ranking among mappings with the same match type"""
     mapping_context = MappingContext('something', 'efo', ['mondo', 'hp'])
     # Expected order of mappings
     expected_mappings = [
@@ -87,7 +87,7 @@ def test_ranking_same_match_type():
 
 
 def test_ranking_same_mapping_source():
-    # Test ranking among mappings with the same mapping source
+    """Test ranking among mappings with the same mapping source"""
     mapping_context = MappingContext('something', 'efo', ['mondo', 'hp'])
     # Expected order of mappings
     expected_mappings = [
