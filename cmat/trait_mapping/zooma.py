@@ -23,6 +23,9 @@ class ZoomaConfidence(Enum):
             return False
         return self.value == other.value
 
+    def __hash__(self):
+        return hash(self.value)
+
     def __lt__(self, other):
         return self.value < other.value
 
@@ -36,17 +39,21 @@ class ZoomaMapping(OntologyMapping):
         self.confidence = ZoomaConfidence[confidence.upper()]
         self.zooma_source = zooma_source
 
-    # TODO review for consistency with OntologyMapping
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        if (self.uri != other.uri or self.confidence != other.confidence
-                or self.get_mapping_source() != other.get_mapping_source()):
-            return False
-        return True
+        return super().__eq__(other) and self.confidence == other.confidence
+
+    def __hash__(self):
+        return hash((super().__hash__, self.confidence, self.zooma_source))
 
     def __lt__(self, other):
-        return (self.confidence, other.get_mapping_source()) < (other.confidence, self.get_mapping_source())
+        if isinstance(other, ZoomaMapping):
+            # Higher confidence means better mapping
+            return super().__lt__(other) and self.confidence > other.confidence
+        elif isinstance(other, OntologyMapping):
+            return super().__lt__(other)
+        return NotImplemented
 
 
 def get_zooma_results(mapping_context: MappingContext, filters: dict) -> list:
@@ -106,4 +113,5 @@ def get_zooma_results_for_trait(mapping_context: MappingContext, zooma_response_
         source_name = response["derivedFrom"]["provenance"]["source"]["name"]
         for uri in uris:
             result_list.append(ZoomaMapping(mapping_context, uri, confidence, source_name))
-    return result_list
+    # Keep only high confidence results
+    return [m for m in result_list if m.confidence == ZoomaConfidence.HIGH]

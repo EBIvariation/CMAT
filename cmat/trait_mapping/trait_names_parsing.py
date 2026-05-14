@@ -8,8 +8,8 @@ from cmat.trait_mapping.trait import Trait
 
 def parse_trait_names(filepath: str) -> list:
     """For a file containing ClinVar records in the XML format, return a list of Traits for the records in the file.
-    Each Trait object contains trait name, how many times it occurs in the input file, and whether it is linked to an NT
-    expansion variant.
+    Each Trait object contains trait name, how many times it occurs in the input file, a list of URLs appearing as
+    ClinVar cross-references, and whether it is linked to an NT expansion variant.
 
     Trait occurrence count is calculated based on all unique (RCV, trait name) tuples in the input file. This is because
     each such tuple will, generally speaking, correspond to one output evidence string. So if we want to gauge which
@@ -43,7 +43,13 @@ def parse_trait_names(filepath: str) -> list:
         for trait in clinvar_record.traits_with_valid_names:
             trait_tuple = (trait.preferred_or_other_valid_name.lower(), trait.identifier)
             trait_names_and_ids.add(trait_tuple)
-            xrefs = [OntologyUri(id_, db).uri for (db, id_, status) in trait.xrefs if status.lower() == 'current']
+
+            # Add xrefs from this trait
+            xrefs = []
+            for (db, id_, status) in trait.xrefs:
+                if status.lower() == 'current' and db.lower() in OntologyUri.db_to_uri_conversion:
+                    xrefs.append(OntologyUri(id_, db).uri)
+
             trait_xrefs[trait_tuple].extend(xrefs)
             trait_name_counter[trait_tuple] += 1
         if clinvar_record.measure and clinvar_record.measure.is_repeat_expansion_variant:
@@ -57,7 +63,7 @@ def parse_trait_names(filepath: str) -> list:
             continue
         associated_with_nt_expansion = trait_tuple in nt_expansion_traits
         traits.append(Trait(name=trait_tuple[0], identifier=trait_tuple[1], frequency=trait_frequency,
-                            xrefs=trait_xrefs.get(trait_tuple),
+                            xrefs=trait_xrefs.get(trait_tuple, []),
                             associated_with_nt_expansion=associated_with_nt_expansion))
 
     return traits

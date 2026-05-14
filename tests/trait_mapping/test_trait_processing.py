@@ -47,7 +47,7 @@ class TestProcessTrait:
         # Finds nothing exact via OLS, so checks previous mappings and finds a current result
         trait = Trait('11p partial monosomy syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 7
+        assert len(processed_trait.candidate_mappings) == 6
         assert self.get_mapping_types(processed_trait) == {OlsMapping, PreviousMapping}
         assert processed_trait.is_finished
 
@@ -55,15 +55,14 @@ class TestProcessTrait:
         # No sufficiently good mappings in OLS or Zooma
         trait = Trait('aicardi-goutieres syndrome 99', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 44
-        assert self.get_mapping_types(processed_trait) == {ZoomaMapping}
+        assert len(processed_trait.candidate_mappings) == 0
         assert not processed_trait.is_finished
 
     def test_ols_exact_ascii_match(self):
         # Search should be agnostic to accents and other non-ASCII characters
         trait = Trait('pelger-huët anomaly', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 20
+        assert len(processed_trait.candidate_mappings) == 10
         assert processed_trait.is_finished
         assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://purl.obolibrary.org/obo/MONDO_0008214'}
 
@@ -85,8 +84,7 @@ class TestProcessTrait:
         trait = Trait('frontotemporal lobar degeneration with tdp43 inclusions, tardbp-related', None, None, xrefs)
         processed_trait = self.run_process_trait(trait)
         assert not processed_trait.is_finished
-        # TODO currently this contains the xref from both Zooma and ClinVar, should deduplicate...
-        assert len(processed_trait.candidate_mappings) == 3
+        assert len(processed_trait.candidate_mappings) == 1
         for mapping in processed_trait.candidate_mappings:
             if isinstance(mapping, ClinVarXrefMapping):
                 assert mapping.uri == xrefs[0]

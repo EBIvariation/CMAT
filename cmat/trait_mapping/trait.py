@@ -1,7 +1,7 @@
 import logging
-from itertools import groupby
 
-from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance, MatchType, MappingSource
+from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingProvenance, MatchType, MappingSource, \
+    sort_and_deduplicate_mappings
 
 logger = logging.getLogger(__package__)
 
@@ -58,29 +58,9 @@ class Trait:
     def assess_if_finished(self):
         """Check whether any of the candidate mappings is acceptable as an automated mapping.
         If so adds this to finished mappings."""
-        # TODO deduplication? Does this work across the mapping types?
+        self.candidate_mappings = sort_and_deduplicate_mappings(self.candidate_mappings)
         for mapping in self.candidate_mappings:
             if mapping.get_mapping_source() == MappingSource.TARGET_CURRENT:
                 # Accept any mappings full exact matches on the label, or ones we previously accepted
                 if mapping.get_match_type() == MatchType.EXACT_MATCH_LABEL or mapping.provenance == MappingProvenance.PREVIOUS:
                     self.finished_mapping_set.add(mapping)
-
-
-    # TODO move the deduplication logic someplace
-    # def process_ols_results(self):
-    #     """
-    #     Deduplicate OLS mappings and check whether any can be output as a finished ontology mapping.
-    #     Put any finished mappings in finished_mapping_set
-    #     """
-    #     # First deduplicate by IRI, taking the top-ranked results associated with each IRI
-    #     sorted_results = sorted(self.ols_result_list, key=lambda x: x.uri)
-    #     deduplicated_results = []
-    #     for iri, grouped_results in groupby(sorted_results, key=lambda x: x.uri):
-    #         deduplicated_results.append(max(grouped_results))
-    #     self.ols_result_list = deduplicated_results
-    #
-    #     for ols_result in self.ols_result_list:
-    #         # Accept current mappings in the target ontology with full exact matches on the label
-    #         if ols_result.in_target_ontology and ols_result.is_current and 'label' in ols_result.full_exact_match:
-    #             ontology_entry = OntologyEntry(ols_result.uri, ols_result.label)
-    #             self.finished_mapping_set.add(ontology_entry)

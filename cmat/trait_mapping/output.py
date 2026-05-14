@@ -5,7 +5,7 @@ from collections import Counter
 from cmat.clinvar_xml_io.ontology_uri import OntologyUri
 from cmat.trait_mapping.ols import get_replacement_term
 from cmat.trait_mapping.ontology_mapping import MappingProvenance, MappingSource, MatchType, OntologyMapping, \
-    PreviousMapping, MappingContext
+    PreviousMapping, MappingContext, sort_and_deduplicate_mappings
 from cmat.trait_mapping.trait import Trait
 
 logger = logging.getLogger(__package__)
@@ -73,12 +73,11 @@ def output_for_curation(trait: Trait, curation_writer: csv.writer, target_ontolo
     # records they are associated with is low. This is added to the "Notes" column.
     output_row = [trait.name, trait.frequency, 'NT expansion' if trait.associated_with_nt_expansion else '']
 
-    # TODO Need to confirm that deduplication and ranking work across all mapping types, including non-ontology mappings
     # Pull out previous and replacement mappings
     previous_and_replacement, remaining_mappings = get_previous_and_replacement_mappings(
         trait.candidate_mappings, trait.name, target_ontology, preferred_ontologies)
     # From the rest, pull out top-ranked exact label and exact synonym matches
-    sorted_candidates = sorted(list(set(remaining_mappings)), reverse=True)
+    sorted_candidates = sort_and_deduplicate_mappings(remaining_mappings)
     exact_match_str = ''
     exact_synonym_match_str = ''
     other_mapping_strs = []

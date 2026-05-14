@@ -52,12 +52,11 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
                             which ontologies should be queried using OxO.
     :param oxo_distance: int specifying the maximum number of steps to use to query OxO. i.e. OxO's
                          "distance" parameter.
-    :param ols_ontology_list: A string listing ontologies used to query OLS
     :param ols_query_fields: A string listing query fields used to query OLS
     :param ols_field_list: A string listing fields to return from OLS query
     :param target_ontology: ID of target ontology
     :param preferred_ontologies: List of preferred non-target ontology IDs
-    :return: The original trait after querying Zooma and possibly OxO, with any results found.
+    :return: The original trait with any results found.
     """
     logger.debug('Processing trait {}'.format(trait.name))
 
@@ -86,7 +85,7 @@ def process_trait(trait: Trait, previous_mappings: dict, filters: dict, oxo_targ
 
     # Add ClinVar xrefs
     if trait.xrefs:
-        trait.candidate_mappings.extend([ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs])
+        trait.candidate_mappings.extend(ClinVarXrefMapping(mapping_context, uri) for uri in trait.xrefs)
 
     # Query ZOOMA - these results will only be used as candidates for curation
     logger.info(f'Querying ZOOMA for trait {trait.name}')
@@ -118,6 +117,7 @@ def output_traits_to_csv(trait_list, output_filepath, for_platform=False):
         for trait in trait_list:
             row = [trait.name, trait.identifier, trait.frequency]
             if not for_platform:
+                row.append('|'.join(trait.xrefs))
                 row.append(trait.associated_with_nt_expansion)
             writer.writerow(row)
 
@@ -127,7 +127,8 @@ def read_traits_from_csv(traits_filepath):
     with open(traits_filepath, 'r') as input_file:
         reader = csv.reader(input_file, delimiter=',')
         for row in reader:
-            traits.append(Trait(row[0], row[1], int(row[2]), row[3] == 'True'))
+            xrefs = row[3].split('|') if row[3] else []
+            traits.append(Trait(row[0], row[1], int(row[2]), xrefs, row[4] == 'True'))
     return traits
 
 

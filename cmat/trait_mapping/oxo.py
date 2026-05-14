@@ -17,17 +17,20 @@ class OxoMapping(OntologyMapping):
         self.distance = distance
         self.query_id = query_id
 
-    # TODO review for consistency with OntologyMapping
     def __eq__(self, other):
         if not isinstance(other, type(self)):
             return False
-        return (self.label == other.label, self.uri == other.uri,
-                self.distance == other.distance, self.get_mapping_source() == other.get_mapping_source())
+        return super().__eq__(other) and self.distance == other.distance
+
+    def __hash__(self):
+        return hash((super().__hash__, self.distance))
 
     def __lt__(self, other):
-        # Lower distances and mapping sources are better and should be sorted high
-        # TODO consider flipping the order of the enums or the mappings so they're more consistent
-        return (other.distance, other.get_mapping_source()) < (self.distance, self.get_mapping_source())
+        if isinstance(other, OxoMapping):
+            return super().__lt__(other) and self.distance < other.distance
+        elif isinstance(other, OntologyMapping):
+            return super().__lt__(other)
+        return NotImplemented
 
     def __str__(self):
         return "{}, {}, {}, {}".format(self.label, self.uri, self.distance, self.query_id)
@@ -120,8 +123,8 @@ def get_oxo_results_from_response(mapping_context: MappingContext, oxo_response:
             mapping_distance = mapping_response["distance"]
             oxo_mapping = OxoMapping(mapping_context, uri, mapping_label, mapping_distance, query_id)
             oxo_result_list.append(oxo_mapping)
-
-    return oxo_result_list
+    # Keep only distance 1 results
+    return [m for m in oxo_result_list if m.distance <= 1]
 
 
 def get_oxo_results(mapping_context, id_list: list, target_list: list, distance: int) -> list:
