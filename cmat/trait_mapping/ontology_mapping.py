@@ -190,8 +190,8 @@ class ClinVarXrefMapping(OntologyMapping):
 
 def sort_and_deduplicate_mappings(mappings):
     """Sort mappings and deduplicate by IRI, taking the top-ranked results associated with each IRI"""
-    sorted_results = sorted(list(set(mappings)), key=lambda x: x.uri)
+    results_by_uri = sorted(list(set(mappings)), key=lambda x: x.uri)
     deduplicated_results = []
-    for iri, grouped_results in groupby(sorted_results, key=lambda x: x.uri):
+    for iri, grouped_results in groupby(results_by_uri, key=lambda x: x.uri):
         deduplicated_results.append(min(grouped_results))
-    return deduplicated_results
+    return sorted(deduplicated_results)
