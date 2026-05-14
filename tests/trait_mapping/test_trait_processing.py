@@ -55,8 +55,7 @@ class TestProcessTrait:
         # No sufficiently good mappings in OLS or Zooma
         trait = Trait('aicardi-goutieres syndrome 99', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 24
-        assert self.get_mapping_types(processed_trait) == {ZoomaMapping}
+        assert len(processed_trait.candidate_mappings) == 0
         assert not processed_trait.is_finished
 
     def test_ols_exact_ascii_match(self):

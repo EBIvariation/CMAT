@@ -6,6 +6,8 @@ import pytest
 from cmat.trait_mapping.ols import EXACT_SYNONYM_KEY
 from cmat.trait_mapping.ontology_mapping import OntologyMapping, MappingContext, MappingProvenance, MatchType, \
     MappingSource, ClinVarXrefMapping
+from cmat.trait_mapping.oxo import OxoMapping
+from cmat.trait_mapping.zooma import ZoomaMapping
 
 
 @pytest.mark.integration
@@ -107,3 +109,12 @@ def test_ranking_same_mapping_source():
         OntologyMapping(mapping_context, 'uri', MappingProvenance.OLS, 'label', True, False, True, [], [], ['label']),
     ]
     sort_and_assert_ranking(expected_mappings)
+
+
+def test_ontology_mappings_hashable():
+    mapping_context = MappingContext('something', 'efo', ['mondo', 'hp'])
+    set_of_mappings = {
+        ZoomaMapping(mapping_context, 'uri', 'high', 'clinvar_xrefs'),
+        OxoMapping(mapping_context, 'uri', 'label', 1, 'id'),
+        ClinVarXrefMapping(mapping_context, 'uri')
+    }
