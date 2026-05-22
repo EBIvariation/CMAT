@@ -23,7 +23,7 @@ class OxoMapping(OntologyMapping):
         return super().__eq__(other) and self.distance == other.distance
 
     def __hash__(self):
-        return hash((super().__hash__, self.distance))
+        return hash((super().__hash__(), self.distance))
 
     def __lt__(self, other):
         if isinstance(other, OxoMapping):

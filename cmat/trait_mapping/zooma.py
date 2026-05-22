@@ -45,7 +45,7 @@ class ZoomaMapping(OntologyMapping):
         return super().__eq__(other) and self.confidence == other.confidence
 
     def __hash__(self):
-        return hash((super().__hash__, self.confidence, self.zooma_source))
+        return hash((super().__hash__(), self.confidence, self.zooma_source))
 
     def __lt__(self, other):
         if isinstance(other, ZoomaMapping):
