@@ -50,7 +50,8 @@ class ZoomaMapping(OntologyMapping):
     def __lt__(self, other):
         if isinstance(other, ZoomaMapping):
             # Higher confidence means better mapping
-            return super().__lt__(other) and self.confidence > other.confidence
+            return super().__lt__(other) or (not super(ZoomaMapping, other).__lt__(self)
+                                             and self.confidence > other.confidence)
         elif isinstance(other, OntologyMapping):
             return super().__lt__(other)
         return NotImplemented

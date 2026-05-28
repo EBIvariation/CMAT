@@ -27,7 +27,8 @@ class OxoMapping(OntologyMapping):
 
     def __lt__(self, other):
         if isinstance(other, OxoMapping):
-            return super().__lt__(other) and self.distance < other.distance
+            return super().__lt__(other) or (not super(OxoMapping, other).__lt__(self)
+                                             and self.distance < other.distance)
         elif isinstance(other, OntologyMapping):
             return super().__lt__(other)
         return NotImplemented
@@ -102,12 +103,12 @@ def build_oxo_payload(id_list: list, target_list: list, distance: int) -> dict:
     return payload
 
 
-def get_oxo_results_from_response(mapping_context: MappingContext, oxo_response: dict) -> list:
+def get_oxo_results_from_response(mapping_context: MappingContext, oxo_response: dict, distance: int) -> list:
     """
     For a json(/dict) response from an OxO request, parse the data into a list of OxOResults
 
+    :param mapping_context: Context (search term, target and preferred ontologies) of the mapping
     :param oxo_response: Response from OxO request
-    :param target_ontology: ID of target ontology (default EFO)
     :return: List of OxOResults based upon the response from OxO
     """
     oxo_result_list = []
@@ -123,8 +124,8 @@ def get_oxo_results_from_response(mapping_context: MappingContext, oxo_response:
             mapping_distance = mapping_response["distance"]
             oxo_mapping = OxoMapping(mapping_context, uri, mapping_label, mapping_distance, query_id)
             oxo_result_list.append(oxo_mapping)
-    # Keep only distance 1 results
-    return [m for m in oxo_result_list if m.distance <= 1]
+    # Keep only results below the specified distance
+    return [m for m in oxo_result_list if m.distance <= distance]
 
 
 def get_oxo_results(mapping_context, id_list: list, target_list: list, distance: int) -> list:
@@ -132,6 +133,7 @@ def get_oxo_results(mapping_context, id_list: list, target_list: list, distance:
     Use list of ontology IDs, datasource targets and distance call function to query OxO and return
     a list of OxOResults.
 
+    :param mapping_context: Context (search term, target and preferred ontologies) of the mapping
     :param id_list: List of ontology IDs with which to find xrefs using OxO
     :param target_list: List of ontology datasources to include
     :param distance: Number of steps to take through xrefs to find mappings
@@ -154,4 +156,4 @@ def get_oxo_results(mapping_context, id_list: list, target_list: list, distance:
         logger.warning("Cannot parse the response from OxO for the following identifiers: {}".format(','.join(id_list)))
         return []
 
-    return get_oxo_results_from_response(mapping_context, oxo_response)
+    return get_oxo_results_from_response(mapping_context, oxo_response, distance)
