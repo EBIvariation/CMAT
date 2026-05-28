@@ -1,6 +1,6 @@
 import logging
 from enum import IntEnum
-from functools import total_ordering, cached_property
+from functools import cached_property
 from itertools import groupby
 
 from cmat.trait_mapping.ols import get_fields_with_match, get_label_and_synonyms_from_ols, get_is_in_ontologies, \
@@ -68,7 +68,6 @@ class MappingContext:
         return hash((self.trait_name, self.target_ontology) + tuple(x for x in self.preferred_ontologies))
 
 
-@total_ordering
 class OntologyMapping:
     """
     An OntologyMapping represents a possible mapping between a string (trait name) and an ontology term (URI).

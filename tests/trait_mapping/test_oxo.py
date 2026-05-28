@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 import pytest
 import requests_mock
 
@@ -82,7 +84,7 @@ class TestGetOxoResultsFromResponse:
                     distance=1,
                     query_id="http://purl.obolibrary.org/obo/HP_0001537")]
 
-            assert oxo.get_oxo_results_from_response(mapping_context, oxo_response) == expected_oxo_results
+            assert oxo.get_oxo_results_from_response(mapping_context, oxo_response, 1) == expected_oxo_results
 
     @pytest.mark.integration
     @pytest.mark.skip(reason="OxO frequently down")
@@ -93,3 +95,40 @@ class TestGetOxoResultsFromResponse:
         assert len(results) == 2
         assert len(results[0].mapping_list) == 2
         assert len(results[1].mapping_list) == 2
+
+
+class TestOxoMapping:
+
+    def test_oxo_mapping_sorting(self):
+        mapping_context = MappingContext('trait', 'efo', ['mondo', 'hp'])
+        # Base mapping: preferred not target and distance 2
+        mapping_1 = oxo.OxoMapping(mapping_context, 'uri_1', 'trait', 2, 'query_id')
+        # Mapping with a better source but worse distance
+        mapping_2 = oxo.OxoMapping(mapping_context, 'uri_2', 'trait', 3, 'query_id')
+        # Mapping with a worse source but better distance
+        mapping_3 = oxo.OxoMapping(mapping_context, 'uri_3', 'trait', 1, 'query_id')
+        # Mapping with same source but better distance
+        mapping_4 = oxo.OxoMapping(mapping_context, 'uri_4', 'trait', 1, 'query_id')
+
+        def mock_is_in_ontologies(uri, mapping_context):
+            # Returns is_in_target, is_in_preferred
+            if uri == 'uri_1':
+                return False, True
+            if uri == 'uri_2':
+                return True, False
+            if uri == 'uri_3':
+                return False, False
+            if uri == 'uri_4':
+                return False, True
+            return NotImplemented
+
+        with patch('cmat.trait_mapping.ontology_mapping.get_is_in_ontologies') as m_get_is_in_ontologies, \
+            patch('cmat.trait_mapping.ontology_mapping.is_current_and_in_ontology') as m_is_current_and_in_ontology, \
+            patch('cmat.trait_mapping.ontology_mapping.get_label_and_synonyms_from_ols') as m_get_label_and_synonyms_from_ols:
+            m_get_is_in_ontologies.side_effect = mock_is_in_ontologies
+            m_is_current_and_in_ontology.return_value = True  # only called if mapping is in target ontology
+            m_get_label_and_synonyms_from_ols.return_value = ('trait', [])  # all match types are exact label
+
+            mappings = [mapping_1, mapping_2, mapping_3, mapping_4]
+            result = sorted(mappings)
+            assert result == [mapping_2, mapping_4, mapping_1, mapping_3]
