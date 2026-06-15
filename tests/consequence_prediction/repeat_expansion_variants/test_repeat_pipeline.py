@@ -157,6 +157,7 @@ def test_annotate_genes_with_transcripts():
         ['ENSG00000136869', 'ENST00000394487'],
         ['ENSG00000136869', 'ENST00000355622'],
         ['ENSG00000136869', 'ENST00000490685'],
+        ['ENSG00000136869', 'ENST00001119368'],
     ])
     assert_gene_transcript('variant_with_gene_symbol', [
         ['ENSG00000130711', 'ENST00000253008'],
