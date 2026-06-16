@@ -37,7 +37,7 @@ def get_ols_search_results(mapping_context, query_fields, field_list):
         'q': mapping_context.trait_name,
         'exact': 'true',
         'obsoletes': 'false',
-        'ontologies': f'{mapping_context.target_ontology.lower()},{",".join(mapping_context.preferred_ontologies)}',
+        'ontology': f'{mapping_context.target_ontology.lower()},{",".join(mapping_context.preferred_ontologies)}',
         'queryFields': query_fields,
         'fieldList': field_list,
         'rows': 1000

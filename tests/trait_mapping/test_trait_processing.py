@@ -39,15 +39,15 @@ class TestProcessTrait:
         # Only goes through OLS as it finds an exact match in EFO
         trait = Trait('chédiak-higashi syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 8
+        assert len(processed_trait.candidate_mappings) == 3
         assert self.get_mapping_types(processed_trait) == {OlsMapping}
         assert processed_trait.is_finished
 
     def test_previous_mapping(self):
         # Finds nothing exact via OLS, so checks previous mappings and finds a current result
-        trait = Trait('11p partial monosomy syndrome', None, None)
+        trait = Trait('young simpson syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 6
+        assert len(processed_trait.candidate_mappings) == 3
         assert self.get_mapping_types(processed_trait) == {OlsMapping, PreviousMapping}
         assert processed_trait.is_finished
 
@@ -62,7 +62,7 @@ class TestProcessTrait:
         # Search should be agnostic to accents and other non-ASCII characters
         trait = Trait('pelger-huët anomaly', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 10
+        assert len(processed_trait.candidate_mappings) == 8
         assert processed_trait.is_finished
         assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://purl.obolibrary.org/obo/MONDO_0008214'}
 
