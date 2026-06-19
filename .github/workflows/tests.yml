@@ -5,9 +5,11 @@ name: CMAT pipelines
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, clinvar-xrefs ]
   workflow_dispatch:
 
+permissions:
+  contents: read
 
 jobs:
   build:

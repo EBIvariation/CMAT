@@ -2,6 +2,8 @@
 
 set -Eeuo pipefail
 export LC_COLLATE=C
+# Disable strict syntax for Nextflow >= 26.04
+export NXF_SYNTAX_PARSER=v1
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export CODE_ROOT="$(dirname $(dirname "${SCRIPT_DIR}"))"

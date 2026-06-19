@@ -143,7 +143,7 @@ def test_annotate_genes_with_transcripts():
         ['variant_not_found', 'RCV4', 'blah', 'HGNC:blah', 'NM_blah', None]
     ], columns=('Name', 'RCVaccession', 'GeneSymbol', 'HGNC_ID', 'TranscriptID', 'RepeatType'))
     annotated_variants = annotate_ensembl_gene_info(variants, include_transcripts=True)
-    assert annotated_variants.shape == (7, 11)
+    assert annotated_variants.shape == (8, 11)
 
     # Helper function to check gene/transcript annotations for a particular variant
     def assert_gene_transcript(name, arr):
@@ -157,6 +157,7 @@ def test_annotate_genes_with_transcripts():
         ['ENSG00000136869', 'ENST00000394487'],
         ['ENSG00000136869', 'ENST00000355622'],
         ['ENSG00000136869', 'ENST00000490685'],
+        ['ENSG00000136869', 'ENST00001119368'],
     ])
     assert_gene_transcript('variant_with_gene_symbol', [
         ['ENSG00000130711', 'ENST00000253008'],

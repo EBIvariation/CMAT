@@ -68,7 +68,7 @@ def create_latest_mappings(automated_mappings, curated_mappings, previous_mappin
 def output_and_report(current_mappings, obsolete_mappings, target_ontology, counts):
     with open(OUTPUT_FILE_NAME, 'w') as out_file:
         out_file.write(f'#generated-date={datetime.today().strftime("%Y-%m-%d")}\n')
-        out_file.write(f'#ontology=${target_ontology}\n')
+        out_file.write(f'#ontology={target_ontology}\n')
         out_file.write('#clinvar_trait_name\turi\tlabel\n')
         for trait_name, uri, label in current_mappings:
             out_file.write(f'{trait_name}\t{uri}\t{label}\n')
