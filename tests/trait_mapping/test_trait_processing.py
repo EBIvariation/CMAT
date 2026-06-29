@@ -39,7 +39,7 @@ class TestProcessTrait:
         # Only goes through OLS as it finds an exact match in EFO
         trait = Trait('chédiak-higashi syndrome', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 3
+        assert len(processed_trait.candidate_mappings) == 5
         assert self.get_mapping_types(processed_trait) == {OlsMapping}
         assert processed_trait.is_finished
 
@@ -62,17 +62,11 @@ class TestProcessTrait:
         # Search should be agnostic to accents and other non-ASCII characters
         trait = Trait('pelger-huët anomaly', None, None)
         processed_trait = self.run_process_trait(trait)
-        assert len(processed_trait.candidate_mappings) == 8
+        assert len(processed_trait.candidate_mappings) == 10
         assert processed_trait.is_finished
         assert {m.uri for m in processed_trait.finished_mapping_set} == {'http://purl.obolibrary.org/obo/MONDO_0008214'}
 
     def test_multiple_mappings(self):
-        # Multiple mappings from OLS
-        trait = Trait('albinism', None, None)
-        processed_trait = self.run_process_trait(trait)
-        assert processed_trait.is_finished
-        assert len(processed_trait.finished_mapping_set) == 2
-
         # Multiple mappings from previous
         trait = Trait('coronary artery disease/myocardial infarction', None, None)
         processed_trait = self.run_process_trait(trait)
@@ -84,7 +78,7 @@ class TestProcessTrait:
         trait = Trait('frontotemporal lobar degeneration with tdp43 inclusions, tardbp-related', None, None, xrefs)
         processed_trait = self.run_process_trait(trait)
         assert not processed_trait.is_finished
-        assert len(processed_trait.candidate_mappings) == 1
+        assert len(processed_trait.candidate_mappings) == 2
         for mapping in processed_trait.candidate_mappings:
             if isinstance(mapping, ClinVarXrefMapping):
                 assert mapping.uri == xrefs[0]

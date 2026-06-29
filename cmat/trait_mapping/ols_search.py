@@ -20,12 +20,9 @@ def get_ols_search_results(mapping_context, query_fields, field_list):
     """
     Search OLS for a given trait name with the specified parameters.
 
-    :param trait_name: String containing a trait name from a ClinVar record.
-    :param ontologies: String containing list of ontologies to search
+    :param mapping_context: Context (search term, target and preferred ontologies) of the mapping
     :param query_fields: String containing list of fields to query
     :param field_list: String containing list of fields to return
-    :param target_ontology: ID of target ontology
-    :param preferred_ontologies: List of preferred non-target ontology IDs
     :return: List of OlsResults
     """
     if query_fields is None or field_list is None:
@@ -35,7 +32,7 @@ def get_ols_search_results(mapping_context, query_fields, field_list):
     search_url = 'https://www.ebi.ac.uk/ols4/api/search'
     params = {
         'q': mapping_context.trait_name,
-        'exact': 'true',
+        'exact': 'false',
         'obsoletes': 'false',
         'ontology': f'{mapping_context.target_ontology.lower()},{",".join(mapping_context.preferred_ontologies)}',
         'queryFields': query_fields,
