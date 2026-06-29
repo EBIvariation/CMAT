@@ -115,6 +115,7 @@ def test_get_ols_search_results():
         query_fields='label,synonym',
         field_list='iri,label,ontology_name,synonym'
     )
+    assert len(results) > 0
     top_ranked_result = next(iter(sorted(results)))
     assert top_ranked_result.label == 'hemophilia A'
     assert top_ranked_result.get_match_type() == MatchType.EXACT_MATCH_SYNONYM
