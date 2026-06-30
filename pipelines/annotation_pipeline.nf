@@ -101,8 +101,7 @@ workflow {
  * to genes and functional consequences.
  */
 process runSnpIndel {
-    clusterOptions "-o ${batchRoot}/logs/consequence_snp.out \
-                    -e ${batchRoot}/logs/consequence_snp.err"
+    clusterOptions "-o ${batchRoot}/logs/consequence_snp.out", "-e ${batchRoot}/logs/consequence_snp.err"
 
     publishDir "${batchRoot}/gene_mapping",
         overwrite: true,
@@ -135,8 +134,7 @@ process runSnpIndel {
  * Extract repeat expansion variants from ClinVar and map them to genes.
  */
 process runRepeat {
-   clusterOptions "-o ${batchRoot}/logs/consequence_repeat.out \
-                   -e ${batchRoot}/logs/consequence_repeat.err"
+   clusterOptions "-o ${batchRoot}/logs/consequence_repeat.out", "-e ${batchRoot}/logs/consequence_repeat.err"
 
    publishDir "${batchRoot}/gene_mapping",
        overwrite: true,
@@ -166,8 +164,7 @@ process runRepeat {
  * known repeat expansions).
  */
 process runStructural {
-   clusterOptions "-o ${batchRoot}/logs/consequence_structural.out \
-                   -e ${batchRoot}/logs/consequence_structural.err"
+   clusterOptions "-o ${batchRoot}/logs/consequence_structural.out", "-e ${batchRoot}/logs/consequence_structural.err"
 
    publishDir "${batchRoot}/gene_mapping",
        overwrite: true,
@@ -268,8 +265,7 @@ process checkLatestMappings {
  * Generate annotated ClinVar XML
  */
 process generateAnnotatedXml {
-    clusterOptions "-o ${batchRoot}/logs/annotated_xml_generation.out \
-                    -e ${batchRoot}/logs/annotated_xml_generation.err"
+    clusterOptions "-o ${batchRoot}/logs/annotated_xml_generation.out", "-e ${batchRoot}/logs/annotated_xml_generation.err"
 
     publishDir "${batchRoot}",
         overwrite: true,
@@ -322,8 +318,7 @@ process countClinvarRecords {
  * Generate the evidence strings for submission to Open Targets.
  */
 process generateEvidence {
-    clusterOptions "-o ${batchRoot}/logs/evidence_string_generation_${startEnd[0]}.out \
-                    -e ${batchRoot}/logs/evidence_string_generation_${startEnd[0]}.err"
+    clusterOptions "-o ${batchRoot}/logs/evidence_string_generation_${startEnd[0]}.out", "-e ${batchRoot}/logs/evidence_string_generation_${startEnd[0]}.err"
 
     // Removed mappings are the same for each process, so no need to aggregate
     publishDir "${batchRoot}/logs",
@@ -410,8 +405,7 @@ process collectInvalidEvidence {
 process collectCounts {
     label 'short_time'
     label 'small_mem'
-    clusterOptions "-o ${batchRoot}/logs/collect_counts.out \
-                    -e ${batchRoot}/logs/collect_counts.err"
+    clusterOptions "-o ${batchRoot}/logs/collect_counts.out", "-e ${batchRoot}/logs/collect_counts.err"
 
     publishDir "${batchRoot}/logs",
         overwrite: true,
@@ -453,8 +447,7 @@ process checkDuplicates {
  * Convert MedGen and OMIM cross-references into ZOOMA format.
  */
 process convertXrefs {
-    clusterOptions "-o ${batchRoot}/logs/traits_to_zooma_format.out \
-                    -e ${batchRoot}/logs/traits_to_zooma_format.err"
+    clusterOptions "-o ${batchRoot}/logs/traits_to_zooma_format.out", "-e ${batchRoot}/logs/traits_to_zooma_format.err"
 
     publishDir "${batchRoot}/clinvar",
         overwrite: true,
