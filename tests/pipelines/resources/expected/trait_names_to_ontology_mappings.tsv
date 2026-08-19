@@ -1,4 +1,4 @@
-#generated-date=2026-05-14
+#generated-date=2026-08-19
 #ontology=EFO
 #clinvar_trait_name	uri	label
 1-2 finger cutaneous syndactyly	http://purl.obolibrary.org/obo/HP_0010704	1-2 finger cutaneous syndactyly
@@ -1535,7 +1535,7 @@ autosomal recessive nonsyndromic hearing loss 59	http://purl.obolibrary.org/obo/
 autosomal recessive nonsyndromic hearing loss 6	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 61	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 63	http://purl.obolibrary.org/obo/MONDO_0012670	autosomal recessive nonsyndromic hearing loss 63
-autosomal recessive nonsyndromic hearing loss 66	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
+autosomal recessive nonsyndromic hearing loss 66	http://purl.obolibrary.org/obo/MONDO_0012442	autosomal recessive nonsyndromic hearing loss 66
 autosomal recessive nonsyndromic hearing loss 67	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 68	http://purl.obolibrary.org/obo/MONDO_0019588	hearing loss, autosomal recessive
 autosomal recessive nonsyndromic hearing loss 7	http://purl.obolibrary.org/obo/MONDO_0010967	autosomal recessive nonsyndromic hearing loss 7
@@ -2435,7 +2435,6 @@ charcot-marie-tooth disease axonal type 2o	http://purl.obolibrary.org/obo/MONDO_
 charcot-marie-tooth disease axonal type 2p	http://purl.obolibrary.org/obo/MONDO_0013753	Charcot-Marie-Tooth disease axonal type 2P
 charcot-marie-tooth disease axonal type 2q	http://purl.obolibrary.org/obo/MONDO_0014012	Charcot-Marie-Tooth disease axonal type 2Q
 charcot-marie-tooth disease axonal type 2s	http://purl.obolibrary.org/obo/MONDO_0014511	Charcot-Marie-Tooth disease axonal type 2S
-charcot-marie-tooth disease axonal type 2t	http://purl.obolibrary.org/obo/MONDO_0014866	Charcot-Marie-Tooth disease axonal type 2T
 charcot-marie-tooth disease axonal type 2u	http://purl.obolibrary.org/obo/MONDO_0014566	Charcot-Marie-Tooth disease axonal type 2U
 charcot-marie-tooth disease axonal type 2v	http://purl.obolibrary.org/obo/MONDO_0014665	Charcot-Marie-Tooth disease axonal type 2V
 charcot-marie-tooth disease axonal type 2z	http://purl.obolibrary.org/obo/MONDO_0014736	Charcot-Marie-Tooth disease axonal type 2Z
@@ -3881,7 +3880,7 @@ developmental and epileptic encephalopathy, 31a	http://purl.obolibrary.org/obo/M
 developmental and epileptic encephalopathy, 31b	http://purl.obolibrary.org/obo/MONDO_0957248	developmental and epileptic encephalopathy, 31B
 developmental and epileptic encephalopathy, 32	http://purl.obolibrary.org/obo/MONDO_0018614	undetermined early-onset epileptic encephalopathy
 developmental and epileptic encephalopathy, 33	http://purl.obolibrary.org/obo/MONDO_0014625	developmental and epileptic encephalopathy, 33
-developmental and epileptic encephalopathy, 34	http://purl.obolibrary.org/obo/MONDO_0017385	malignant migrating partial seizures of infancy
+developmental and epileptic encephalopathy, 34	http://purl.obolibrary.org/obo/MONDO_0014718	developmental and epileptic encephalopathy, 34
 developmental and epileptic encephalopathy, 35	http://purl.obolibrary.org/obo/MONDO_0014719	developmental and epileptic encephalopathy, 35
 developmental and epileptic encephalopathy, 36	http://purl.obolibrary.org/obo/MONDO_0010472	developmental and epileptic encephalopathy, 36
 developmental and epileptic encephalopathy, 37	http://purl.obolibrary.org/obo/MONDO_0100062	genetic developmental and epileptic encephalopathy
@@ -4567,7 +4566,6 @@ epidermolytic ichthyosis	http://purl.obolibrary.org/obo/MONDO_0007239	epidermoly
 epidermolytic nevus	http://purl.obolibrary.org/obo/MONDO_0044656	epidermolytic nevus
 epidermolytic palmoplantar keratoderma	http://purl.obolibrary.org/obo/MONDO_0007758	epidermolytic palmoplantar keratoderma
 epidermolytic palmoplantar keratoderma, 1	http://purl.obolibrary.org/obo/MONDO_0007758	epidermolytic palmoplantar keratoderma, 1
-epilepsy of infancy with migrating focal seizures	http://purl.obolibrary.org/obo/MONDO_0100025	epilepsy of infancy with migrating focal seizures
 epilepsy syndrome	http://purl.obolibrary.org/obo/MONDO_0015650	epilepsy syndrome
 epilepsy with myoclonic atonic seizures	http://purl.obolibrary.org/obo/MONDO_0014633	epilepsy with myoclonic atonic seizures
 epilepsy, childhood absence 2	http://purl.obolibrary.org/obo/MONDO_0010826	childhood absence epilepsy
@@ -6208,6 +6206,7 @@ hypertrophic cardiomyopathy 13	http://purl.obolibrary.org/obo/MONDO_0013195	hype
 hypertrophic cardiomyopathy 14	http://purl.obolibrary.org/obo/MONDO_0013197	hypertrophic cardiomyopathy 14
 hypertrophic cardiomyopathy 15	http://purl.obolibrary.org/obo/MONDO_0013200	hypertrophic cardiomyopathy 15
 hypertrophic cardiomyopathy 17	http://purl.obolibrary.org/obo/MONDO_0013474	hypertrophic cardiomyopathy 17
+hypertrophic cardiomyopathy 18	http://purl.obolibrary.org/obo/MONDO_0013475	hypertrophic cardiomyopathy 18
 hypertrophic cardiomyopathy 19	http://purl.obolibrary.org/obo/MONDO_0013476	hypertrophic cardiomyopathy 19
 hypertrophic cardiomyopathy 2	http://purl.obolibrary.org/obo/MONDO_0007266	hypertrophic cardiomyopathy 2
 hypertrophic cardiomyopathy 20	http://purl.obolibrary.org/obo/MONDO_0013477	hypertrophic cardiomyopathy 20
@@ -7116,6 +7115,7 @@ isolated microphthalmia 6	http://www.orpha.net/ORDO/Orphanet_2542	Isolated micro
 isolated microphthalmia 7	http://purl.obolibrary.org/obo/MONDO_0013377	isolated microphthalmia 7
 isolated microphthalmia 8	http://www.orpha.net/ORDO/Orphanet_2542	Isolated microphthalmia-anophthalmia-coloboma
 isolated nail anomaly	http://www.orpha.net/ORDO/Orphanet_79369	Isolated nail anomaly
+isolated neonatal sclerosing cholangitis	http://purl.obolibrary.org/obo/MONDO_0018816	isolated neonatal sclerosing cholangitis
 isolated noncompaction of the ventricular myocardium	http://www.ebi.ac.uk/efo/EFO_1001802	isolated noncompaction of the ventricular myocardium
 isolated optic nerve hypoplasia	http://purl.obolibrary.org/obo/MONDO_0008136	isolated optic nerve hypoplasia
 isolated pierre-robin syndrome	http://purl.obolibrary.org/obo/MONDO_0009869	isolated Pierre-Robin syndrome
@@ -7266,7 +7266,6 @@ keratosis follicularis	http://purl.obolibrary.org/obo/MONDO_0007417	Darier disea
 keratosis follicularis spinulosa decalvans, x-linked	http://purl.obolibrary.org/obo/MONDO_0000136	keratosis follicularis spinulosa decalvans
 keratosis linearis-ichthyosis congenita-sclerosing keratoderma syndrome	http://purl.obolibrary.org/obo/MONDO_0011169	keratosis linearis-ichthyosis congenita-sclerosing keratoderma syndrome
 keratosis palmoplantaris striata 2	http://purl.obolibrary.org/obo/MONDO_0013034	keratosis palmoplantaris striata 2
-keratosis palmoplantaris striata 3	http://purl.obolibrary.org/obo/MONDO_0011881	keratosis palmoplantaris striata 3
 keratosis pilaris	http://purl.obolibrary.org/obo/MONDO_0021036	keratosis pilaris
 keratosis pilaris atrophicans	http://purl.obolibrary.org/obo/MONDO_0018855	keratosis pilaris atrophicans
 ketoacidosis due to monocarboxylate transporter-1 deficiency	http://purl.obolibrary.org/obo/MONDO_0014490	ketoacidosis due to monocarboxylate transporter-1 deficiency
@@ -9410,6 +9409,7 @@ neuronopathy, distal hereditary motor, autosomal recessive 8	http://purl.obolibr
 neuronopathy, distal hereditary motor, autosomal recessive 9	http://purl.obolibrary.org/obo/MONDO_0957874	neuronopathy, distal hereditary motor, autosomal recessive 9
 neuronopathy, distal hereditary motor, type 1	http://purl.obolibrary.org/obo/MONDO_0008451	neuronopathy, distal hereditary motor, autosomal dominant 1
 neuronopathy, distal hereditary motor, type 1	http://www.orpha.net/ORDO/Orphanet_139518	Distal hereditary motor neuropathy type 1
+neuronopathy, distal hereditary motor, type 2a	http://purl.obolibrary.org/obo/MONDO_0008025	neuronopathy, distal hereditary motor, type 2A
 neuronopathy, distal hereditary motor, type 2b	http://purl.obolibrary.org/obo/MONDO_0012080	neuronopathy, distal hereditary motor, type 2B
 neuronopathy, distal hereditary motor, type 2c	http://purl.obolibrary.org/obo/MONDO_0015352	distal hereditary motor neuropathy type 2
 neuronopathy, distal hereditary motor, type 2d	http://purl.obolibrary.org/obo/MONDO_0015352	distal hereditary motor neuropathy type 2
@@ -9745,7 +9745,6 @@ orofaciodigital syndrome v	http://purl.obolibrary.org/obo/MONDO_0008267	orofacio
 orofaciodigital syndrome xv	http://www.orpha.net/ORDO/Orphanet_2754	Orofaciodigital syndrome type 6
 oromandibular dystonia	http://purl.obolibrary.org/obo/MONDO_0019771	oromandibular dystonia
 oromandibular-limb hypogenesis spectrum	http://purl.obolibrary.org/obo/MONDO_0008006	Mobius syndrome
-oromandibular-limb hypogenesis spectrum	http://www.orpha.net/ORDO/Orphanet_570	Moebius syndrome
 orotic aciduria	http://purl.obolibrary.org/obo/MONDO_0009797	orotic aciduria
 oroticaciduria	http://www.orpha.net/ORDO/Orphanet_30	Hereditary orotic aciduria
 orstavik lindemann solberg syndrome	http://www.orpha.net/ORDO/Orphanet_1338	Heart defect-tongue hamartoma-polysyndactyly syndrome
@@ -10216,7 +10215,6 @@ phosphoenolpyruvate carboxykinase deficiency, cytosolic	http://purl.obolibrary.o
 phosphoenolpyruvate carboxykinase deficiency, mitochondrial	http://purl.obolibrary.org/obo/MONDO_0009864	phosphoenolpyruvate carboxykinase deficiency, mitochondrial
 phosphoglycerate dehydrogenase deficiency	http://www.orpha.net/ORDO/Orphanet_79351	3-phosphoglycerate dehydrogenase deficiency, infantile/juvenile form
 phosphohydroxylysinuria	http://purl.obolibrary.org/obo/MONDO_0014008	phosphohydroxylysinuria
-phosphoribosylaminoimidazole carboxylase deficiency	http://purl.obolibrary.org/obo/MONDO_0859244	phosphoribosylaminoimidazole carboxylase deficiency
 phosphoribosylpyrophosphate synthetase superactivity	http://purl.obolibrary.org/obo/MONDO_0010395	phosphoribosylpyrophosphate synthetase superactivity
 phosphoserine aminotransferase deficiency	http://www.orpha.net/ORDO/Orphanet_284417	Phosphoserine aminotransferase deficiency, infantile/juvenile form
 photophobia	http://purl.obolibrary.org/obo/HP_0000613	Photophobia
@@ -12450,7 +12448,6 @@ third degree atrioventricular block	http://purl.obolibrary.org/obo/MONDO_0000468
 thoc6-related developmental delay-microcephaly-facial dysmorphism syndrome	http://purl.obolibrary.org/obo/MONDO_0013362	THOC6-related developmental delay-microcephaly-facial dysmorphism syndrome
 thomsen and becker disease	http://purl.obolibrary.org/obo/MONDO_0009710	Thomsen and Becker disease
 thoracic aortic aneurysm and aortic dissection	http://www.orpha.net/ORDO/Orphanet_285014	Rare disease with thoracic aortic aneurysm and aortic dissection
-thoracic dysostosis, isolated	http://purl.obolibrary.org/obo/MONDO_0008549	thoracic dysostosis, isolated
 thoracic hypoplasia	http://purl.obolibrary.org/obo/HP_0005257	Thoracic hypoplasia
 thoracic kyphoscoliosis	http://purl.obolibrary.org/obo/HP_0005659	Thoracic kyphoscoliosis
 thoracic scoliosis	http://purl.obolibrary.org/obo/HP_0002943	Thoracic scoliosis
@@ -12547,6 +12544,7 @@ tooth agenesis	http://purl.obolibrary.org/obo/HP_0009804	Tooth agenesis
 tooth agenesis, selective, 1	http://purl.obolibrary.org/obo/MONDO_0007129	tooth agenesis, selective, 1
 tooth agenesis, selective, 10	http://purl.obolibrary.org/obo/MONDO_0859339	tooth agenesis, selective, 10
 tooth agenesis, selective, 2	http://purl.obolibrary.org/obo/MONDO_0011265	tooth agenesis, selective, 2
+tooth agenesis, selective, 3	http://purl.obolibrary.org/obo/MONDO_0011477	tooth agenesis, selective, 3
 tooth agenesis, selective, 4	http://purl.obolibrary.org/obo/MONDO_0007881	tooth agenesis, selective, 4
 tooth agenesis, selective, 7	http://purl.obolibrary.org/obo/MONDO_0014749	tooth agenesis, selective, 7
 tooth agenesis, selective, x-linked, 1	http://purl.obolibrary.org/obo/MONDO_0010741	tooth agenesis, selective, X-linked, 1

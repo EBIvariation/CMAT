@@ -35,7 +35,7 @@ def get_ols_search_results(mapping_context, query_fields, field_list):
         ontology_param += f',{",".join(o.lower() for o in mapping_context.preferred_ontologies)}'
     params = {
         'q': mapping_context.trait_name,
-        'exact': 'false',
+        'exact': 'true',
         'obsoletes': 'false',
         'ontology': ontology_param,
         'queryFields': query_fields,

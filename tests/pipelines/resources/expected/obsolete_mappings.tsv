@@ -483,6 +483,7 @@ ceroid lipofuscinosis neuronal 4b autosomal dominant	http://www.orpha.net/ORDO/O
 ceroid lipofuscinosis, neuronal, 11	http://www.orpha.net/ORDO/Orphanet_216	Neuronal ceroid lipofuscinosis
 ceroid lipofuscinosis, neuronal, 13	http://www.orpha.net/ORDO/Orphanet_216	Neuronal ceroid lipofuscinosis
 charcot-marie-tooth disease and deafness	http://www.orpha.net/ORDO/Orphanet_90658	Charcot-Marie-Tooth disease type 1E
+charcot-marie-tooth disease axonal type 2t	http://purl.obolibrary.org/obo/MONDO_0014866	Charcot-Marie-Tooth disease axonal type 2T
 charcot-marie-tooth disease axonal type 2x	http://www.ebi.ac.uk/efo/EFO_1001983	Autosomal recessive Charcot Marie Tooth disease type 2X
 charcot-marie-tooth disease type 2c	http://www.orpha.net/ORDO/Orphanet_166	Charcot-Marie-Tooth disease/Hereditary motor and sensory neuropathy
 charcot-marie-tooth disease type 2f	http://www.orpha.net/ORDO/Orphanet_166	Charcot-Marie-Tooth disease/Hereditary motor and sensory neuropathy
@@ -1073,6 +1074,7 @@ epidermolysis bullosa dystrophica	http://www.ebi.ac.uk/efo/EFO_1000692	epidermol
 epidermolysis bullosa simplex, autosomal recessive 2	http://www.orpha.net/ORDO/Orphanet_304	Epidermolysis bullosa simplex
 epidermolysis bullosa, lethal acantholytic	http://www.orpha.net/ORDO/Orphanet_158687	Lethal acantholytic epidermolysis bullosa
 epilepsy	http://www.ebi.ac.uk/efo/EFO_0000474	epilepsy
+epilepsy of infancy with migrating focal seizures	http://purl.obolibrary.org/obo/MONDO_0100025	epilepsy of infancy with migrating focal seizures
 epilepsy with generalized tonic-clonic seizures	http://www.ebi.ac.uk/efo/EFO_0007262	epilepsy with generalized tonic-clonic seizures
 epilepsy with grand mal seizures on awakening	http://www.orpha.net/ORDO/Orphanet_307	Juvenile myoclonic epilepsy
 epilepsy, childhood absence 1	http://www.orpha.net/ORDO/Orphanet_64280	Childhood absence epilepsy
@@ -1471,7 +1473,6 @@ hypertriglyceridemia	http://www.ebi.ac.uk/efo/EFO_0004211	Hypertriglyceridemia
 hypertriglyceridemia, familial	http://purl.obolibrary.org/obo/MONDO_0007788	hypertriglyceridemia, familial
 hypertriglyceridemia, transient infantile	http://www.orpha.net/ORDO/Orphanet_300293	Transient infantile hypertriglyceridemia and hepatosteatosis
 hypertrophic cardiomyopathy 16	http://www.ebi.ac.uk/efo/EFO_0000538	hypertrophic cardiomyopathy
-hypertrophic cardiomyopathy 18	http://www.ebi.ac.uk/efo/EFO_0000538	hypertrophic cardiomyopathy
 hypertrophic cardiomyopathy 3	http://www.ebi.ac.uk/efo/EFO_0000538	hypertrophic cardiomyopathy
 hypertrophic cardiomyopathy 8	http://www.ebi.ac.uk/efo/EFO_0000538	hypertrophic cardiomyopathy
 hyperuricemia, pulmonary hypertension, renal failure, and alkalosis	http://www.orpha.net/ORDO/Orphanet_363694	Hyperuricemia-pulmonary hypertension-renal failure-alkalosis syndrome
@@ -1605,7 +1606,6 @@ ischiopatellar dysplasia	http://www.orpha.net/ORDO/Orphanet_1509	Coxopodopatella
 islet cell hyperplasia	http://www.ebi.ac.uk/efo/EFO_0007318	hyperinsulinemic hypoglycemia
 isolated growth hormone deficiency type 1b	http://www.orpha.net/ORDO/Orphanet_231671	Isolated growth hormone deficiency type IB
 isolated growth hormone deficiency, type iv	http://www.orpha.net/ORDO/Orphanet_231671	Isolated growth hormone deficiency type IB
-isolated neonatal sclerosing cholangitis	http://www.ebi.ac.uk/efo/EFO_0004268	sclerosing cholangitis
 isolated nonsyndromic congenital heart disease	http://www.ebi.ac.uk/efo/EFO_0005207	congenital heart disease
 isolated sulfite oxidase deficiency	http://www.orpha.net/ORDO/Orphanet_99731	Isolated sulfite oxidase deficiency
 isolated thoracic aortic aneurysm	http://www.ebi.ac.uk/efo/EFO_0004282	thoracic aortic aneurysm
@@ -1634,6 +1634,7 @@ keratoderma palmoplantar deafness	http://www.orpha.net/ORDO/Orphanet_2202	Palmop
 keratosis linearis with ichthyosis congenita and sclerosing keratoderma	http://www.orpha.net/ORDO/Orphanet_281201	Keratosis linearis-ichthyosis congenita-sclerosing keratoderma syndrome
 keratosis palmoplantaris papulosa	http://www.orpha.net/ORDO/Orphanet_79501	Punctate palmoplantar keratoderma type 1
 keratosis palmoplantaris striata 1	http://www.orpha.net/ORDO/Orphanet_50942	Striate palmoplantar keratoderma
+keratosis palmoplantaris striata 3	http://purl.obolibrary.org/obo/MONDO_0011881	keratosis palmoplantaris striata 3
 keratosis palmoplantaris striata ii	http://www.orpha.net/ORDO/Orphanet_50942	Striate palmoplantar keratoderma
 keratosis pilaris decalvans	http://www.orpha.net/ORDO/Orphanet_2340	Keratosis follicularis spinulosa decalvans
 keratosis, seborrheic	http://www.ebi.ac.uk/efo/EFO_0005584	seborrheic keratosis
@@ -2200,7 +2201,6 @@ neuromuscular diseases	http://www.ebi.ac.uk/efo/EFO_1001902	neuromuscular diseas
 neuronal ceroid lipofuscinosis 4a	http://www.orpha.net/ORDO/Orphanet_79262	Adult neuronal ceroid lipofuscinosis
 neuronal ceroid lipofuscinosis 4b	http://www.orpha.net/ORDO/Orphanet_79262	Adult neuronal ceroid lipofuscinosis
 neuronal ceroid lipofuscinosis 6	http://www.orpha.net/ORDO/Orphanet_216	Neuronal ceroid lipofuscinosis
-neuronopathy, distal hereditary motor, type 2a	http://purl.obolibrary.org/obo/MONDO_0008025	neuronopathy, distal hereditary motor, type 2A
 neuronopathy, distal hereditary motor, type ix	http://www.orpha.net/ORDO/Orphanet_140465	Autosomal dominant distal hereditary motor neuropathy
 neuronopathy, distal hereditary motor, type viia	http://www.orpha.net/ORDO/Orphanet_139589	Distal hereditary motor neuropathy type 7
 neuropathy ataxia retinitis pigmentosa syndrome	http://www.orpha.net/ORDO/Orphanet_644	NARP syndrome
@@ -2279,6 +2279,7 @@ orofacial clefting	http://www.orpha.net/ORDO/Orphanet_139039	Orofacial clefting 
 orofaciodigital syndrome xiv	http://www.orpha.net/ORDO/Orphanet_140997	Orofaciodigital syndrome
 orofaciodigital syndrome xvi	http://www.orpha.net/ORDO/Orphanet_140997	Orofaciodigital syndrome
 orofaciodigital syndromes	http://www.orpha.net/ORDO/Orphanet_140997	Orofaciodigital syndrome
+oromandibular-limb hypogenesis spectrum	http://www.orpha.net/ORDO/Orphanet_570	Moebius syndrome
 orthostatic hypotension	http://www.ebi.ac.uk/efo/EFO_0005252	orthostatic hypotension
 orthostatic hypotension 2	http://www.ebi.ac.uk/efo/EFO_0005252	orthostatic hypotension
 orthostatic intolerance	http://www.ebi.ac.uk/efo/EFO_1000645	orthostatic intolerance
@@ -2393,6 +2394,7 @@ pes planus	http://www.ebi.ac.uk/efo/EFO_0003874	flatfoot
 pfeiffer syndrome, type iii	http://www.orpha.net/ORDO/Orphanet_710	Pfeiffer syndrome
 phimosis	http://www.ebi.ac.uk/efo/EFO_1001104	phimosis
 phosphoglycerate kinase 1 deficiency	http://www.orpha.net/ORDO/Orphanet_713	Glycogen storage disease due to phosphoglycerate kinase 1 deficiency
+phosphoribosylaminoimidazole carboxylase deficiency	http://purl.obolibrary.org/obo/MONDO_0859244	phosphoribosylaminoimidazole carboxylase deficiency
 pick disease	http://www.ebi.ac.uk/efo/EFO_0003096	Pick disease
 pick's disease	http://www.ebi.ac.uk/efo/EFO_0003096	Pick disease
 pigmented paravenous chorioretinal atrophy	http://www.orpha.net/ORDO/Orphanet_251295	Pigmented paravenous retinochoroidal atrophy
@@ -2869,6 +2871,7 @@ testicular disease	http://www.ebi.ac.uk/efo/EFO_0009601	testicular disease
 thalassemia	http://www.ebi.ac.uk/efo/EFO_1001996	Thalassemia
 thiamine metabolism dysfunction syndrome 5 (episodic encephalopathy type)	http://www.orpha.net/ORDO/Orphanet_293955	Childhood encephalopathy due to thiamine pyrophosphokinase deficiency
 thoracic aortic aneurysm	http://www.ebi.ac.uk/efo/EFO_0004282	thoracic aortic aneurysm
+thoracic dysostosis, isolated	http://purl.obolibrary.org/obo/MONDO_0008549	thoracic dysostosis, isolated
 thrombocytopenia, x-linked	http://www.orpha.net/ORDO/Orphanet_268322	Hereditary thrombocytopenia with normal platelets
 thrombocytosis, benign familial microcytic	http://www.ebi.ac.uk/efo/EFO_0000479	essential thrombocythemia
 thrombocytosis, benign familial microcytic	http://www.orpha.net/ORDO/Orphanet_71493	Familial thrombocytosis
@@ -2891,7 +2894,6 @@ thyrotoxic periodic paralysis	http://www.orpha.net/ORDO/Orphanet_79102	Thyrotoxi
 thyrotoxic periodic paralysis 2	http://www.orpha.net/ORDO/Orphanet_79102	Thyrotoxic periodic paralysis
 tobacco use disorder	http://www.ebi.ac.uk/efo/EFO_0003768	nicotine dependence
 tooth agenesis	http://www.ebi.ac.uk/efo/EFO_0005410	tooth agenesis
-tooth agenesis, selective, 3	http://www.ebi.ac.uk/efo/EFO_0005410	tooth agenesis
 tooth agenesis, selective, 8	http://www.ebi.ac.uk/efo/EFO_0005410	tooth agenesis
 tooth agenesis, selective, 9	http://www.ebi.ac.uk/efo/EFO_0005410	tooth agenesis
 torsade de pointes	http://www.ebi.ac.uk/efo/EFO_0005307	torsades de pointes
