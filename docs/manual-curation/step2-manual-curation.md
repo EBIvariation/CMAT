@@ -103,8 +103,7 @@ The “Status” column has the following acceptable values:
 * **IMPORT** — an acceptable trait has been found from the MONDO/HP ontologies which is not contained in EFO and must be
   imported
 * **NEW** — new term must be created in EFO
-* **SKIP** — trait is going to be skipped in this iteration, due to being too non-specific, or just having a low
-  frequency
+* **SKIP** — trait should be skipped in this round and in the future, due to being too non-specific (e.g. "tbc1-related disorder")
 * **UNSURE** — temporary status; traits to be discussed with reviewers/the team
 
 ### Comment field for curation review
@@ -208,3 +207,7 @@ ${PYTHON_BIN} ${CODE_ROOT}/bin/trait_mapping/get_children_with_keywords.py --ont
 
 Keep in mind however that EFO is not able to modify imported ontology hierarchies such as MONDO, so suggested child 
 terms may not be included in the new term.
+
+## Skipped terms
+
+<!-- TODO -->
