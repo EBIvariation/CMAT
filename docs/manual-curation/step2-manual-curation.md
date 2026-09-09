@@ -102,8 +102,8 @@ The “Status” column has the following acceptable values:
 * **DONE** — an acceptable trait contained in EFO has been found for the trait
 * **IMPORT** — an acceptable trait has been found from the MONDO/HP ontologies which is not contained in EFO and must be
   imported
-* **NEW** — new term must be created in EFO
-* **SKIP** — trait should be skipped in this round and in the future, due to being too non-specific (e.g. "tbc1-related disorder")
+* **NEW** — new term must be created in EFO (see [New terms](#new-terms))
+* **SKIP** — trait should be skipped in future curation rounds (see [Skipped terms](#skipped-terms))
 * **UNSURE** — temporary status; traits to be discussed with reviewers/the team
 
 ### Comment field for curation review
@@ -210,4 +210,18 @@ terms may not be included in the new term.
 
 ## Skipped terms
 
-<!-- TODO -->
+Some traits in ClinVar are simply not mappable without additional context, due to being not specific enough or not
+describing a disease phenotype. These should be marked as SKIP, possibly with a comment providing a justification.
+
+Categories that may be eligible for skipping:
+* Clearly erroneous terms (e.g. "rare" or "see cases")
+* Extremely general terms (e.g. "disease or disorder")
+* Drug response terms (e.g. "capecitabine response - toxicity")
+* Gene-related disorder terms (e.g. "tbc1-related disorder")
+  * These may still be mapped if there is good evidence of a coherent phenotype that can be described as relating to
+    this gene, for example "polr2a-related disorder" → MONDO:0032829 based on [this paper](https://www.mdpi.com/2073-4425/13/3/470).
+* Terms that only describe a gene or variant (e.g. "caused by mutation in the tafazzin gene", "gc1/gc2 polymorphism")
+* Terms that describe other entities besides a disease or similar (e.g. "hemoglobin s", "blood group, i system")
+
+If you are not certain, mark as UNSURE rather than SKIP, as skipped terms will be removed from all future manual
+curation rounds by default.
