@@ -11,6 +11,7 @@ def helpMessage() {
         --curation_root     Directory for current batch
         --input_csv         Input csv file
         --mappings          Current mappings file (optional, will use a default path if omitted)
+        --skipped           Current skipped traits file (optional, will use a default path if omitted)
         --with_feedback     Whether to generate EFO/Zooma feedback and final symlinking (default false)
     """
 }
@@ -19,6 +20,7 @@ params.help = null
 params.curation_root = null
 params.input_csv = null
 params.mappings = "\${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv"
+params.skipped = "\${BATCH_ROOT_BASE}/manual_curation/skipped_traits.tsv"
 params.with_feedback = false
 
 if (params.help) {
@@ -41,6 +43,7 @@ workflow {
         exportTable.out.finishedMappings,
         Channel.of(params.mappings)
     )
+    createSkippedTraits(exportTable.out.newSkipped, Channel.of(params.skipped))
 
     if (params.with_feedback) {
         generateZoomaFeedback(createLatestMappings.out.finalMappings)
@@ -63,12 +66,15 @@ process exportTable {
     output:
     path "finished_mappings_curation.tsv", emit: finishedMappings
     path "curator_comments.tsv", emit: curatorComments
+    path "new_skipped_traits.tsv", emit: newSkipped
 
     script:
     """
     \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/export_curation_table.py \
         -i ${params.input_csv} \
+        -b \${CURATION_RELEASE} \
         -d finished_mappings_curation.tsv \
+        -s new_skipped_traits.tsv \
         -c curator_comments.tsv
     """
 }
@@ -103,6 +109,31 @@ process createLatestMappings {
         --previous ${previousMappings}
     """
 }
+
+/*
+ * Create final skipped_traits file.
+ */
+ process createSkippedTraits  {
+    label 'short_time'
+    label 'small_mem'
+
+    publishDir "${curationRoot}",
+        overwrite: true,
+        mode: "copy",
+        pattern: "*.tsv"
+
+    input:
+    path newSkipped
+    val previousSkipped
+
+    output:
+    path "skipped_traits.tsv", emit: skippedTraits
+
+    script:
+    """
+    cat ${previousSkipped} ${newSkipped} >> skipped_traits.tsv
+    """
+ }
 
 /*
  * Generate ZOOMA feedback.
@@ -148,6 +179,7 @@ process updateLinks {
     script:
     """
     ln -s -f ${curationRoot}/trait_names_to_ontology_mappings.tsv \${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv
+    ln -s -f ${curationRoot}/skipped_traits.tsv \${BATCH_ROOT_BASE}/manual_curation/skipped_traits.tsv
     ln -s -f ${curationRoot}/eva_clinvar.txt \${BATCH_ROOT_BASE}/manual_curation/eva_clinvar.txt
     ln -s -f ${curationRoot}/curator_comments.tsv \${BATCH_ROOT_BASE}/manual_curation/latest_comments.tsv
     """

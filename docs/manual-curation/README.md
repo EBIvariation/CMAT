@@ -29,6 +29,7 @@ export CURATION_RELEASE_ROOT=${BATCH_ROOT_BASE}/manual_curation/${CURATION_RELEA
 * Good/bad criteria for curation are observed (see the manual curation protocol, section “Criteria to manually evaluate mapping quality”)
 * The number of traits in the `finished_mappings_curation.tsv` file is the same as in the spreadsheet after applying all relevant filters
 * _Important:_ spreadsheet does not contain line endings, or extraneous space symbols, in trait names (can be checked by a regexp search)
+* Skipped traits are reviewed and confirmed to be too non-specific or not disease terms.
 * For submitting terms to EFO
   + Terms for import all have associated HP or MONDO IDs
   + Information for new terms has been populated for as many traits as possible

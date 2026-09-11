@@ -13,6 +13,7 @@ def helpMessage() {
         --curation_root     Directory for current batch
         --clinvar           ClinVar XML file (optional, will download latest if omitted)
         --mappings          Current mappings file (optional, will use a default path if omitted)
+        --skipped           Current skipped traits file (optional, will use a default path if omitted)
         --comments          Current curator comments file (optional, will use a default path if omitted)
         --chunk_size        Chunk size to split traits into (default 1000)
         --max_forks         Max number of processes to run in parallel (default 10)
@@ -23,6 +24,7 @@ params.help = null
 params.curation_root = null
 params.clinvar = null
 params.mappings = "\${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv"
+params.skipped = "\${BATCH_ROOT_BASE}/manual_curation/skipped_traits.tsv"
 params.comments = "\${BATCH_ROOT_BASE}/manual_curation/latest_comments.tsv"
 params.chunk_size = 1000
 params.max_forks = 10
@@ -69,6 +71,7 @@ process parseTraits {
     """
     \${PYTHON_BIN} ${codeRoot}/bin/trait_mapping/parse_traits.py \
         -i ${clinvarXml} \
+        -s ${params.skipped} \
         -o parsed_traits.csv
     """
 }

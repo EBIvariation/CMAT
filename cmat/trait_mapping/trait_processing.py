@@ -137,12 +137,22 @@ def read_traits_from_csv(traits_filepath):
     return traits
 
 
-def parse_traits(input_filepath, output_traits_filepath, output_for_platform=None):
+def load_skipped_traits(skipped_traits_filepath):
+    with open(skipped_traits_filepath, 'r') as f:
+        reader = csv.reader(f, delimiter='\t')
+        next(reader)
+        return {row[0] for row in reader}
+
+
+def parse_traits(input_filepath, skipped_traits_filepath, output_traits_filepath, output_for_platform=None):
     logger.info('Started parsing trait names')
     trait_list = parse_trait_names(input_filepath)
     logger.info("Loaded {} trait names".format(len(trait_list)))
     # Remove non-specific trait names which should never be output
     trait_list = [trait for trait in trait_list if trait.name.lower() not in ClinVarTrait.NONSPECIFIC_TRAITS]
+    # Remove trait names that are skipped for curation
+    skipped_traits = load_skipped_traits(skipped_traits_filepath)
+    trait_list = [trait for trait in trait_list if trait.name.lower() not in skipped_traits]
     output_traits_to_csv(trait_list, output_traits_filepath)
     logger.info("Output {} valid trait names".format(len(trait_list)))
     # Output an extra csv file for curation platform if path is provided
