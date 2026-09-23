@@ -4,7 +4,7 @@ Evidence strings are generated automatically every month via cron job, using the
 pipeline and the most recent monthly ClinVar release. The below steps can be used if needed to run the pipeline on
 demand.
 
-At least once per quarter, we should continue to check the logs and perform the [manual follow-up actions](#3-manual-follow-up-actions)
+At least once per quarter, we will continue to check the logs and perform the [manual follow-up actions](#3-manual-follow-up-actions)
 in order to submit the most recent batch of evidence.
 
 ## 1. Preparation steps
