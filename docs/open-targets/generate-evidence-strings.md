@@ -1,11 +1,17 @@
 # Evidence string generation protocol
 
+Evidence strings are generated automatically every month via cron job, using the currently deployed version of the
+pipeline and the most recent monthly ClinVar release. The below steps can be used if needed to run the pipeline on
+demand.
+
+At least once per quarter, we will continue to check the logs and perform the [manual follow-up actions](#3-manual-follow-up-actions)
+in order to submit the most recent batch of evidence.
+
 ## 1. Preparation steps
 
 ### Check if the pipeline needs to be updated
-Open Targets will circulate an email several weeks before the data submission deadline which will contain the version of the [JSON schema](https://github.com/opentargets/json_schema) to be used. Examine the changes, and modify this pipeline to accommodate them if necessary.
-
-Regardless of whether any changes were made, update the `OT_SCHEMA_VERSION` value in [this file](/OT_SCHEMA_VERSION), which is used both in this protocol and the tests.
+Deploy any new changes to the pipeline, including updating the `OT_SCHEMA_VERSION` value in [this file](/OT_SCHEMA_VERSION) if a
+[new version](https://github.com/opentargets/json_schema/tags) has been released by Open Targets.
 
 ### Set up the environment
 First, [set up the common environment.](environment.md)
@@ -21,7 +27,7 @@ export OT_RELEASE=YYYY-MM
 export OT_SCHEMA_VERSION=$(cat "${CODE_ROOT}/OT_SCHEMA_VERSION")
 ```
 
-## 1. Process data
+## 2. Process data
 The protocol is automated. See specific section comments for details.
 
 ```bash
@@ -51,7 +57,7 @@ A repeated evidence string will have identical values for these five fields:
 
 Nevertheless, we also report evidence strings in which  ``diseaseFromSourceMappedId`` may be empty (``diseaseFromSourceMappedId: null``) - i.e. the phenotype has not been mapped to an ontology yet. Therefore, to check for duplicates we also take into account the field ``diseaseFromSource``, which is the string describing the phenotype within ClinVar records (and is never missing in any evidence string).
 
-## 2. Manual follow-up actions
+## 3. Manual follow-up actions
 
 ### Check removed mappings and invalid evidence
 The pipeline removes mappings that would violate the current JSON schema, and outputs them to `${BATCH_ROOT}/logs/removed_mappings.tsv`.
@@ -75,14 +81,6 @@ To do this, run the following:
 gzip evidence_strings/evidence_strings.json
 ${CODE_ROOT}/env/bin/upload_to_gcloud.py --input-file evidence_strings/evidence_strings.json.gz --destination-folder disease-target-evidence
 ```
-
-Once the upload is complete, send an email to Open Targets (data [at] opentargets.org) containing the following information from the [metrics spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/):
-* The number of submitted evidence strings
-* The ClinVar release date
-* The Ensembl release
-* The EFO version used for mapping
-* The `CMAT` pipeline version
-* The Open Targets JSON schema version
 
 ### Submit feedback to ZOOMA
 The idea with [ZOOMA](http://www.ebi.ac.uk/spot/zooma/) is that we not only use it, but also provide feedback to help improve it. The evidence string generation pipeline generates two files with such a feedback:
@@ -117,18 +115,18 @@ If everything has been done correctly, hash sums will be the same. Note that the
     - In the correct format without obvious errors (compare with the previous OT batch)
     - Line/record count is the same or more compared to the previous OT batch
     - Files are terminated correctly (not ending abruptly after an incomplete record)
-* Step 2 “Set up directories and download the data”
+* Step 1 “Preparation steps”
   + Working directory exists and its structure is as described in the instructions for the step
-* Step 3 “Manual steps & checks before running the pipeline”
   + References to the Open Targets schema version are updated throughout the code and in the test files
-* Step 4 “Process data”
+* Step 2 “Process data”
   + Functional consequences
     - There shouldn't be any warnings such as “Error on last attempt, skipping” in the logs. This might mean that one of the servers was down during processing, and potentially not all information has been gathered.
     - The final file with the genes & consequences contains both “normal variants”, and a few dozen repeat variants, including `short_tandem_repeat_expansion` and `trinucleotide_repeat_expansion` ones.
     - The `${BATCH_ROOT}/logs/consequence_repeat.err` log will record all repeat expansion variants which could not be parsed using any of the regular expressions. Verify that there are no new such variants compared to the previous batch.
-  + Evidence stringts
-    - Version of JSON schema is the same as specified in the Open Targets e-mail
-* Step 5 “Manual follow-up actions”
+  + Evidence strings
+    - Version of JSON schema is the same as the most recent [Open Targets release](https://github.com/opentargets/json_schema/tags)
+    - No new unexpected entries in removed mappings or invalid evidence files
+* Step 3 “Manual follow-up actions”
   + The summary metrics
     - Are present in the [spreadsheet](https://docs.google.com/spreadsheets/d/1g_4tHNWP4VIikH7Jb0ui5aNr0PiFgvscZYOe69g191k/)
     - Are calculated correctly (re-calculate using the commands in the spreadsheet as required)
@@ -136,7 +134,6 @@ If everything has been done correctly, hash sums will be the same. Note that the
   + Generated evidence strings validate against the schema
     - Have actually been submitted to the Open Targets cloud storage
     - The file is the same as on the cluster (check md5)
-    - E-mail has been sent to Open Targets, with opentargets-clinvar in copy
   + ZOOMA feedback (the FTP path is http://ftp.ebi.ac.uk/pub/databases/eva/ClinVar/latest; to see where files are located on the cluster, see variable `BATCH_ROOT_BASE` on [this page](https://github.com/EBIvariation/configuration/blob/master/open-targets-configuration.md))
     - The changes have been propagated to the FTP, and the files available over FTP are the same as on the cluster
     - The files in the `YYYY/MM/DD` and in the `latest` folders are identical (using either symlinks or copied)
