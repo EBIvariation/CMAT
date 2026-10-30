@@ -157,6 +157,7 @@ angioedema	http://www.ebi.ac.uk/efo/EFO_0005532	angioedema
 angioedema induced by ace inhibitors, susceptibility to	http://www.ebi.ac.uk/efo/EFO_0005532	angioedema
 angioimmunoblastic t-cell lymphoma	http://www.ebi.ac.uk/efo/EFO_0000255	angioimmunoblastic T-cell lymphoma
 angiosarcoma	http://www.ebi.ac.uk/efo/EFO_0003968	angiosarcoma
+anhidrotic ectodermal dysplasia	http://purl.obolibrary.org/obo/HP_0007476	Anhidrotic ectodermal dysplasia
 aniridia	http://www.orpha.net/ORDO/Orphanet_250923	Isolated aniridia
 ankylosing spondylitis	http://www.ebi.ac.uk/efo/EFO_0003898	ankylosing spondylitis
 anophthalmia - microphthalmia	http://www.orpha.net/ORDO/Orphanet_98555	Microphthalmia-anophthalmia-coloboma
@@ -447,6 +448,7 @@ cataract, coppock-like	http://www.orpha.net/ORDO/Orphanet_98986	OBSOLETE: Coppoc
 cataract, posterior polar, 3	http://www.orpha.net/ORDO/Orphanet_91492	Early-onset non-syndromic cataract
 catecholaminergic polymorphic ventricular tachycardia type 1	http://www.orpha.net/ORDO/Orphanet_3286	Catecholaminergic polymorphic ventricular tachycardia
 catel manzke syndrome	http://www.orpha.net/ORDO/Orphanet_1388	Catel-Manzke syndrome
+cathepsin a-related arteriopathy-strokes-leukoencephalopathy	http://purl.obolibrary.org/obo/MONDO_0035551	cathepsin a-related arteriopathy-strokes-leukoencephalopathy
 catsper-related male infertility	http://www.orpha.net/ORDO/Orphanet_276234	Non-syndromic male infertility due to sperm motility disorder
 caudal duplication anomaly	http://www.orpha.net/ORDO/Orphanet_1756	Caudal duplication
 cavernous hemangioma	http://www.ebi.ac.uk/efo/EFO_1000151	Cavernous Hemangioma
@@ -954,6 +956,7 @@ distal spinal muscular atrophy, autosomal recessive 2	http://www.orpha.net/ORDO/
 distal spinal muscular atrophy, autosomal recessive 4	http://www.orpha.net/ORDO/Orphanet_206580	Autosomal recessive lower motor neuron disease with childhood onset
 distal spinal muscular atrophy, congenital nonprogressive	http://www.orpha.net/ORDO/Orphanet_1216	Autosomal dominant congenital benign spinal muscular atrophy
 distal spinal muscular atrophy, x-linked 3	http://www.orpha.net/ORDO/Orphanet_139557	X-linked distal spinal muscular atrophy type 3
+dominant hereditary optic atrophy	http://purl.obolibrary.org/obo/MONDO_0020250	autosomal dominant optic atrophy
 dominant hypophosphatemia with nephrolithiasis or osteoporosis	http://www.orpha.net/ORDO/Orphanet_244305	Dominant hypophosphatemia with nephrolithiasis or osteoporosis
 donnai barrow syndrome	http://www.orpha.net/ORDO/Orphanet_2143	Donnai-Barrow syndrome
 dopamine beta hydroxylase deficiency	http://www.orpha.net/ORDO/Orphanet_230	Dopamine beta-hydroxylase deficiency
@@ -1040,6 +1043,7 @@ ehlers-danlos syndrome, procollagen proteinase deficient	http://www.orpha.net/OR
 ehlers-danlos syndrome, procollagen proteinase deficient	http://www.orpha.net/ORDO/Orphanet_99876	OBSOLETE: Ehlers-Danlos syndrome type 7B
 ehlers-danlos syndrome, type 7a	http://www.orpha.net/ORDO/Orphanet_99875	OBSOLETE: Ehlers-Danlos syndrome type 7A
 ehlers-danlos syndrome, type 8	http://www.orpha.net/ORDO/Orphanet_286	Vascular Ehlers-Danlos syndrome
+eichsfeld type congenital muscular dystrophy	http://purl.obolibrary.org/obo/MONDO_0011271	rigid spine muscular dystrophy 1
 eiken skeletal dysplasia	http://www.orpha.net/ORDO/Orphanet_79106	Eiken syndrome
 elevated serum creatine phosphokinase	http://www.orpha.net/ORDO/Orphanet_206599	Isolated asymptomatic elevation of creatine phosphokinase
 embryonal neoplasm	http://www.ebi.ac.uk/efo/EFO_0005784	embryonal neoplasm
@@ -1530,7 +1534,9 @@ immune dysfunction with t-cell inactivation due to calcium entry defect 2	http:/
 immune dysfunction with t-cell inactivation due to calcium entry defect 2	http://www.orpha.net/ORDO/Orphanet_317430	Combined immunodeficiency due to STIM1 deficiency
 immunodeficiency 11	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
 immunodeficiency 12	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
+immunodeficiency 128	http://purl.obolibrary.org/obo/MONDO_0975834	immunodeficiency 128
 immunodeficiency 13	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
+immunodeficiency 132b	http://purl.obolibrary.org/obo/MONDO_0976228	immunodeficiency 132b
 immunodeficiency 15	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
 immunodeficiency 16	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
 immunodeficiency 17	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
@@ -1549,6 +1555,7 @@ immunodeficiency 46	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodefi
 immunodeficiency 50	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
 immunodeficiency 52	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
 immunodeficiency 8	http://www.orpha.net/ORDO/Orphanet_179006	Primary immunodeficiency due to a defect in adaptive immunity
+immunodeficiency 93 and hypertrophic cardiomyopathy	http://purl.obolibrary.org/obo/MONDO_0030528	immunodeficiency 93 and hypertrophic cardiomyopathy
 immunodeficiency due to defect in cd3-zeta	http://www.orpha.net/ORDO/Orphanet_169160	T-B+ severe combined immunodeficiency due to CD3delta/CD3epsilon/CD3zeta
 immunodeficiency due to defect in mapbp-interacting protein	http://www.orpha.net/ORDO/Orphanet_90023	Primary immunodeficiency syndrome due to LAMTOR2 deficiency
 immunodeficiency due to ficolin 3 deficiency	http://www.orpha.net/ORDO/Orphanet_331190	Immunodeficiency due to ficolin3 deficiency
@@ -2018,6 +2025,7 @@ mild obesity	http://www.ebi.ac.uk/efo/EFO_0001073	obesity
 minicore myopathy with external ophthalmoplegia	http://www.orpha.net/ORDO/Orphanet_98905	Congenital multicore myopathy with external ophthalmoplegia
 minimal change disease	http://www.ebi.ac.uk/efo/EFO_1001020	lipoid nephrosis
 minimal change glomerulonephritis	http://www.ebi.ac.uk/efo/EFO_1001020	lipoid nephrosis
+mirror movements 1	http://purl.obolibrary.org/obo/MONDO_0008002	mirror movements 1
 mitochondrial 3-hydroxy-3-methylglutaryl-coa synthase deficiency	http://www.orpha.net/ORDO/Orphanet_35701	3-hydroxy-3-methylglutaryl-CoA synthase deficiency
 mitochondrial complex i deficiency, nuclear type 35	http://www.orpha.net/ORDO/Orphanet_2609	Isolated complex I deficiency
 mitochondrial complex ii deficiency	http://www.orpha.net/ORDO/Orphanet_68380	Mitochondrial disease
@@ -2271,6 +2279,7 @@ opitz-frias syndrome	http://www.orpha.net/ORDO/Orphanet_2745	Opitz G/BBB syndrom
 opsoclonus-myoclonus syndrome	http://www.ebi.ac.uk/efo/EFO_1001383	Opsoclonus-Myoclonus Syndrome
 optic atrophy 10 with or without ataxia, mental retardation, and seizures	http://www.orpha.net/ORDO/Orphanet_98675	OBSOLETE: Autosomal recessive optic atrophy
 optic atrophy 7	http://www.orpha.net/ORDO/Orphanet_104	Leber hereditary optic neuropathy
+optic atrophy, dominant	http://purl.obolibrary.org/obo/MONDO_0020250	autosomal dominant optic atrophy
 optic nerve glioma	http://www.ebi.ac.uk/efo/EFO_0009254	optic nerve glioblastoma
 optic neuritis	http://www.ebi.ac.uk/efo/EFO_0007405	optic neuritis
 oral-facial-digital syndrome	http://www.orpha.net/ORDO/Orphanet_140997	Orofaciodigital syndrome
