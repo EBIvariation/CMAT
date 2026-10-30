@@ -1,0 +1,4 @@
+| disease | Parent term | Child terms | Definition | Synonyms | PubMed IDs | MedGen | OMIM | Comments |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| scapuloperoneal spinal muscular atrophy | MONDO:0001516 | MONDO:0008408 |  |  |  |  |  |  |
+| familial interstitial pneumonia | MONDO:0015925 |  | Familial interstitial pneumonia (FIP) is defined as the presence of any fibrotic interstitial lung disease (ILD) in at least two blood relatives' first or second-degree family members |  | 25506193.0 |  |  |  |
