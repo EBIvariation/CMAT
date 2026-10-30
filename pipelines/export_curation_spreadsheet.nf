@@ -10,6 +10,7 @@ def helpMessage() {
     Params:
         --curation_root     Directory for current batch
         --input_csv         Input csv file
+        --new_input_csv     Input csv file for new terms (optional)
         --mappings          Current mappings file (optional, will use a default path if omitted)
         --skipped           Current skipped traits file (optional, will use a default path if omitted)
         --with_feedback     Whether to generate EFO/Zooma feedback and final symlinking (default false)
@@ -19,6 +20,7 @@ def helpMessage() {
 params.help = null
 params.curation_root = null
 params.input_csv = null
+params.new_input_csv = null
 params.mappings = "\${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv"
 params.skipped = "\${BATCH_ROOT_BASE}/manual_curation/skipped_traits.tsv"
 params.with_feedback = false
@@ -61,10 +63,12 @@ process exportTable {
     publishDir "${curationRoot}",
         overwrite: true,
         mode: "copy",
-        pattern: "curator_comments.tsv"
+        pattern: "{curator_comments.tsv,import_terms_table.md,new_terms_table.md}"
 
     output:
     path "finished_mappings_curation.tsv", emit: finishedMappings
+    path "import_terms_table.md", emit: importMappings
+    path "new_terms_table.md", emit: newTerms, optional: true
     path "curator_comments.tsv", emit: curatorComments
     path "new_skipped_traits.tsv", emit: newSkipped
 
@@ -74,8 +78,10 @@ process exportTable {
         -i ${params.input_csv} \
         -b \${CURATION_RELEASE} \
         -d finished_mappings_curation.tsv \
+        -m import_terms_table.md \
         -s new_skipped_traits.tsv \
-        -c curator_comments.tsv
+        -c curator_comments.tsv \
+        ${params.new_input_csv ? "-e ${params.new_input_csv} -n new_terms_table.md" : ""}
     """
 }
 
