@@ -30,6 +30,7 @@ diff ${BATCH_ROOT}/google_sheets_table.tsv ${BATCH_ROOT_BASE}/expected/google_sh
 nextflow run ${CODE_ROOT}/pipelines/export_curation_spreadsheet.nf \
   --curation_root ${BATCH_ROOT} \
   --input_csv ${BATCH_ROOT_BASE}/finished_curation_spreadsheet.csv \
+  --new_input_csv ${BATCH_ROOT_BASE}/finished_new_terms.csv \
   --mappings ${CODE_ROOT}/mappings/latest_mappings.tsv \
   --skipped ${BATCH_ROOT_BASE}/skipped_traits.tsv \
   -resume
@@ -39,6 +40,8 @@ diff -I '^#generated-date' ${BATCH_ROOT}/trait_names_to_ontology_mappings.tsv ${
 diff ${BATCH_ROOT}/skipped_traits.tsv ${BATCH_ROOT_BASE}/expected/skipped_traits.tsv
 diff ${BATCH_ROOT}/obsolete_mappings.tsv ${BATCH_ROOT_BASE}/expected/obsolete_mappings.tsv
 diff ${BATCH_ROOT}/trait_counts.yml ${BATCH_ROOT_BASE}/expected/trait_counts.yml
+diff ${BATCH_ROOT}/import_terms_table.md ${BATCH_ROOT_BASE}/expected/import_terms_table.md
+diff ${BATCH_ROOT}/new_terms_table.md ${BATCH_ROOT_BASE}/expected/new_terms_table.md
 
 cd ${CWD}
 rm -r ${BATCH_ROOT}
