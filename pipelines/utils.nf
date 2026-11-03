@@ -33,23 +33,3 @@ process downloadClinvar {
         https://ftp.ncbi.nlm.nih.gov/pub/clinvar/xml/RCV_release/ClinVarRCVRelease_00-latest.xml.gz
     """
 }
-
-/*
- * Download the Open Targets JSON schema.
- */
-process downloadJsonSchema {
-    label 'short_time'
-    label 'small_mem'
-
-    input:
-    val schemaVersion
-
-    output:
-    path "opentargets-${schemaVersion}.json", emit: jsonSchema
-
-    script:
-    """
-    wget -O opentargets-${schemaVersion}.json \
-        https://raw.githubusercontent.com/opentargets/json_schema/${schemaVersion}/schemas/disease_target_evidence.json
-    """
-}

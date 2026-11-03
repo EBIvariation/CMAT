@@ -2,7 +2,7 @@
 
 nextflow.enable.dsl=2
 
-include { downloadClinvar; downloadJsonSchema } from './utils.nf'
+include { downloadClinvar } from './utils.nf'
 
 def helpMessage() {
     log.info"""
@@ -10,7 +10,7 @@ def helpMessage() {
     
     Params:
         --output_dir           Directory for output
-        --schema               Open Targets JSON schema version (optional, will output XML if omitted)
+        --json_schema          Path to Open Targets JSON schema (optional, will output XML if omitted)
         --clinvar              ClinVar XML file (optional, will download latest if omitted)
         --mappings             Trait mappings file (optional, will use a default path if omitted)
         --include_transcripts  Whether to include transcripts in consequences (default false)
@@ -20,7 +20,7 @@ def helpMessage() {
 
 params.help = null
 params.output_dir = null
-params.schema = null
+params.json_schema = null
 params.clinvar = null
 params.mappings = '${BATCH_ROOT_BASE}/manual_curation/latest_mappings.tsv'
 params.include_transcripts = false
@@ -56,9 +56,8 @@ workflow {
                         runRepeat.out.consequencesRepeat,
                         runStructural.out.consequencesStructural)
 
-    if (params.schema != null) {
+    if (params.json_schema != null) {
         // Open Targets evidence string output
-        downloadJsonSchema(params.schema)
         // Get start/end indices to break XML into chunks
         countClinvarRecords(clinvarXml)
         .map { strN ->
@@ -71,7 +70,7 @@ workflow {
         .set { startEndPairs }
         // Generate evidence for each chunk and concatenate
         generateEvidence(clinvarXml,
-                         downloadJsonSchema.out.jsonSchema,
+                         params.json_schema,
                          combineConsequences.out.consequencesCombined,
                          startEndPairs.collect())
         collectEvidenceStrings(generateEvidence.out.evidenceStrings.collect())

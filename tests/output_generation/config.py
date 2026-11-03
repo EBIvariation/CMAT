@@ -6,8 +6,7 @@ from cmat import clinvar_xml_io
 test_dir = os.path.dirname(__file__)
 efo_mapping_file = os.path.join(test_dir, 'resources', 'string_to_ontology_mappings.tsv')
 snp_2_gene_file = os.path.join(test_dir, 'resources/snp2gene_extract.tsv')
-OT_SCHEMA_VERSION = open(os.path.join(test_dir, '../../OT_SCHEMA_VERSION')).read()
-
+ot_schema_file = os.path.join(test_dir, '../../etc/disease_target_evidence.json')
 
 def get_expected_evidence_string(filename):
     return open(os.path.join(test_dir, 'resources', f'expected_{filename}_evidence_string.json')).read()

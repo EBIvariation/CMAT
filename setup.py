@@ -35,7 +35,7 @@ setup(name='cmat',
       packages=find_packages(),
       install_requires=get_requires(),
       package_data={
-          'cmat': ['OT_SCHEMA_VERSION', 'pipelines/*']
+          'cmat': ['pipelines/*', 'etc/*']
       },
       description='ClinVar Mapping and Annotation Toolkit',
       long_description=long_description,

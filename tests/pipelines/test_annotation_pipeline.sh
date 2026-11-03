@@ -17,7 +17,7 @@ cd ${BATCH_ROOT}
 
 nextflow run ${CODE_ROOT}/pipelines/annotation_pipeline.nf \
   --output_dir ${BATCH_ROOT} \
-  --schema $(cat "${CODE_ROOT}/OT_SCHEMA_VERSION") \
+  --json_schema ${CODE_ROOT}/etc/disease_target_evidence.json \
   --clinvar ${BATCH_ROOT_BASE}/input.xml.gz \
   --mappings ${CODE_ROOT}/mappings/latest_mappings.tsv \
   -resume
