@@ -57,6 +57,7 @@ workflow {
                         runStructural.out.consequencesStructural)
 
     if (params.json_schema != null) {
+        // Open Targets evidence string output
         // Get start/end indices to break XML into chunks
         countClinvarRecords(clinvarXml)
         .map { strN ->
