@@ -10,8 +10,7 @@ in order to submit the most recent batch of evidence.
 ## 1. Preparation steps
 
 ### Check if the pipeline needs to be updated
-Deploy any new changes to the pipeline, including updating the `OT_SCHEMA_VERSION` value in [this file](/OT_SCHEMA_VERSION) if a
-[new version](https://github.com/opentargets/json_schema/tags) has been released by Open Targets.
+Deploy any new changes to the pipeline if necessary.
 
 ### Set up the environment
 First, [set up the common environment.](environment.md)
@@ -22,9 +21,6 @@ Next, set up the protocol-specific environment:
 # Year and month for the upcoming Open Targets release.
 # For example, if you're processing data for “20.02” release, this variable will be set to `2020-02`.
 export OT_RELEASE=YYYY-MM
-
-# Open Targets JSON schema version.
-export OT_SCHEMA_VERSION=$(cat "${CODE_ROOT}/OT_SCHEMA_VERSION")
 ```
 
 ## 2. Process data
@@ -40,7 +36,7 @@ mkdir -p clinvar gene_mapping evidence_strings logs
 # Run the nextflow pipeline, resuming execution of previous attempt if possible.
 nextflow run ${CODE_ROOT}/pipelines/annotation_pipeline.nf \
   --output_dir ${BATCH_ROOT} \
-  --schema ${OT_SCHEMA_VERSION} \
+  --json_schema ${CODE_ROOT}/etc/disease_target_evidence.json \
   -resume
 ```
 
@@ -117,14 +113,12 @@ If everything has been done correctly, hash sums will be the same. Note that the
     - Files are terminated correctly (not ending abruptly after an incomplete record)
 * Step 1 “Preparation steps”
   + Working directory exists and its structure is as described in the instructions for the step
-  + References to the Open Targets schema version are updated throughout the code and in the test files
 * Step 2 “Process data”
   + Functional consequences
     - There shouldn't be any warnings such as “Error on last attempt, skipping” in the logs. This might mean that one of the servers was down during processing, and potentially not all information has been gathered.
     - The final file with the genes & consequences contains both “normal variants”, and a few dozen repeat variants, including `short_tandem_repeat_expansion` and `trinucleotide_repeat_expansion` ones.
     - The `${BATCH_ROOT}/logs/consequence_repeat.err` log will record all repeat expansion variants which could not be parsed using any of the regular expressions. Verify that there are no new such variants compared to the previous batch.
   + Evidence strings
-    - Version of JSON schema is the same as the most recent [Open Targets release](https://github.com/opentargets/json_schema/tags)
     - No new unexpected entries in removed mappings or invalid evidence files
 * Step 3 “Manual follow-up actions”
   + The summary metrics
