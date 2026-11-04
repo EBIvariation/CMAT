@@ -27,7 +27,7 @@ def export_table(input_filepath, batch_date, done_filepath, skipped_filepath, co
     done_rows.to_csv(done_filepath, sep='\t', header=False, index=False)
 
     # Import mappings
-    import_rows = curation_table[curation_table[STATUS_HEADER] == 'DONE']
+    import_rows = curation_table[curation_table[STATUS_HEADER] == 'IMPORT']
     import_rows = import_rows[[MAPPING_LABEL_HEADER, MAPPING_URI_HEADER]]
     import_rows[MAPPING_URI_HEADER] = import_rows[MAPPING_URI_HEADER].str.rsplit('/', n=1).str[-1]
     with open(import_filepath, 'w') as import_file:
