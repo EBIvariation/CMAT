@@ -1,3 +1,3 @@
 | Label | ID |
 | --- | --- |
-| corneal dystrophy | MONDO_0018102 |
+| amyloidosis, hereditary systemic 3 | MONDO_0971008 |
